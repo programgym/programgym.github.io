@@ -145,30 +145,7 @@
       <div class="donut-wrap">
         <div class="donut" id="donut">
           <svg viewBox="0 0 260 260" role="img" aria-label="Task composition by language">
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-go)"
-                stroke-dasharray="247.497 255.157"
-                style="--len:249.497; --d:0.08s"
-                transform="rotate(-90.0000 130 130)"
-                data-name="Go" data-count="818" data-pct="49.64"></circle>
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-cpp)"
-                stroke-dasharray="113.293 389.361"
-                style="--len:115.293; --d:0.21s"
-                transform="rotate(88.6893 130 130)"
-                data-name="C++" data-count="378" data-pct="22.94"></circle>
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-rust)"
-                stroke-dasharray="90.418 412.237"
-                style="--len:92.418; --d:0.34s"
-                transform="rotate(171.2621 130 130)"
-                data-name="Rust" data-count="303" data-pct="18.39"></circle>
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-c)"
-                stroke-dasharray="43.446 459.208"
-                style="--len:45.446; --d:0.47s"
-                transform="rotate(237.4515 130 130)"
-                data-name="C" data-count="149" data-pct="9.04"></circle>
+{{SEGS}}
           </svg>
           <div class="donut-core">
             <span class="k">Program-Env</span>
@@ -178,30 +155,7 @@
         </div>
 
         <ul class="dlegend" id="dlegend">
-          <li style="--c:var(--c-go)" data-name="Go">
-            <i class="sw"></i>
-            <span class="nm">Go</span>
-            <span class="ct">818</span>
-            <span class="pc">49.64%</span>
-          </li>
-          <li style="--c:var(--c-cpp)" data-name="C++">
-            <i class="sw"></i>
-            <span class="nm">C++</span>
-            <span class="ct">378</span>
-            <span class="pc">22.94%</span>
-          </li>
-          <li style="--c:var(--c-rust)" data-name="Rust">
-            <i class="sw"></i>
-            <span class="nm">Rust</span>
-            <span class="ct">303</span>
-            <span class="pc">18.39%</span>
-          </li>
-          <li style="--c:var(--c-c)" data-name="C">
-            <i class="sw"></i>
-            <span class="nm">C</span>
-            <span class="ct">149</span>
-            <span class="pc">9.04%</span>
-          </li>
+{{LEGEND}}
         </ul>
       </div>
     </div>
@@ -214,81 +168,11 @@
       <div class="barscroll">
         <div class="barchart">
           <div class="plot" id="plot">
-        <div class="gridline" style="bottom:0.00%"><span>0</span></div>
-        <div class="gridline" style="bottom:25.00%"><span>20</span></div>
-        <div class="gridline" style="bottom:50.00%"><span>40</span></div>
-        <div class="gridline" style="bottom:75.00%"><span>60</span></div>
-        <div class="gridline" style="bottom:100.00%"><span>80</span></div>
-        <div class="bar" style="--h:88.625%; --d:0.1s"
-             data-name="Claude Opus 4.8 (xhigh)" data-score="70.9">
-          <span class="bval">70.9</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:87.375%; --d:0.155s"
-             data-name="GPT-5.6 Sol (xhigh)" data-score="69.9">
-          <span class="bval">69.9</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:80.750%; --d:0.21s"
-             data-name="GLM-5.2" data-score="64.6">
-          <span class="bval">64.6</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:76.500%; --d:0.265s"
-             data-name="Gemini 3.7 (Flash)" data-score="61.2">
-          <span class="bval">61.2</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:72.100%; --d:0.32s"
-             data-name="DS-V4-Flash (0731)" data-score="57.68">
-          <span class="bval">57.68</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar ours" style="--h:70.312%; --d:0.375s"
-             data-name="Qwen3.8-27B-SFT (Program-Agent)" data-score="56.25" data-ours="1">
-          <span class="bval">56.25</span>
-          <span class="bdelta">&uarr; +13.4</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar ours" style="--h:69.638%; --d:0.43s"
-             data-name="Qwen3.8-27B (Program-Agent)" data-score="55.71" data-ours="1">
-          <span class="bval">55.71</span>
-          <span class="bdelta">&uarr; +20.8</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:69.625%; --d:0.485s"
-             data-name="Gemini 3.6 (Flash)" data-score="55.7">
-          <span class="bval">55.7</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:67.000%; --d:0.54s"
-             data-name="Kimi K2.7 (Code)" data-score="53.6">
-          <span class="bval">53.6</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar ours" style="--h:53.550%; --d:0.595s"
-             data-name="Qwen3.8-27B-SFT (Claude Code)" data-score="42.84" data-ours="1">
-          <span class="bval">42.84</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:43.587%; --d:0.65s"
-             data-name="Qwen3.8-27B" data-score="34.87">
-          <span class="bval">34.87</span>
-          <i class="bfill"></i>
-        </div>
+{{GRID}}
+{{BARS}}
           </div>
           <div class="blabels">
-        <div class="blab"><b>Claude Opus 4.8</b><br>xhigh</div>
-        <div class="blab"><b>GPT-5.6 Sol</b><br>xhigh</div>
-        <div class="blab"><b>GLM-5.2</b></div>
-        <div class="blab"><b>Gemini 3.7</b><br>Flash</div>
-        <div class="blab"><b>DS-V4-Flash</b><br>0731</div>
-        <div class="blab ours"><b>Qwen3.8-27B-SFT</b><br>Program-Agent</div>
-        <div class="blab ours"><b>Qwen3.8-27B</b><br>Program-Agent</div>
-        <div class="blab"><b>Gemini 3.6</b><br>Flash</div>
-        <div class="blab"><b>Kimi K2.7</b><br>Code</div>
-        <div class="blab ours"><b>Qwen3.8-27B-SFT</b><br>Claude Code</div>
-        <div class="blab"><b>Qwen3.8-27B</b></div>
+{{LABS}}
           </div>
         </div>
       </div>
@@ -302,7 +186,7 @@
   </div>
 
   <p class="figcap">
-    <b>Figure 1. Overview of ProgramGym.</b> Program-Env contributes 1,648 executable tasks
+    <b>Figure 1. Overview of ProgramGym.</b> Program-Env contributes {{TOTAL}} executable tasks
     across four systems languages. Training in it lifts Qwen3.8-27B by <b>+20.8</b> points and its
     SFT variant by <b>+13.4</b> points on ProgramBench, closing much of the gap to far larger
     proprietary models.
@@ -312,30 +196,17 @@
 
   <div class="datatable" id="tables" hidden>
     <table>
-      <caption>Program-Env composition &mdash; 1,648 tasks</caption>
+      <caption>Program-Env composition &mdash; {{TOTAL}} tasks</caption>
       <thead><tr><th>Language</th><th>Tasks</th><th>Share</th></tr></thead>
       <tbody>
-            <tr><td>Go</td><td class="n">818</td><td class="n">49.64%</td></tr>
-            <tr><td>C++</td><td class="n">378</td><td class="n">22.94%</td></tr>
-            <tr><td>Rust</td><td class="n">303</td><td class="n">18.39%</td></tr>
-            <tr><td>C</td><td class="n">149</td><td class="n">9.04%</td></tr>
+{{ROWS_LANG}}
       </tbody>
     </table>
     <table style="margin-top:22px">
       <caption>Tests passed on ProgramBench (%)</caption>
       <thead><tr><th>Model</th><th>Group</th><th>Score</th></tr></thead>
       <tbody>
-            <tr><td>Claude Opus 4.8 (xhigh)</td><td>Baseline</td><td class="n">70.9</td></tr>
-            <tr><td>GPT-5.6 Sol (xhigh)</td><td>Baseline</td><td class="n">69.9</td></tr>
-            <tr><td>GLM-5.2</td><td>Baseline</td><td class="n">64.6</td></tr>
-            <tr><td>Gemini 3.7 (Flash)</td><td>Baseline</td><td class="n">61.2</td></tr>
-            <tr><td>DS-V4-Flash (0731)</td><td>Baseline</td><td class="n">57.68</td></tr>
-            <tr><td>Qwen3.8-27B-SFT (Program-Agent)</td><td>ProgramGym</td><td class="n">56.25</td></tr>
-            <tr><td>Qwen3.8-27B (Program-Agent)</td><td>ProgramGym</td><td class="n">55.71</td></tr>
-            <tr><td>Gemini 3.6 (Flash)</td><td>Baseline</td><td class="n">55.7</td></tr>
-            <tr><td>Kimi K2.7 (Code)</td><td>Baseline</td><td class="n">53.6</td></tr>
-            <tr><td>Qwen3.8-27B-SFT (Claude Code)</td><td>ProgramGym</td><td class="n">42.84</td></tr>
-            <tr><td>Qwen3.8-27B</td><td>Baseline</td><td class="n">34.87</td></tr>
+{{ROWS_MODEL}}
       </tbody>
     </table>
   </div>
