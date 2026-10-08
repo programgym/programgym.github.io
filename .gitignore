@@ -1,0 +1,4 @@
+# Never commit credentials.
+githubtoken
+*.token
+.env

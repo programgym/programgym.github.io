@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProgramGym</title>
+  <meta name="description" content="ProgramGym is a training ground for coding agents.">
+
+  <link rel="icon" type="image/png" href="static/images/favicon.png">
+  <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png">
+
+  <meta property="og:site_name" content="ProgramGym">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ProgramGym">
+  <meta property="og:description" content="ProgramGym is a training ground for coding agents.">
+  <meta property="og:url" content="https://programgym.github.io/">
+  <meta property="og:image" content="https://programgym.github.io/static/images/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="./ProgramGym">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ProgramGym">
+  <meta name="twitter:description" content="ProgramGym is a training ground for coding agents.">
+  <meta name="twitter:image" content="https://programgym.github.io/static/images/social-preview.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/main.css">
+
+  <script>
+    // Resolve the theme before first paint so the page never flashes the wrong one.
+    (function () {
+      var t = localStorage.getItem('theme') ||
+              (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-brand"><span class="accent">./</span>ProgramGym</a>
+    <div class="nav-links">
+      <a href="/" class="nav-link active">Home</a>
+      <a href="https://github.com/programgym" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <img src="static/images/logo.png" alt="ProgramGym mascot" class="hero-logo" width="635" height="640">
+    <h1 class="hero-title"><span id="anim-prefix" class="accent">./</span>Program<span id="anim-suffix" class="accent">Gym</span></h1>
+    <p class="hero-subtitle">A training ground for coding agents.</p>
+    <p class="hero-description">
+      Where language models come to lift. Benchmarks, environments, and
+      evaluation harnesses for measuring how well agents actually write code.
+    </p>
+    <div class="hero-install">
+      <a href="https://github.com/programgym" class="hero-gh-btn" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
+      <span class="hero-install-cmd">github.com/programgym</span>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="coming-soon">
+      <span class="coming-soon-label">Coming soon</span>
+      <p>Results, tasks, and the leaderboard are on their way. Check back shortly.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>Copyright &copy; 2026 ProgramGym</span>
+    <span class="footer-links">
+      <a href="https://github.com/programgym" target="_blank" rel="noopener">GitHub</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  }
+</script>
+
+<script>
+  // Hero wordmark: briefly cycle the suffix through file extensions, then settle on "Gym".
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var prefix = document.getElementById('anim-prefix');
+    var suffix = document.getElementById('anim-suffix');
+
+    function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+    // Keep the title a fixed width so the layout never shifts mid-cycle.
+    function padTo5(str) {
+      if (str.length >= 5) return str;
+      return str + '<span style="visibility:hidden">' + 'x'.repeat(5 - str.length) + '</span>';
+    }
+
+    async function run() {
+      await sleep(1500);
+
+      prefix.style.transition = 'opacity 0.25s';
+      suffix.style.transition = 'opacity 0.25s';
+      prefix.style.opacity = '0';
+      suffix.style.opacity = '0';
+      await sleep(300);
+
+      prefix.style.visibility = 'hidden';
+      suffix.innerHTML = padTo5('.cxx');
+      suffix.style.opacity = '1';
+      await sleep(600);
+
+      var cycle = ['.go', '.rs', '.c', '.cxx', '.java', '.py', '.js', '.hs'];
+      for (var e of cycle) {
+        suffix.innerHTML = padTo5(e);
+        await sleep(120);
+      }
+      await sleep(400);
+
+      suffix.style.opacity = '0';
+      await sleep(300);
+      prefix.style.visibility = 'visible';
+      prefix.style.opacity = '1';
+      suffix.textContent = 'Gym';
+      suffix.style.opacity = '1';
+    }
+
+    run();
+  })();
+</script>
+
+</body>
+</html>
