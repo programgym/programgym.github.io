@@ -30,16 +30,17 @@
   --accent-2: #f0920b;
   --accent-soft: rgba(181, 102, 10, .10);
   --hud-bg: rgba(255, 255, 255, .82);
+  --arxiv: #b31b1b;
   --shadow: 0 1px 2px rgba(16, 20, 28, .04), 0 8px 24px -12px rgba(16, 20, 28, .12);
   --shadow-lg: 0 2px 4px rgba(16, 20, 28, .04), 0 24px 56px -24px rgba(16, 20, 28, .20);
 
   /* Data — light steps */
-  --c-go:   #2a78d6;
-  --c-cpp:  #eb6834;
-  --c-rust: #4a3aa7;
-  --c-c:    #eda100;
-  --c-ours: #1baf7a;
-  --c-base: #c3cad4;
+  --c-go:   #0d5242;
+  --c-cpp:  #1f6d5a;
+  --c-rust: #378674;
+  --c-c:    #509f8c;
+  --c-ours: #2a6e55;
+  --c-base: #b9c2ce;
   --grid:   rgba(21, 24, 29, .07);
 }
 
@@ -57,16 +58,17 @@
   --accent-2: #ffab33;
   --accent-soft: rgba(240, 146, 11, .13);
   --hud-bg: rgba(11, 15, 21, .80);
+  --arxiv: #c62828;
   --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
   --shadow-lg: 0 2px 4px rgba(0, 0, 0, .4), 0 24px 56px -24px rgba(0, 0, 0, .7);
 
   /* Data — dark steps, re-chosen for the dark surface (not a flip) */
-  --c-go:   #3987e5;
-  --c-cpp:  #d95926;
-  --c-rust: #9085e9;
-  --c-c:    #c98500;
-  --c-ours: #199e70;
-  --c-base: #434d5c;
+  --c-go:   #61d8bc;
+  --c-cpp:  #3ab699;
+  --c-rust: #35967f;
+  --c-c:    #2d7a68;
+  --c-ours: #43a584;
+  --c-base: #4a5464;
   --grid:   rgba(231, 236, 243, .07);
 }
 
@@ -174,7 +176,7 @@ a { color: inherit; text-decoration: none; }
   text-wrap: balance;
 }
 .authors sup { font-size: .68em; color: var(--ink-3); }
-.authors b { font-weight: 600; color: var(--ink-2); }
+.authors b { font-weight: 600; color: var(--ink); }
 
 .affils {
   margin: 9px auto 0; max-width: 820px;
@@ -219,18 +221,20 @@ a { color: inherit; text-decoration: none; }
 .btn-hero:active { transform: translateY(0) scale(.99); }
 .btn-hero .bicon { width: 15px; height: 15px; flex: none; }
 
-/* Primary gets a one-pass sheen on hover — restrained, not a loop. */
-.btn-hero.primary {
-  position: relative; overflow: hidden;
-  background: var(--accent); border-color: var(--accent); color: #fff;
-}
+/* Filled buttons share one restrained sheen pass on hover — not a loop. */
+.btn-hero.primary, .btn-hero.arxiv { position: relative; overflow: hidden; }
+
+.btn-hero.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 [data-theme="dark"] .btn-hero.primary { color: #1a1205; }
-.btn-hero.primary::after {
+
+.btn-hero.arxiv { background: var(--arxiv); border-color: var(--arxiv); color: #fff; }
+
+.btn-hero.primary::after, .btn-hero.arxiv::after {
   content: ""; position: absolute; top: 0; bottom: 0; left: -45%; width: 34%;
   background: linear-gradient(105deg, transparent, rgba(255,255,255,.55), transparent);
   transform: skewX(-18deg); transition: left .6s var(--ease-soft);
 }
-.btn-hero.primary:hover::after { left: 125%; }
+.btn-hero.primary:hover::after, .btn-hero.arxiv:hover::after { left: 125%; }
 
 /* ═══════════════ Figure section ═══════════════ */
 
@@ -355,7 +359,7 @@ a { color: inherit; text-decoration: none; }
 /* Specular lip — reads as a lit surface rather than a flat block. */
 .bar.ours .bfill::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255,255,255,.28), transparent 44%);
+  background: linear-gradient(180deg, rgba(255,255,255,.18), transparent 46%);
 }
 .bar:hover .bfill { filter: brightness(1.1); }
 
