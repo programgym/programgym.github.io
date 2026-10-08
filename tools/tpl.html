@@ -65,13 +65,14 @@
 </head>
 <body>
 
-<!-- ═══════════ HUD ═══════════ -->
+<!-- Inline icon sprite: brand marks from simple-icons, recoloured via currentColor. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+{{SPRITE}}
+</svg>
+
 <div class="hud">
   <div class="hud-in">
-    <a class="wordmark" href="#top">
-      <img src="static/images/favicon.png" alt="" aria-hidden="true">
-      <span>ProgramGym</span>
-    </a>
+    <a class="wordmark" href="#top">ProgramGym</a>
     <nav>
       <a href="#overview" class="hide-s">Overview</a>
       <a href="https://huggingface.co/programgym" class="hide-s">HuggingFace</a>
@@ -82,16 +83,13 @@
 </div>
 
 <main>
-<!-- ═══════════ HERO ═══════════ -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <img class="hero-mark focusin" src="static/images/logo.png" alt="ProgramGym mascot" width="635" height="640" style="--d:.02s">
-
-    <h1 class="papertitle focusin" style="--d:.1s">
+    <h1 class="papertitle focusin" style="--d:.04s">
       <span class="grad">ProgramGym</span>: Scaling Executable Environments for Program-Level Coding Agents
     </h1>
 
-    <p class="authors rise" style="--d:.26s">
+    <p class="authors rise" style="--d:.2s">
       <b>Chengyi&nbsp;Yang<sup>1*</sup></b>, <b>Renxu&nbsp;Bao<sup>1*</sup></b>,
       <b>Jue&nbsp;Hou<sup>1*</sup></b>, <b>Zongpei&nbsp;Teng<sup>1</sup></b>,
       <b>Ziheng&nbsp;Wang<sup>1</sup></b>, <b>Yujie&nbsp;Lin<sup>1</sup></b>,
@@ -101,22 +99,22 @@
       <b>Jinsong&nbsp;Su<sup>1&dagger;</sup></b>
     </p>
 
-    <p class="affils rise" style="--d:.33s">
+    <p class="affils rise" style="--d:.28s">
       <sup>1</sup>Xiamen University &nbsp;&middot;&nbsp;
       <sup>2</sup>Washington University in St.&nbsp;Louis<br>
       <sup>3</sup>Institute of Automation, Chinese Academy of Sciences &nbsp;&middot;&nbsp;
       <sup>4</sup>Unisound
     </p>
 
-    <p class="fnotes rise" style="--d:.39s">
+    <p class="fnotes rise" style="--d:.34s">
       <sup>*</sup>Equal contributions &nbsp;&middot;&nbsp; <sup>&dagger;</sup>Corresponding authors
     </p>
 
-    <p class="tagline rise" style="--d:.54s">
+    <p class="tagline rise" style="--d:.44s">
       Agents need somewhere to train. <span class="grad">So we built the gym.</span>
     </p>
 
-    <div class="cta rise" style="--d:.64s">
+    <div class="cta rise" style="--d:.54s">
       <a class="btn-hero primary" href="https://huggingface.co/programgym">
         <svg class="bicon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9 9 0 0 0-9 9c0 1.2.24 2.35.67 3.4a1.6 1.6 0 0 0-.3 2.2 1.63 1.63 0 0 0 .67.55c-.04.2-.04.42 0 .63.13.66.68 1.15 1.35 1.2.17.5.6.89 1.14.98.6.1 1.2-.17 1.53-.67A8.96 8.96 0 0 0 12 20c1.1 0 2.15-.2 3.11-.56.33.5.93.77 1.53.67.54-.09.97-.47 1.14-.99a1.5 1.5 0 0 0 1.35-1.19c.04-.21.04-.43 0-.63.28-.12.51-.32.67-.56a1.6 1.6 0 0 0-.3-2.19c.43-1.06.67-2.21.67-3.41a9 9 0 0 0-9-9Zm-3.2 7.2a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm6.4 0a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm-7 4.6h7.6c.3 0 .5.3.4.6a4.3 4.3 0 0 1-8.4 0c-.1-.3.1-.6.4-.6Z"/></svg>
         HuggingFace
@@ -129,11 +127,9 @@
   </div>
 </section>
 
-<!-- ═══════════ FIGURE 1 ═══════════ -->
 <section class="section" id="overview">
   <div class="figrow">
 
-    <!-- Left: corpus composition -->
     <div class="vpanel rise" id="donutPanel" style="--d:.06s">
       <div class="vtitle">Program-Env &middot; Corpus</div>
       <div class="vsub">Executable tasks by source language</div>
@@ -142,6 +138,7 @@
         <div class="donut" id="donut">
           <svg viewBox="0 0 260 260" role="img" aria-label="Task composition by language">
 {{SEGS}}
+{{RINGICONS}}
           </svg>
           <div class="donut-core">
             <span class="k">Program-Env</span>
@@ -156,26 +153,25 @@
       </div>
     </div>
 
-    <!-- Right: benchmark scores -->
     <div class="vpanel rise" id="barPanel" style="--d:.16s">
       <div class="vtitle">ProgramBench &middot; Tests Passed</div>
       <div class="vsub">Share of behavioural tests passed (%)</div>
 
-      <div class="barscroll">
-        <div class="barchart">
-          <div class="plot" id="plot">
+      <div class="barchart">
+        <div class="bhead">
+{{BHEAD}}
+        </div>
+        <div class="plot" id="plot">
 {{GRID}}
 {{BARS}}
-          </div>
-          <div class="blabels">
-{{LABS}}
-          </div>
+          <svg class="arcs" id="arcs" aria-hidden="true"></svg>
         </div>
       </div>
 
       <div class="blegend">
         <span><i style="background:var(--c-ours)"></i>Trained in Program-Env (ours)</span>
         <span><i style="background:var(--c-base)"></i>Baseline</span>
+        <span><i class="dash"></i>Gain over its own baseline</span>
       </div>
     </div>
 
@@ -207,7 +203,6 @@
     </table>
   </div>
 </section>
-
 </main>
 
 <footer>
@@ -223,6 +218,7 @@
 (function () {
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ARCS = {{ARCS}}, Y_MAX = {{YMAX}}, TOTAL = {{TOTALNUM}};
 
   /* ── Theme ─────────────────────────────────────────────── */
   var btn = document.getElementById('themeBtn');
@@ -237,7 +233,7 @@
     syncLabel();
   });
 
-  /* ── Entrance: hero plays on load, panels on scroll ─────── */
+  /* ── Hero plays on load; panels on scroll ──────────────── */
   document.querySelectorAll('.hero .rise, .hero .focusin').forEach(function (el) {
     requestAnimationFrame(function () { el.classList.add('in'); });
   });
@@ -248,13 +244,12 @@
       e.target.classList.add('in');
       io.unobserve(e.target);
       if (e.target.id === 'donutPanel') countUp();
+      if (e.target.id === 'barPanel') runBars();
     });
   }, { threshold: 0.25 });
-
   ['donutPanel', 'barPanel'].forEach(function (id) { io.observe(document.getElementById(id)); });
 
-  /* ── Count the centre total up as the ring draws ────────── */
-  var TOTAL = 1648;
+  /* ── Centre total counts up alongside the ring ─────────── */
   function countUp() {
     var el = document.getElementById('totalNum');
     if (reduce) { el.textContent = TOTAL.toLocaleString(); return; }
@@ -262,28 +257,122 @@
     function step(ts) {
       if (start === null) start = ts;
       var p = Math.min((ts - start) / dur, 1);
-      // easeOutExpo — lands softly rather than stopping dead
-      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);   // easeOutExpo
       el.textContent = Math.round(e * TOTAL).toLocaleString();
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
 
+  /* ── Bars: baselines first, then ours right-to-left ────── */
+  var plot = document.getElementById('plot');
+  var svg  = document.getElementById('arcs');
+  var bars = Array.prototype.slice.call(plot.querySelectorAll('.bar'));
+  var byIdx = {};
+  bars.forEach(function (b) { byIdx[b.dataset.idx] = b; });
+
+  function barPoint(idx) {
+    // Centre-x and the y of the bar's top edge, in plot-local pixels.
+    var b = byIdx[idx];
+    var pr = plot.getBoundingClientRect(), br = b.getBoundingClientRect();
+    return {
+      x: br.left - pr.left + br.width / 2,
+      y: pr.height * (1 - parseFloat(b.dataset.score) / Y_MAX)
+    };
+  }
+
+  function drawArc(a, done) {
+    var p1 = barPoint(a.from), p2 = barPoint(a.to);
+    var lift = Math.max(34, Math.abs(p1.y - p2.y) * 0.55);
+    var cx = (p1.x + p2.x) / 2, cy = Math.min(p1.y, p2.y) - lift;
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('class', 'arcpath');
+    path.setAttribute('d', 'M' + p1.x + ',' + p1.y + ' Q' + cx + ',' + cy + ' ' + p2.x + ',' + p2.y);
+    svg.appendChild(path);
+
+    // Arrowhead, rotated to the curve's final tangent (from control point to end).
+    var ang = Math.atan2(p2.y - cy, p2.x - cx) * 180 / Math.PI;
+    var head = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    head.setAttribute('class', 'archead');
+    head.setAttribute('points', '0,-3.4 7,0 0,3.4');
+    head.setAttribute('transform', 'translate(' + p2.x + ',' + p2.y + ') rotate(' + ang + ')');
+    svg.appendChild(head);
+
+    if (reduce) { head.classList.add('on'); if (done) done(); return; }
+
+    var len = path.getTotalLength();
+    path.style.strokeDasharray = len + ' ' + len;
+    path.style.strokeDashoffset = len;
+    path.getBoundingClientRect();                       // force layout before animating
+    path.style.transition = 'stroke-dashoffset .62s cubic-bezier(.4,0,.2,1)';
+    path.style.strokeDashoffset = '0';
+    setTimeout(function () {
+      path.style.strokeDasharray = '5 4';               // settle into the dashed look
+      path.style.strokeDashoffset = '0';
+      head.classList.add('on');
+      if (done) done();
+    }, 640);
+  }
+
+  function sizeSvg() {
+    var pr = plot.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + pr.width + ' ' + pr.height);
+  }
+
+  var ran = false;
+  function runBars() {
+    if (ran) return; ran = true;
+    sizeSvg();
+
+    var base = bars.filter(function (b) { return !b.dataset.ours; });
+    var ours = bars.filter(function (b) { return b.dataset.ours; })
+                   .sort(function (a, b) { return b.dataset.idx - a.dataset.idx; }); // right -> left
+
+    if (reduce) {
+      bars.forEach(function (b) { b.classList.add('on'); });
+      ARCS.forEach(function (a) { drawArc(a); });
+      return;
+    }
+
+    base.forEach(function (b, i) {
+      setTimeout(function () { b.classList.add('on'); }, i * 70);
+    });
+
+    var t0 = base.length * 70 + 620;
+    ours.forEach(function (b, i) {
+      setTimeout(function () {
+        var arc = ARCS.filter(function (a) { return String(a.to) === b.dataset.idx; })[0];
+        if (arc) {
+          drawArc(arc, function () { b.classList.add('on', 'pop'); });
+        } else {
+          b.classList.add('on', 'pop');
+        }
+      }, t0 + i * 780);
+    });
+  }
+
+  var rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () {
+      if (!ran) return;
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      sizeSvg();
+      ARCS.forEach(function (a) {
+        var saved = reduce; reduce = true; drawArc(a); reduce = saved;
+      });
+    }, 160);
+  });
+
   /* ── Tooltips ──────────────────────────────────────────── */
   var tip = document.getElementById('tip');
-  function showTip(html, ev) {
-    tip.innerHTML = html;
-    tip.classList.add('on');
-    moveTip(ev);
-  }
+  function showTip(html, ev) { tip.innerHTML = html; tip.classList.add('on'); moveTip(ev); }
   function moveTip(ev) {
     var r = tip.getBoundingClientRect();
     var x = ev.clientX + 14, y = ev.clientY - r.height - 10;
     if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - 14;
     if (y < 8) y = ev.clientY + 18;
-    tip.style.left = x + 'px';
-    tip.style.top = y + 'px';
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
   }
   function hideTip() { tip.classList.remove('on'); }
 
@@ -297,7 +386,7 @@
     s.addEventListener('mouseleave', hideTip);
   });
 
-  document.querySelectorAll('.bar').forEach(function (b) {
+  bars.forEach(function (b) {
     b.addEventListener('mouseenter', function (ev) {
       showTip('<span class="t">' + b.dataset.name + '</span>' +
               '<span class="v">' + b.dataset.score + '%</span> tests passed' +
@@ -307,11 +396,10 @@
     b.addEventListener('mouseleave', hideTip);
   });
 
-  /* Legend row hover dims the other ring segments. */
   var segs = Array.prototype.slice.call(document.querySelectorAll('.seg'));
   document.querySelectorAll('#dlegend li').forEach(function (li) {
     li.addEventListener('mouseenter', function () {
-      segs.forEach(function (s) { s.style.opacity = s.dataset.name === li.dataset.name ? '1' : '.42'; });
+      segs.forEach(function (s) { s.style.opacity = s.dataset.name === li.dataset.name ? '1' : '.38'; });
     });
     li.addEventListener('mouseleave', function () {
       segs.forEach(function (s) { s.style.opacity = ''; });

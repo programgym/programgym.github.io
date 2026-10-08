@@ -65,13 +65,24 @@
 </head>
 <body>
 
-<!-- ═══════════ HUD ═══════════ -->
+<!-- Inline icon sprite: brand marks from simple-icons, recoloured via currentColor. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="ic-anthropic" viewBox="0 0 24 24"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></symbol>
+  <symbol id="ic-c" viewBox="0 0 24 24"><path d="M16.5921 9.1962s-.354-3.298-3.627-3.39c-3.2741-.09-4.9552 2.474-4.9552 6.14 0 3.6651 1.858 6.5972 5.0451 6.5972 3.184 0 3.5381-3.665 3.5381-3.665l6.1041.365s.36 3.31-2.196 5.836c-2.552 2.5241-5.6901 2.9371-7.8762 2.9201-2.19-.017-5.2261.034-8.1602-2.97-2.938-3.0101-3.436-5.9302-3.436-8.8002 0-2.8701.556-6.6702 4.047-9.5502C7.444.72 9.849 0 12.254 0c10.0422 0 10.7172 9.2602 10.7172 9.2602z"/></symbol>
+  <symbol id="ic-cplusplus" viewBox="0 0 24 24"><path d="M22.394 6c-.167-.29-.398-.543-.652-.69L12.926.22c-.509-.294-1.34-.294-1.848 0L2.26 5.31c-.508.293-.923 1.013-.923 1.6v10.18c0 .294.104.62.271.91.167.29.398.543.652.69l8.816 5.09c.508.293 1.34.293 1.848 0l8.816-5.09c.254-.147.485-.4.652-.69.167-.29.27-.616.27-.91V6.91c.003-.294-.1-.62-.268-.91zM12 19.11c-3.92 0-7.109-3.19-7.109-7.11 0-3.92 3.19-7.11 7.11-7.11a7.133 7.133 0 016.156 3.553l-3.076 1.78a3.567 3.567 0 00-3.08-1.78A3.56 3.56 0 008.444 12 3.56 3.56 0 0012 15.555a3.57 3.57 0 003.08-1.778l3.078 1.78A7.135 7.135 0 0112 19.11zm7.11-6.715h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79zm2.962 0h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79z"/></symbol>
+  <symbol id="ic-deepseek" viewBox="0 0 24 24"><path d="M23.748 4.651c-.254-.124-.364.113-.512.233-.051.04-.094.09-.137.137-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.155-.708-.311-.955-.65-.172-.24-.219-.509-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.094.172.187.129.323-.082.28-.18.553-.266.833-.055.179-.137.218-.328.14a5.5 5.5 0 0 1-1.737-1.179c-.857-.828-1.631-1.743-2.597-2.46a12 12 0 0 0-.689-.47c-.985-.957.13-1.743.387-1.836.27-.098.094-.433-.778-.428-.872.003-1.67.295-2.687.685a3 3 0 0 1-.465.136 9.6 9.6 0 0 0-2.883-.101c-1.885.21-3.39 1.1-4.497 2.622C.082 8.776-.231 10.854.152 13.02c.403 2.284 1.568 4.175 3.36 5.653 1.857 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.132-.284 4.994-1.86.47.234.962.328 1.78.398.629.058 1.235-.031 1.705-.129.735-.155.684-.836.418-.961-2.155-1.004-1.682-.595-2.112-.926 1.095-1.295 2.768-3.598 3.284-6.733.05-.346.115-.834.108-1.114-.004-.171.035-.238.23-.257a4.2 4.2 0 0 0 1.545-.475c1.397-.763 1.96-2.016 2.093-3.517.02-.23-.004-.467-.247-.588M11.58 18.168c-2.088-1.642-3.101-2.183-3.52-2.16-.39.024-.32.472-.234.763.09.288.207.487.371.74.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.168-1.361-.801-2.5-1.86-3.301-3.306-.775-1.393-1.225-2.888-1.299-4.482-.02-.385.094-.522.477-.592a4.7 4.7 0 0 1 1.53-.038c2.131.311 3.946 1.264 5.467 2.774.868.86 1.525 1.887 2.202 2.89.72 1.066 1.494 2.082 2.48 2.915.348.291.626.513.892.677-.802.09-2.14.109-3.055-.615zm1.001-6.44a.306.306 0 0 1 .415-.287.3.3 0 0 1 .113.074.3.3 0 0 1 .086.214c0 .17-.136.307-.308.307a.303.303 0 0 1-.306-.307m3.11 1.596c-.2.081-.4.151-.591.16a1.25 1.25 0 0 1-.798-.254c-.274-.23-.47-.358-.551-.758a1.7 1.7 0 0 1 .015-.588c.07-.327-.007-.537-.238-.727-.188-.156-.426-.199-.689-.199a.6.6 0 0 1-.254-.078.253.253 0 0 1-.114-.358 1 1 0 0 1 .192-.21c.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.392.451.462.576.685.915.176.264.336.536.446.848.066.194-.02.353-.25.45"/></symbol>
+  <symbol id="ic-glm" viewBox="0 0 24 24"><path d="M4.6 3h14.8v2.9l-9.6 12.2h9.6V21H4.6v-2.9l9.6-12.2H4.6z"/></symbol>
+  <symbol id="ic-go" viewBox="0 0 24 24"><path d="M1.811 10.231c-.047 0-.058-.023-.035-.059l.246-.315c.023-.035.081-.058.128-.058h4.172c.046 0 .058.035.035.07l-.199.303c-.023.036-.082.07-.117.07zM.047 11.306c-.047 0-.059-.023-.035-.058l.245-.316c.023-.035.082-.058.129-.058h5.328c.047 0 .07.035.058.07l-.093.28c-.012.047-.058.07-.105.07zm2.828 1.075c-.047 0-.059-.035-.035-.07l.163-.292c.023-.035.07-.07.117-.07h2.337c.047 0 .07.035.07.082l-.023.28c0 .047-.047.082-.082.082zm12.129-2.36c-.736.187-1.239.327-1.963.514-.176.046-.187.058-.34-.117-.174-.199-.303-.327-.548-.444-.737-.362-1.45-.257-2.115.175-.795.514-1.204 1.274-1.192 2.22.011.935.654 1.706 1.577 1.835.795.105 1.46-.175 1.987-.77.105-.13.198-.27.315-.434H10.47c-.245 0-.304-.152-.222-.35.152-.362.432-.97.596-1.274a.315.315 0 01.292-.187h4.253c-.023.316-.023.631-.07.947a4.983 4.983 0 01-.958 2.29c-.841 1.11-1.94 1.8-3.33 1.986-1.145.152-2.209-.07-3.143-.77-.865-.655-1.356-1.52-1.484-2.595-.152-1.274.222-2.419.993-3.424.83-1.086 1.928-1.776 3.272-2.02 1.098-.2 2.15-.07 3.096.571.62.41 1.063.97 1.356 1.648.07.105.023.164-.117.2m3.868 6.461c-1.064-.024-2.034-.328-2.852-1.029a3.665 3.665 0 01-1.262-2.255c-.21-1.32.152-2.489.947-3.529.853-1.122 1.881-1.706 3.272-1.95 1.192-.21 2.314-.095 3.33.595.923.63 1.496 1.484 1.648 2.605.198 1.578-.257 2.863-1.344 3.962-.771.783-1.718 1.273-2.805 1.495-.315.06-.63.07-.934.106zm2.78-4.72c-.011-.153-.011-.27-.034-.387-.21-1.157-1.274-1.81-2.384-1.554-1.087.245-1.788.935-2.045 2.033-.21.912.234 1.835 1.075 2.21.643.28 1.285.244 1.905-.07.923-.48 1.425-1.228 1.484-2.233z"/></symbol>
+  <symbol id="ic-google" viewBox="0 0 24 24"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></symbol>
+  <symbol id="ic-kimi" viewBox="0 0 24 24"><path d="M21.765.351C22.998.351 24 1.353 24 2.586S22.998 4.82 21.765 4.82h-1.974c-.15 0-.26-.12-.26-.26V2.586A2.237 2.237 0 0 1 21.765.35M9.41 13.388l8.447-8.377c.16-.16.07-.471-.14-.471h-4.55s-.1.02-.14.06l-9.099 9.029c-.14.14-.35.02-.35-.21V4.81c0-.15-.1-.27-.221-.27H.22c-.12 0-.22.12-.22.27v18.57c0 .15.1.27.22.27h3.137c.12 0 .22-.12.22-.27v-3.79c0-.08.03-.16.08-.21l2.826-2.796c.07-.07.16-.08.241-.03l7.546 5.551a8.9 8.9 0 0 0 4.018 1.493c.12.01.23-.11.23-.27V19.76c0-.14-.08-.25-.19-.26a5.8 5.8 0 0 1-2.355-.942l-6.533-4.73c-.14-.09-.15-.32-.03-.441"/></symbol>
+  <symbol id="ic-openai" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol>
+  <symbol id="ic-qwen" viewBox="0 0 24 24"><path d="M23.919 14.545 20.817 9.17l1.47-2.544a.56.56 0 0 0 0-.566l-1.633-2.83a.57.57 0 0 0-.49-.283h-6.207L12.487.402a.57.57 0 0 0-.49-.284H8.732a.56.56 0 0 0-.49.284L5.139 5.775h-2.94a.56.56 0 0 0-.49.284L.077 8.887a.56.56 0 0 0 0 .567L3.18 14.83l-1.47 2.545a.56.56 0 0 0 0 .566l1.634 2.83a.57.57 0 0 0 .49.283h6.205l1.47 2.545a.57.57 0 0 0 .49.284h3.266a.57.57 0 0 0 .49-.284l3.104-5.375h2.94a.57.57 0 0 0 .49-.283l1.634-2.828a.55.55 0 0 0-.004-.568M8.733.686l1.634 2.828-1.634 2.828H21.8L20.164 9.17H7.425L5.63 6.06Zm1.306 19.801-6.205-.002 1.634-2.83h3.265L2.201 6.344h3.267q3.182 5.517 6.367 11.032zm10.124-5.66L18.53 12l-6.532 11.315-1.634-2.83c2.129-3.673 4.25-7.351 6.373-11.028h3.592l3.102 5.374z"/></symbol>
+  <symbol id="ic-rust" viewBox="0 0 24 24"><path d="M23.8346 11.7033l-1.0073-.6236a13.7268 13.7268 0 00-.0283-.2936l.8656-.8069a.3483.3483 0 00-.1154-.578l-1.1066-.414a8.4958 8.4958 0 00-.087-.2856l.6904-.9587a.3462.3462 0 00-.2257-.5446l-1.1663-.1894a9.3574 9.3574 0 00-.1407-.2622l.49-1.0761a.3437.3437 0 00-.0274-.3361.3486.3486 0 00-.3006-.154l-1.1845.0416a6.7444 6.7444 0 00-.1873-.2268l.2723-1.153a.3472.3472 0 00-.417-.4172l-1.1532.2724a14.0183 14.0183 0 00-.2278-.1873l.0415-1.1845a.3442.3442 0 00-.49-.328l-1.076.491c-.0872-.0476-.1742-.0952-.2623-.1407l-.1903-1.1673A.3483.3483 0 0016.256.955l-.9597.6905a8.4867 8.4867 0 00-.2855-.086l-.414-1.1066a.3483.3483 0 00-.5781-.1154l-.8069.8666a9.2936 9.2936 0 00-.2936-.0284L12.2946.1683a.3462.3462 0 00-.5892 0l-.6236 1.0073a13.7383 13.7383 0 00-.2936.0284L9.9803.3374a.3462.3462 0 00-.578.1154l-.4141 1.1065c-.0962.0274-.1903.0567-.2855.086L7.744.955a.3483.3483 0 00-.5447.2258L7.009 2.348a9.3574 9.3574 0 00-.2622.1407l-1.0762-.491a.3462.3462 0 00-.49.328l.0416 1.1845a7.9826 7.9826 0 00-.2278.1873L3.8413 3.425a.3472.3472 0 00-.4171.4171l.2713 1.1531c-.0628.075-.1255.1509-.1863.2268l-1.1845-.0415a.3462.3462 0 00-.328.49l.491 1.0761a9.167 9.167 0 00-.1407.2622l-1.1662.1894a.3483.3483 0 00-.2258.5446l.6904.9587a13.303 13.303 0 00-.087.2855l-1.1065.414a.3483.3483 0 00-.1155.5781l.8656.807a9.2936 9.2936 0 00-.0283.2935l-1.0073.6236a.3442.3442 0 000 .5892l1.0073.6236c.008.0982.0182.1964.0283.2936l-.8656.8079a.3462.3462 0 00.1155.578l1.1065.4141c.0273.0962.0567.1914.087.2855l-.6904.9587a.3452.3452 0 00.2268.5447l1.1662.1893c.0456.088.0922.1751.1408.2622l-.491 1.0762a.3462.3462 0 00.328.49l1.1834-.0415c.0618.0769.1235.1528.1873.2277l-.2713 1.1541a.3462.3462 0 00.4171.4161l1.153-.2713c.075.0638.151.1255.2279.1863l-.0415 1.1845a.3442.3442 0 00.49.327l1.0761-.49c.087.0486.1741.0951.2622.1407l.1903 1.1662a.3483.3483 0 00.5447.2268l.9587-.6904a9.299 9.299 0 00.2855.087l.414 1.1066a.3452.3452 0 00.5781.1154l.8079-.8656c.0972.0111.1954.0203.2936.0294l.6236 1.0073a.3472.3472 0 00.5892 0l.6236-1.0073c.0982-.0091.1964-.0183.2936-.0294l.8069.8656a.3483.3483 0 00.578-.1154l.4141-1.1066a8.4626 8.4626 0 00.2855-.087l.9587.6904a.3452.3452 0 00.5447-.2268l.1903-1.1662c.088-.0456.1751-.0931.2622-.1407l1.0762.49a.3472.3472 0 00.49-.327l-.0415-1.1845a6.7267 6.7267 0 00.2267-.1863l1.1531.2713a.3472.3472 0 00.4171-.416l-.2713-1.1542c.0628-.0749.1255-.1508.1863-.2278l1.1845.0415a.3442.3442 0 00.328-.49l-.49-1.076c.0475-.0872.0951-.1742.1407-.2623l1.1662-.1893a.3483.3483 0 00.2258-.5447l-.6904-.9587.087-.2855 1.1066-.414a.3462.3462 0 00.1154-.5781l-.8656-.8079c.0101-.0972.0202-.1954.0283-.2936l1.0073-.6236a.3442.3442 0 000-.5892zm-6.7413 8.3551a.7138.7138 0 01.2986-1.396.714.714 0 11-.2997 1.396zm-.3422-2.3142a.649.649 0 00-.7715.5l-.3573 1.6685c-1.1035.501-2.3285.7795-3.6193.7795a8.7368 8.7368 0 01-3.6951-.814l-.3574-1.6684a.648.648 0 00-.7714-.499l-1.473.3158a8.7216 8.7216 0 01-.7613-.898h7.1676c.081 0 .1356-.0141.1356-.088v-2.536c0-.074-.0536-.0881-.1356-.0881h-2.0966v-1.6077h2.2677c.2065 0 1.1065.0587 1.394 1.2088.0901.3533.2875 1.5044.4232 1.8729.1346.413.6833 1.2381 1.2685 1.2381h3.5716a.7492.7492 0 00.1296-.0131 8.7874 8.7874 0 01-.8119.9526zM6.8369 20.024a.714.714 0 11-.2997-1.396.714.714 0 01.2997 1.396zM4.1177 8.9972a.7137.7137 0 11-1.304.5791.7137.7137 0 011.304-.579zm-.8352 1.9813l1.5347-.6824a.65.65 0 00.33-.8585l-.3158-.7147h1.2432v5.6025H3.5669a8.7753 8.7753 0 01-.2834-3.348zm6.7343-.5437V8.7836h2.9601c.153 0 1.0792.1772 1.0792.8697 0 .575-.7107.7815-1.2948.7815zm10.7574 1.4862c0 .2187-.008.4363-.0243.651h-.9c-.09 0-.1265.0586-.1265.1477v.413c0 .973-.5487 1.1846-1.0296 1.2382-.4576.0517-.9648-.1913-1.0275-.4717-.2704-1.5186-.7198-1.8436-1.4305-2.4034.8817-.5599 1.799-1.386 1.799-2.4915 0-1.1936-.819-1.9458-1.3769-2.3153-.7825-.5163-1.6491-.6195-1.883-.6195H5.4682a8.7651 8.7651 0 014.907-2.7699l1.0974 1.151a.648.648 0 00.9182.0213l1.227-1.1743a8.7753 8.7753 0 016.0044 4.2762l-.8403 1.8982a.652.652 0 00.33.8585l1.6178.7188c.0283.2875.0425.577.0425.8717zm-9.3006-9.5993a.7128.7128 0 11.984 1.0316.7137.7137 0 01-.984-1.0316zm8.3389 6.71a.7107.7107 0 01.9395-.3625.7137.7137 0 11-.9405.3635z"/></symbol>
+</svg>
+
 <div class="hud">
   <div class="hud-in">
-    <a class="wordmark" href="#top">
-      <img src="static/images/favicon.png" alt="" aria-hidden="true">
-      <span>ProgramGym</span>
-    </a>
+    <a class="wordmark" href="#top">ProgramGym</a>
     <nav>
       <a href="#overview" class="hide-s">Overview</a>
       <a href="https://huggingface.co/programgym" class="hide-s">HuggingFace</a>
@@ -82,16 +93,13 @@
 </div>
 
 <main>
-<!-- ═══════════ HERO ═══════════ -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <img class="hero-mark focusin" src="static/images/logo.png" alt="ProgramGym mascot" width="635" height="640" style="--d:.02s">
-
-    <h1 class="papertitle focusin" style="--d:.1s">
+    <h1 class="papertitle focusin" style="--d:.04s">
       <span class="grad">ProgramGym</span>: Scaling Executable Environments for Program-Level Coding Agents
     </h1>
 
-    <p class="authors rise" style="--d:.26s">
+    <p class="authors rise" style="--d:.2s">
       <b>Chengyi&nbsp;Yang<sup>1*</sup></b>, <b>Renxu&nbsp;Bao<sup>1*</sup></b>,
       <b>Jue&nbsp;Hou<sup>1*</sup></b>, <b>Zongpei&nbsp;Teng<sup>1</sup></b>,
       <b>Ziheng&nbsp;Wang<sup>1</sup></b>, <b>Yujie&nbsp;Lin<sup>1</sup></b>,
@@ -101,22 +109,22 @@
       <b>Jinsong&nbsp;Su<sup>1&dagger;</sup></b>
     </p>
 
-    <p class="affils rise" style="--d:.33s">
+    <p class="affils rise" style="--d:.28s">
       <sup>1</sup>Xiamen University &nbsp;&middot;&nbsp;
       <sup>2</sup>Washington University in St.&nbsp;Louis<br>
       <sup>3</sup>Institute of Automation, Chinese Academy of Sciences &nbsp;&middot;&nbsp;
       <sup>4</sup>Unisound
     </p>
 
-    <p class="fnotes rise" style="--d:.39s">
+    <p class="fnotes rise" style="--d:.34s">
       <sup>*</sup>Equal contributions &nbsp;&middot;&nbsp; <sup>&dagger;</sup>Corresponding authors
     </p>
 
-    <p class="tagline rise" style="--d:.54s">
+    <p class="tagline rise" style="--d:.44s">
       Agents need somewhere to train. <span class="grad">So we built the gym.</span>
     </p>
 
-    <div class="cta rise" style="--d:.64s">
+    <div class="cta rise" style="--d:.54s">
       <a class="btn-hero primary" href="https://huggingface.co/programgym">
         <svg class="bicon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9 9 0 0 0-9 9c0 1.2.24 2.35.67 3.4a1.6 1.6 0 0 0-.3 2.2 1.63 1.63 0 0 0 .67.55c-.04.2-.04.42 0 .63.13.66.68 1.15 1.35 1.2.17.5.6.89 1.14.98.6.1 1.2-.17 1.53-.67A8.96 8.96 0 0 0 12 20c1.1 0 2.15-.2 3.11-.56.33.5.93.77 1.53.67.54-.09.97-.47 1.14-.99a1.5 1.5 0 0 0 1.35-1.19c.04-.21.04-.43 0-.63.28-.12.51-.32.67-.56a1.6 1.6 0 0 0-.3-2.19c.43-1.06.67-2.21.67-3.41a9 9 0 0 0-9-9Zm-3.2 7.2a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm6.4 0a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm-7 4.6h7.6c.3 0 .5.3.4.6a4.3 4.3 0 0 1-8.4 0c-.1-.3.1-.6.4-.6Z"/></svg>
         HuggingFace
@@ -129,11 +137,9 @@
   </div>
 </section>
 
-<!-- ═══════════ FIGURE 1 ═══════════ -->
 <section class="section" id="overview">
   <div class="figrow">
 
-    <!-- Left: corpus composition -->
     <div class="vpanel rise" id="donutPanel" style="--d:.06s">
       <div class="vtitle">Program-Env &middot; Corpus</div>
       <div class="vsub">Executable tasks by source language</div>
@@ -141,30 +147,34 @@
       <div class="donut-wrap">
         <div class="donut" id="donut">
           <svg viewBox="0 0 260 260" role="img" aria-label="Task composition by language">
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-go)"
-                stroke-dasharray="247.497 255.157"
-                style="--len:249.497; --d:0.08s"
-                transform="rotate(-90.0000 130 130)"
-                data-name="Go" data-count="818" data-pct="49.64"></circle>
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-cpp)"
-                stroke-dasharray="113.293 389.361"
-                style="--len:115.293; --d:0.21s"
-                transform="rotate(88.6893 130 130)"
-                data-name="C++" data-count="378" data-pct="22.94"></circle>
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-rust)"
-                stroke-dasharray="90.418 412.237"
-                style="--len:92.418; --d:0.34s"
-                transform="rotate(171.2621 130 130)"
-                data-name="Rust" data-count="303" data-pct="18.39"></circle>
-        <circle class="seg" r="80" cx="130" cy="130"
-                stroke="var(--c-c)"
-                stroke-dasharray="43.446 459.208"
-                style="--len:45.446; --d:0.47s"
-                transform="rotate(237.4515 130 130)"
-                data-name="C" data-count="149" data-pct="9.04"></circle>
+          <circle class="seg" r="80" cx="130" cy="130"
+                  stroke="var(--c-go)"
+                  stroke-dasharray="247.497 255.157"
+                  style="--len:249.497; --d:0.08s"
+                  transform="rotate(-90.0000 130 130)"
+                  data-name="Go" data-count="818" data-pct="49.64"></circle>
+          <circle class="seg" r="80" cx="130" cy="130"
+                  stroke="var(--c-cpp)"
+                  stroke-dasharray="113.293 389.361"
+                  style="--len:115.293; --d:0.21s"
+                  transform="rotate(88.6893 130 130)"
+                  data-name="C++" data-count="378" data-pct="22.94"></circle>
+          <circle class="seg" r="80" cx="130" cy="130"
+                  stroke="var(--c-rust)"
+                  stroke-dasharray="90.418 412.237"
+                  style="--len:92.418; --d:0.34s"
+                  transform="rotate(171.2621 130 130)"
+                  data-name="Rust" data-count="303" data-pct="18.39"></circle>
+          <circle class="seg" r="80" cx="130" cy="130"
+                  stroke="var(--c-c)"
+                  stroke-dasharray="43.446 459.208"
+                  style="--len:45.446; --d:0.47s"
+                  transform="rotate(237.4515 130 130)"
+                  data-name="C" data-count="149" data-pct="9.04"></circle>
+          <svg class="ringicon i-go" x="222.99" y="115.79" width="26" height="26" viewBox="0 0 24 24" style="--d:0.08s"><use href="#ic-go"></use></svg>
+          <svg class="ringicon i-cpp" x="48.90" y="198.23" width="26" height="26" viewBox="0 0 24 24" style="--d:0.21s"><use href="#ic-cplusplus"></use></svg>
+          <svg class="ringicon i-rust" x="20.43" y="73.28" width="26" height="26" viewBox="0 0 24 24" style="--d:0.34s"><use href="#ic-rust"></use></svg>
+          <svg class="ringicon i-c" x="87.30" y="15.25" width="26" height="26" viewBox="0 0 24 24" style="--d:0.47s"><use href="#ic-c"></use></svg>
           </svg>
           <div class="donut-core">
             <span class="k">Program-Env</span>
@@ -174,124 +184,121 @@
         </div>
 
         <ul class="dlegend" id="dlegend">
-          <li style="--c:var(--c-go)" data-name="Go">
-            <i class="sw"></i>
-            <span class="nm">Go</span>
-            <span class="ct">818</span>
-            <span class="pc">49.64%</span>
-          </li>
-          <li style="--c:var(--c-cpp)" data-name="C++">
-            <i class="sw"></i>
-            <span class="nm">C++</span>
-            <span class="ct">378</span>
-            <span class="pc">22.94%</span>
-          </li>
-          <li style="--c:var(--c-rust)" data-name="Rust">
-            <i class="sw"></i>
-            <span class="nm">Rust</span>
-            <span class="ct">303</span>
-            <span class="pc">18.39%</span>
-          </li>
-          <li style="--c:var(--c-c)" data-name="C">
-            <i class="sw"></i>
-            <span class="nm">C</span>
-            <span class="ct">149</span>
-            <span class="pc">9.04%</span>
-          </li>
+            <li style="--c:var(--c-go)" data-name="Go">
+              <span class="ic sw i-go"><svg class="mi" aria-hidden="true"><use href="#ic-go"></use></svg></span>
+              <span class="nm">Go</span>
+              <span class="ct">818</span>
+              <span class="pc">49.64%</span>
+            </li>
+            <li style="--c:var(--c-cpp)" data-name="C++">
+              <span class="ic sw i-cpp"><svg class="mi" aria-hidden="true"><use href="#ic-cplusplus"></use></svg></span>
+              <span class="nm">C++</span>
+              <span class="ct">378</span>
+              <span class="pc">22.94%</span>
+            </li>
+            <li style="--c:var(--c-rust)" data-name="Rust">
+              <span class="ic sw i-rust"><svg class="mi" aria-hidden="true"><use href="#ic-rust"></use></svg></span>
+              <span class="nm">Rust</span>
+              <span class="ct">303</span>
+              <span class="pc">18.39%</span>
+            </li>
+            <li style="--c:var(--c-c)" data-name="C">
+              <span class="ic sw i-c"><svg class="mi" aria-hidden="true"><use href="#ic-c"></use></svg></span>
+              <span class="nm">C</span>
+              <span class="ct">149</span>
+              <span class="pc">9.04%</span>
+            </li>
         </ul>
       </div>
     </div>
 
-    <!-- Right: benchmark scores -->
     <div class="vpanel rise" id="barPanel" style="--d:.16s">
       <div class="vtitle">ProgramBench &middot; Tests Passed</div>
       <div class="vsub">Share of behavioural tests passed (%)</div>
 
-      <div class="barscroll">
-        <div class="barchart">
-          <div class="plot" id="plot">
-        <div class="gridline" style="bottom:0.00%"><span>0</span></div>
-        <div class="gridline" style="bottom:25.00%"><span>20</span></div>
-        <div class="gridline" style="bottom:50.00%"><span>40</span></div>
-        <div class="gridline" style="bottom:75.00%"><span>60</span></div>
-        <div class="gridline" style="bottom:100.00%"><span>80</span></div>
-        <div class="bar" style="--h:88.625%; --d:0.1s"
-             data-name="Claude Opus 4.8 (xhigh)" data-score="70.9">
-          <span class="bval">70.9</span>
-          <i class="bfill"></i>
+      <div class="barchart">
+        <div class="bhead">
+            <div class="bh"><span class="ic i-anthropic"><svg class="mi" aria-hidden="true"><use href="#ic-anthropic"></use></svg></span><span class="nm">Opus 4.8</span><span class="vr">xhigh</span></div>
+            <div class="bh"><span class="ic i-openai"><svg class="mi" aria-hidden="true"><use href="#ic-openai"></use></svg></span><span class="nm">GPT-5.6</span><span class="vr">xhigh</span></div>
+            <div class="bh"><span class="ic i-glm"><svg class="mi" aria-hidden="true"><use href="#ic-glm"></use></svg></span><span class="nm">GLM-5.2</span><span class="vr">&nbsp;</span></div>
+            <div class="bh"><span class="ic i-google"><svg class="mi" aria-hidden="true"><use href="#ic-google"></use></svg></span><span class="nm">Gemini 3.7</span><span class="vr">Flash</span></div>
+            <div class="bh"><span class="ic i-deepseek"><svg class="mi" aria-hidden="true"><use href="#ic-deepseek"></use></svg></span><span class="nm">DS-V4</span><span class="vr">Flash-0731</span></div>
+            <div class="bh ours"><span class="ic"><img src="static/images/favicon.png" alt=""></span><span class="nm">Qwen3.8-SFT</span><span class="vr">Program-Agent</span></div>
+            <div class="bh ours"><span class="ic"><img src="static/images/favicon.png" alt=""></span><span class="nm">Qwen3.8-27B</span><span class="vr">Program-Agent</span></div>
+            <div class="bh"><span class="ic i-google"><svg class="mi" aria-hidden="true"><use href="#ic-google"></use></svg></span><span class="nm">Gemini 3.6</span><span class="vr">Flash</span></div>
+            <div class="bh"><span class="ic i-kimi"><svg class="mi" aria-hidden="true"><use href="#ic-kimi"></use></svg></span><span class="nm">Kimi K2.7</span><span class="vr">Code</span></div>
+            <div class="bh ours"><span class="ic"><img src="static/images/favicon.png" alt=""></span><span class="nm">Qwen3.8-SFT</span><span class="vr">Claude Code</span></div>
+            <div class="bh"><span class="ic i-qwen"><svg class="mi" aria-hidden="true"><use href="#ic-qwen"></use></svg></span><span class="nm">Qwen3.8-27B</span><span class="vr">&nbsp;</span></div>
         </div>
-        <div class="bar" style="--h:87.375%; --d:0.155s"
-             data-name="GPT-5.6 Sol (xhigh)" data-score="69.9">
-          <span class="bval">69.9</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:80.750%; --d:0.21s"
-             data-name="GLM-5.2" data-score="64.6">
-          <span class="bval">64.6</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:76.500%; --d:0.265s"
-             data-name="Gemini 3.7 (Flash)" data-score="61.2">
-          <span class="bval">61.2</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:72.100%; --d:0.32s"
-             data-name="DS-V4-Flash (0731)" data-score="57.68">
-          <span class="bval">57.68</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar ours" style="--h:70.312%; --d:0.375s"
-             data-name="Qwen3.8-27B-SFT (Program-Agent)" data-score="56.25" data-ours="1">
-          <span class="bval">56.25</span>
-          <span class="bdelta">&uarr; +13.4</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar ours" style="--h:69.638%; --d:0.43s"
-             data-name="Qwen3.8-27B (Program-Agent)" data-score="55.71" data-ours="1">
-          <span class="bval">55.71</span>
-          <span class="bdelta">&uarr; +20.8</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:69.625%; --d:0.485s"
-             data-name="Gemini 3.6 (Flash)" data-score="55.7">
-          <span class="bval">55.7</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:67.000%; --d:0.54s"
-             data-name="Kimi K2.7 (Code)" data-score="53.6">
-          <span class="bval">53.6</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar ours" style="--h:53.550%; --d:0.595s"
-             data-name="Qwen3.8-27B-SFT (Claude Code)" data-score="42.84" data-ours="1">
-          <span class="bval">42.84</span>
-          <i class="bfill"></i>
-        </div>
-        <div class="bar" style="--h:43.587%; --d:0.65s"
-             data-name="Qwen3.8-27B" data-score="34.87">
-          <span class="bval">34.87</span>
-          <i class="bfill"></i>
-        </div>
-          </div>
-          <div class="blabels">
-        <div class="blab"><b>Claude Opus 4.8</b><br>xhigh</div>
-        <div class="blab"><b>GPT-5.6 Sol</b><br>xhigh</div>
-        <div class="blab"><b>GLM-5.2</b></div>
-        <div class="blab"><b>Gemini 3.7</b><br>Flash</div>
-        <div class="blab"><b>DS-V4-Flash</b><br>0731</div>
-        <div class="blab ours"><b>Qwen3.8-27B-SFT</b><br>Program-Agent</div>
-        <div class="blab ours"><b>Qwen3.8-27B</b><br>Program-Agent</div>
-        <div class="blab"><b>Gemini 3.6</b><br>Flash</div>
-        <div class="blab"><b>Kimi K2.7</b><br>Code</div>
-        <div class="blab ours"><b>Qwen3.8-27B-SFT</b><br>Claude Code</div>
-        <div class="blab"><b>Qwen3.8-27B</b></div>
-          </div>
+        <div class="plot" id="plot">
+            <div class="gridline" style="bottom:0.00%"><span>0</span></div>
+            <div class="gridline" style="bottom:25.00%"><span>20</span></div>
+            <div class="gridline" style="bottom:50.00%"><span>40</span></div>
+            <div class="gridline" style="bottom:75.00%"><span>60</span></div>
+            <div class="gridline" style="bottom:100.00%"><span>80</span></div>
+            <div class="bar" style="--h:88.625%"
+                 data-idx="0" data-name="Claude Opus 4.8 (xhigh)" data-score="70.9">
+              <span class="bval">70.9</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar" style="--h:87.375%"
+                 data-idx="1" data-name="GPT-5.6 Sol (xhigh)" data-score="69.9">
+              <span class="bval">69.9</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar" style="--h:80.750%"
+                 data-idx="2" data-name="GLM-5.2" data-score="64.6">
+              <span class="bval">64.6</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar" style="--h:76.500%"
+                 data-idx="3" data-name="Gemini 3.7 Flash" data-score="61.2">
+              <span class="bval">61.2</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar" style="--h:72.100%"
+                 data-idx="4" data-name="DeepSeek-V4-Flash-0731" data-score="57.68">
+              <span class="bval">57.68</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar ours" style="--h:70.312%"
+                 data-idx="5" data-name="Qwen3.8-27B-SFT + Program-Agent" data-score="56.25" data-ours="1">
+              <span class="bval">56.25</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar ours" style="--h:69.638%"
+                 data-idx="6" data-name="Qwen3.8-27B + Program-Agent" data-score="55.71" data-ours="1">
+              <span class="bval">55.71</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar" style="--h:69.625%"
+                 data-idx="7" data-name="Gemini 3.6 Flash" data-score="55.7">
+              <span class="bval">55.7</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar" style="--h:67.000%"
+                 data-idx="8" data-name="Kimi K2.7 Code" data-score="53.6">
+              <span class="bval">53.6</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar ours" style="--h:53.550%"
+                 data-idx="9" data-name="Qwen3.8-27B-SFT + Claude Code" data-score="42.84" data-ours="1">
+              <span class="bval">42.84</span>
+              <i class="bfill"></i>
+            </div>
+            <div class="bar" style="--h:43.587%"
+                 data-idx="10" data-name="Qwen3.8-27B" data-score="34.87">
+              <span class="bval">34.87</span>
+              <i class="bfill"></i>
+            </div>
+          <svg class="arcs" id="arcs" aria-hidden="true"></svg>
         </div>
       </div>
 
       <div class="blegend">
         <span><i style="background:var(--c-ours)"></i>Trained in Program-Env (ours)</span>
         <span><i style="background:var(--c-base)"></i>Baseline</span>
+        <span><i class="dash"></i>Gain over its own baseline</span>
       </div>
     </div>
 
@@ -324,19 +331,18 @@
             <tr><td>Claude Opus 4.8 (xhigh)</td><td>Baseline</td><td class="n">70.9</td></tr>
             <tr><td>GPT-5.6 Sol (xhigh)</td><td>Baseline</td><td class="n">69.9</td></tr>
             <tr><td>GLM-5.2</td><td>Baseline</td><td class="n">64.6</td></tr>
-            <tr><td>Gemini 3.7 (Flash)</td><td>Baseline</td><td class="n">61.2</td></tr>
-            <tr><td>DS-V4-Flash (0731)</td><td>Baseline</td><td class="n">57.68</td></tr>
-            <tr><td>Qwen3.8-27B-SFT (Program-Agent)</td><td>ProgramGym</td><td class="n">56.25</td></tr>
-            <tr><td>Qwen3.8-27B (Program-Agent)</td><td>ProgramGym</td><td class="n">55.71</td></tr>
-            <tr><td>Gemini 3.6 (Flash)</td><td>Baseline</td><td class="n">55.7</td></tr>
-            <tr><td>Kimi K2.7 (Code)</td><td>Baseline</td><td class="n">53.6</td></tr>
-            <tr><td>Qwen3.8-27B-SFT (Claude Code)</td><td>ProgramGym</td><td class="n">42.84</td></tr>
+            <tr><td>Gemini 3.7 Flash</td><td>Baseline</td><td class="n">61.2</td></tr>
+            <tr><td>DeepSeek-V4-Flash-0731</td><td>Baseline</td><td class="n">57.68</td></tr>
+            <tr><td>Qwen3.8-27B-SFT + Program-Agent</td><td>ProgramGym</td><td class="n">56.25</td></tr>
+            <tr><td>Qwen3.8-27B + Program-Agent</td><td>ProgramGym</td><td class="n">55.71</td></tr>
+            <tr><td>Gemini 3.6 Flash</td><td>Baseline</td><td class="n">55.7</td></tr>
+            <tr><td>Kimi K2.7 Code</td><td>Baseline</td><td class="n">53.6</td></tr>
+            <tr><td>Qwen3.8-27B-SFT + Claude Code</td><td>ProgramGym</td><td class="n">42.84</td></tr>
             <tr><td>Qwen3.8-27B</td><td>Baseline</td><td class="n">34.87</td></tr>
       </tbody>
     </table>
   </div>
 </section>
-
 </main>
 
 <footer>
@@ -352,6 +358,7 @@
 (function () {
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ARCS = [{"from": 10, "to": 6}, {"from": 9, "to": 5}], Y_MAX = 80, TOTAL = 1648;
 
   /* ── Theme ─────────────────────────────────────────────── */
   var btn = document.getElementById('themeBtn');
@@ -366,7 +373,7 @@
     syncLabel();
   });
 
-  /* ── Entrance: hero plays on load, panels on scroll ─────── */
+  /* ── Hero plays on load; panels on scroll ──────────────── */
   document.querySelectorAll('.hero .rise, .hero .focusin').forEach(function (el) {
     requestAnimationFrame(function () { el.classList.add('in'); });
   });
@@ -377,13 +384,12 @@
       e.target.classList.add('in');
       io.unobserve(e.target);
       if (e.target.id === 'donutPanel') countUp();
+      if (e.target.id === 'barPanel') runBars();
     });
   }, { threshold: 0.25 });
-
   ['donutPanel', 'barPanel'].forEach(function (id) { io.observe(document.getElementById(id)); });
 
-  /* ── Count the centre total up as the ring draws ────────── */
-  var TOTAL = 1648;
+  /* ── Centre total counts up alongside the ring ─────────── */
   function countUp() {
     var el = document.getElementById('totalNum');
     if (reduce) { el.textContent = TOTAL.toLocaleString(); return; }
@@ -391,28 +397,122 @@
     function step(ts) {
       if (start === null) start = ts;
       var p = Math.min((ts - start) / dur, 1);
-      // easeOutExpo — lands softly rather than stopping dead
-      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);   // easeOutExpo
       el.textContent = Math.round(e * TOTAL).toLocaleString();
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
 
+  /* ── Bars: baselines first, then ours right-to-left ────── */
+  var plot = document.getElementById('plot');
+  var svg  = document.getElementById('arcs');
+  var bars = Array.prototype.slice.call(plot.querySelectorAll('.bar'));
+  var byIdx = {};
+  bars.forEach(function (b) { byIdx[b.dataset.idx] = b; });
+
+  function barPoint(idx) {
+    // Centre-x and the y of the bar's top edge, in plot-local pixels.
+    var b = byIdx[idx];
+    var pr = plot.getBoundingClientRect(), br = b.getBoundingClientRect();
+    return {
+      x: br.left - pr.left + br.width / 2,
+      y: pr.height * (1 - parseFloat(b.dataset.score) / Y_MAX)
+    };
+  }
+
+  function drawArc(a, done) {
+    var p1 = barPoint(a.from), p2 = barPoint(a.to);
+    var lift = Math.max(34, Math.abs(p1.y - p2.y) * 0.55);
+    var cx = (p1.x + p2.x) / 2, cy = Math.min(p1.y, p2.y) - lift;
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('class', 'arcpath');
+    path.setAttribute('d', 'M' + p1.x + ',' + p1.y + ' Q' + cx + ',' + cy + ' ' + p2.x + ',' + p2.y);
+    svg.appendChild(path);
+
+    // Arrowhead, rotated to the curve's final tangent (from control point to end).
+    var ang = Math.atan2(p2.y - cy, p2.x - cx) * 180 / Math.PI;
+    var head = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    head.setAttribute('class', 'archead');
+    head.setAttribute('points', '0,-3.4 7,0 0,3.4');
+    head.setAttribute('transform', 'translate(' + p2.x + ',' + p2.y + ') rotate(' + ang + ')');
+    svg.appendChild(head);
+
+    if (reduce) { head.classList.add('on'); if (done) done(); return; }
+
+    var len = path.getTotalLength();
+    path.style.strokeDasharray = len + ' ' + len;
+    path.style.strokeDashoffset = len;
+    path.getBoundingClientRect();                       // force layout before animating
+    path.style.transition = 'stroke-dashoffset .62s cubic-bezier(.4,0,.2,1)';
+    path.style.strokeDashoffset = '0';
+    setTimeout(function () {
+      path.style.strokeDasharray = '5 4';               // settle into the dashed look
+      path.style.strokeDashoffset = '0';
+      head.classList.add('on');
+      if (done) done();
+    }, 640);
+  }
+
+  function sizeSvg() {
+    var pr = plot.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + pr.width + ' ' + pr.height);
+  }
+
+  var ran = false;
+  function runBars() {
+    if (ran) return; ran = true;
+    sizeSvg();
+
+    var base = bars.filter(function (b) { return !b.dataset.ours; });
+    var ours = bars.filter(function (b) { return b.dataset.ours; })
+                   .sort(function (a, b) { return b.dataset.idx - a.dataset.idx; }); // right -> left
+
+    if (reduce) {
+      bars.forEach(function (b) { b.classList.add('on'); });
+      ARCS.forEach(function (a) { drawArc(a); });
+      return;
+    }
+
+    base.forEach(function (b, i) {
+      setTimeout(function () { b.classList.add('on'); }, i * 70);
+    });
+
+    var t0 = base.length * 70 + 620;
+    ours.forEach(function (b, i) {
+      setTimeout(function () {
+        var arc = ARCS.filter(function (a) { return String(a.to) === b.dataset.idx; })[0];
+        if (arc) {
+          drawArc(arc, function () { b.classList.add('on', 'pop'); });
+        } else {
+          b.classList.add('on', 'pop');
+        }
+      }, t0 + i * 780);
+    });
+  }
+
+  var rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () {
+      if (!ran) return;
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      sizeSvg();
+      ARCS.forEach(function (a) {
+        var saved = reduce; reduce = true; drawArc(a); reduce = saved;
+      });
+    }, 160);
+  });
+
   /* ── Tooltips ──────────────────────────────────────────── */
   var tip = document.getElementById('tip');
-  function showTip(html, ev) {
-    tip.innerHTML = html;
-    tip.classList.add('on');
-    moveTip(ev);
-  }
+  function showTip(html, ev) { tip.innerHTML = html; tip.classList.add('on'); moveTip(ev); }
   function moveTip(ev) {
     var r = tip.getBoundingClientRect();
     var x = ev.clientX + 14, y = ev.clientY - r.height - 10;
     if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - 14;
     if (y < 8) y = ev.clientY + 18;
-    tip.style.left = x + 'px';
-    tip.style.top = y + 'px';
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
   }
   function hideTip() { tip.classList.remove('on'); }
 
@@ -426,7 +526,7 @@
     s.addEventListener('mouseleave', hideTip);
   });
 
-  document.querySelectorAll('.bar').forEach(function (b) {
+  bars.forEach(function (b) {
     b.addEventListener('mouseenter', function (ev) {
       showTip('<span class="t">' + b.dataset.name + '</span>' +
               '<span class="v">' + b.dataset.score + '%</span> tests passed' +
@@ -436,11 +536,10 @@
     b.addEventListener('mouseleave', hideTip);
   });
 
-  /* Legend row hover dims the other ring segments. */
   var segs = Array.prototype.slice.call(document.querySelectorAll('.seg'));
   document.querySelectorAll('#dlegend li').forEach(function (li) {
     li.addEventListener('mouseenter', function () {
-      segs.forEach(function (s) { s.style.opacity = s.dataset.name === li.dataset.name ? '1' : '.42'; });
+      segs.forEach(function (s) { s.style.opacity = s.dataset.name === li.dataset.name ? '1' : '.38'; });
     });
     li.addEventListener('mouseleave', function () {
       segs.forEach(function (s) { s.style.opacity = ''; });
