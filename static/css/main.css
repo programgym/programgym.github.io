@@ -521,3 +521,135 @@ footer { margin-top: 64px; padding: 22px 0; border-top: 1px solid var(--line); f
   .bval { font-size: 8px; margin-bottom: -14px; }
   .footer-in { flex-direction: column; text-align: center; padding: 0 16px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Pipeline — stepped walkthrough of the data construction flow
+   ═══════════════════════════════════════════════════════════ */
+
+.pipe {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(220px, 1fr);  /* ~80 / 20 */
+  gap: 18px; align-items: stretch;
+}
+
+.pipe-stage { position: relative; padding: 16px 18px 12px; }
+.pipe-stage svg { width: 100%; height: auto; display: block; }
+
+/* ── Diagram primitives ── */
+
+.pn rect {
+  fill: var(--bg2); stroke: var(--line-2); stroke-width: 1;
+  transition: fill .45s var(--ease-soft), stroke .45s var(--ease-soft);
+}
+.pn text { fill: var(--ink-3); transition: fill .45s var(--ease-soft); }
+.pn .pt { font-size: 13px; font-weight: 600; }
+.pn .ps { font-size: 10.5px; }
+.pn .pm { font-family: var(--mono); font-size: 10px; }
+.pn, .pe { opacity: 0; transition: opacity .5s var(--ease-soft); }
+.pn { transform-box: fill-box; transform-origin: center; }
+
+.pn.on, .pe.on { opacity: 1; }
+.pn.on rect { fill: var(--panel); stroke: var(--line-2); }
+.pn.on text { fill: var(--ink-2); }
+.pn.on .pt { fill: var(--ink); }
+
+/* The step currently being told lights up; everything else recedes. */
+.pn.live rect { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; }
+.pn.live .pt { fill: var(--accent); }
+.pn.live { animation: pnpop .55s var(--ease-pop); }
+@keyframes pnpop { 0% { scale: .94; } 60% { scale: 1.02; } 100% { scale: 1; } }
+
+.pn.bad rect { fill: rgba(179,27,27,.10); stroke: var(--arxiv); stroke-width: 1.6; }
+.pn.bad .pt { fill: var(--arxiv); }
+.pn.good rect { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; }
+.pn.good .pt { fill: var(--accent); }
+
+.pe path {
+  fill: none; stroke: var(--line-2); stroke-width: 1.5;
+  transition: stroke .45s var(--ease-soft);
+}
+.pe.on path { stroke: var(--ink-3); }
+.pe.live path { stroke: var(--accent); stroke-width: 2; }
+.pe.loop path { stroke-dasharray: 5 4; }
+.pe.loop.live path { stroke: var(--arxiv); }
+.pe .ah { fill: var(--line-2); transition: fill .45s var(--ease-soft); }
+.pe.on .ah { fill: var(--ink-3); }
+.pe.live .ah { fill: var(--accent); }
+.pe.loop.live .ah { fill: var(--arxiv); }
+.pe text { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-3); }
+.pe.live text { fill: var(--accent); font-weight: 700; }
+.pe.loop.live text { fill: var(--arxiv); }
+
+.prow { font-family: var(--mono); font-size: 10px; font-weight: 600;
+        letter-spacing: .1em; fill: var(--ink-3); text-transform: uppercase; }
+
+/* ── Step rail ── */
+
+.pipe-steps { display: flex; flex-direction: column; padding: 16px 14px; }
+
+.pipe-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 10px;
+}
+.pipe-count {
+  font-family: var(--mono); font-size: 10.5px; color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.pipe-ctl { display: flex; gap: 4px; }
+.pipe-ctl button {
+  width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: 1px solid var(--line-2); border-radius: 7px;
+  color: var(--ink-3); cursor: pointer;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.pipe-ctl button:hover { color: var(--ink); border-color: var(--ink-3); }
+.pipe-ctl svg { width: 11px; height: 11px; fill: currentColor; }
+
+.steplist { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+
+.steplist li { opacity: .34; transition: opacity .4s var(--ease-soft); }
+.steplist li.seen { opacity: .62; }
+.steplist li.cur  { opacity: 1; }
+
+.steplist button {
+  width: 100%; text-align: left; background: none; border: 0;
+  border-left: 2px solid transparent; padding: 6px 0 6px 11px;
+  cursor: pointer; font-family: inherit; color: inherit;
+  transition: border-color .3s var(--ease-soft);
+}
+.steplist li.cur button { border-left-color: var(--accent); }
+.steplist button:hover .sh { color: var(--accent); }
+
+.steplist .sn {
+  font-family: var(--mono); font-size: 9.5px; color: var(--ink-3);
+  letter-spacing: .06em;
+}
+.steplist .sh {
+  display: block; font-size: 12.5px; font-weight: 600; color: var(--ink);
+  line-height: 1.35; transition: color var(--t-fast);
+}
+
+/* Body text only unfurls for the step being told. */
+.steplist .sb {
+  display: block; font-size: 11.5px; line-height: 1.6; color: var(--ink-3);
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height .5s var(--ease), opacity .35s var(--ease-soft), margin .5s var(--ease);
+}
+.steplist li.cur .sb { max-height: 230px; opacity: 1; margin-top: 4px; }
+.steplist .sb code {
+  font-family: var(--mono); font-size: 10.5px;
+  background: var(--bg2); border-radius: 4px; padding: 1px 4px; color: var(--ink-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pn, .pe { opacity: 1 !important; transition: none; }
+  .pn.live { animation: none; }
+  .steplist li { opacity: 1 !important; }
+  .steplist .sb { max-height: none !important; opacity: 1 !important; margin-top: 4px; }
+}
+
+@media (max-width: 1040px) {
+  .pipe { grid-template-columns: 1fr; }
+  .steplist .sb { max-height: none; opacity: 1; margin-top: 4px; }
+  .steplist li { opacity: .8; }
+}
