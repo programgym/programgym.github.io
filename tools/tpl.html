@@ -135,26 +135,12 @@
     How a repository becomes an environment
   </h2>
 
-  <div class="pipe">
-    <div class="vpanel pipe-stage rise" id="pipePanel" style="--d:.06s">
-      <svg viewBox="0 0 1000 450" role="img"
-           aria-label="Pipeline from repository collection through environment build to black-box test construction">
-{{PIPE_SVG}}
-      </svg>
-    </div>
-
-    <div class="vpanel pipe-steps rise" style="--d:.14s">
-      <div class="pipe-head">
-        <span class="pipe-count" id="pipeCount">01 / 09</span>
-        <span class="pipe-ctl">
-          <button type="button" id="pipePrev" aria-label="Previous step"><svg viewBox="0 0 16 16"><path d="M10.5 2 4 8l6.5 6z"/></svg></button>
-          <button type="button" id="pipePlay" aria-label="Play or pause"><svg viewBox="0 0 16 16"><path d="M4 2h3v12H4zM9 2h3v12H9z"/></svg></button>
-          <button type="button" id="pipeNext" aria-label="Next step"><svg viewBox="0 0 16 16"><path d="M5.5 2 12 8l-6.5 6z"/></svg></button>
-        </span>
-      </div>
-      <ol class="steplist" id="stepList">
-{{PIPE_STEPS}}
-      </ol>
+  <div class="vpanel pipe-embed rise" style="--d:.06s">
+    <iframe id="pipeFrame" src="program-env.html?embed=1" loading="lazy"
+            title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
+    <div class="pipe-foot">
+      <span>Figure 2 of the paper, replayed in 24 beats. Click a line in the rail to replay that beat.</span>
+      <a href="program-env.html" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
 </section>
@@ -397,84 +383,13 @@
   });
 
 
-  /* ── Pipeline walkthrough ──────────────────────────────── */
+  /* ── Pipeline walkthrough (iframe) — keep its theme in step with ours ── */
   (function () {
-    var PLAN = {{PIPE_PLAN}};
-    var list = document.getElementById('stepList');
-    if (!list) return;
-    var items = Array.prototype.slice.call(list.querySelectorAll('li'));
-    var countEl = document.getElementById('pipeCount');
-    var playBtn = document.getElementById('pipePlay');
-    var PLAY = '<svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg>';
-    var PAUSE = '<svg viewBox="0 0 16 16"><path d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>';
-
-    var cur = -1, timer = null, playing = false, started = false;
-
-    function paint(i) {
-      // Everything up to i is "on"; only i is "live".
-      document.querySelectorAll('.pn, .pe').forEach(function (el) {
-        el.classList.remove('on', 'live');
-      });
-      for (var s = 0; s <= i; s++) {
-        PLAN[s].n.concat(PLAN[s].e).forEach(function (id) {
-          var el = document.getElementById(id);
-          if (el) el.classList.add('on');
-        });
-      }
-      PLAN[i].n.concat(PLAN[i].e).forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.classList.add('live');
-      });
-      items.forEach(function (li, k) {
-        li.classList.toggle('cur', k === i);
-        li.classList.toggle('seen', k < i);
-      });
-      countEl.textContent = ('0' + (i + 1)).slice(-2) + ' / ' + ('0' + PLAN.length).slice(-2);
-      cur = i;
-    }
-
-    function go(i, keepPlaying) {
-      paint(Math.max(0, Math.min(PLAN.length - 1, i)));
-      if (!keepPlaying) stop();
-      if (cur === PLAN.length - 1 && playing) stop();
-    }
-
-    function tick() { if (cur >= PLAN.length - 1) { stop(); return; } paint(cur + 1); }
-
-    function start() {
-      if (reduce) { paint(PLAN.length - 1); return; }
-      playing = true; playBtn.innerHTML = PAUSE;
-      clearInterval(timer);
-      timer = setInterval(tick, 4200);
-    }
-    function stop() { playing = false; playBtn.innerHTML = PLAY; clearInterval(timer); }
-
-    playBtn.addEventListener('click', function () {
-      if (playing) { stop(); return; }
-      if (cur >= PLAN.length - 1) paint(0);
-      start();
-    });
-    document.getElementById('pipePrev').addEventListener('click', function () { go(cur - 1); });
-    document.getElementById('pipeNext').addEventListener('click', function () { go(cur + 1); });
-
-    // Clicking a step replays exactly that step.
-    items.forEach(function (li) {
-      li.querySelector('button').addEventListener('click', function () {
-        go(parseInt(li.dataset.step, 10));
-      });
-    });
-
-    var pio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting || started) return;
-        started = true;
-        paint(0);
-        if (!reduce) setTimeout(start, 1400);
-      });
-    }, { threshold: 0.3 });
-    pio.observe(document.getElementById('pipePanel'));
-
-    if (reduce) paint(PLAN.length - 1);
+    var f = document.getElementById('pipeFrame');
+    if (!f) return;
+    function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme') }, '*'); }
+    f.addEventListener('load', sync);
+    new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
 
   /* ── Tooltips ──────────────────────────────────────────── */
