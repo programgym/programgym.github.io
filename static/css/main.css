@@ -401,6 +401,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--bval-base); text-align: center;
   font-variant-numeric: tabular-nums; pointer-events: none;
   opacity: 0; transition: opacity .45s var(--ease-soft) .45s;
+  z-index: 1;                           /* the fill comes later in the DOM and would paint over the value */
 }
 .bar.ours .bval { color: var(--bval-ours); }
 .bar.on .bval { opacity: 1; }
