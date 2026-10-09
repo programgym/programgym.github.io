@@ -832,11 +832,30 @@ footer {
 .ptable.exp small { color: var(--ink-3); font-size: 11px; }
 .ptable.exp tr.hi td { background: color-mix(in srgb, var(--accent) 9%, transparent); }
 .ptable.exp tr.hi td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
-@media (max-width: 1120px) { .roundrow { grid-template-columns: 1fr; } }
+/* ── Experiments: action types across turns (four small multiples, one shared y axis) ── */
+.actrow { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 1180px; margin: 0 auto; padding-left: 18px; }
+.actrow .ylab { position: absolute; left: -6px; top: 50%; transform: rotate(-90deg) translateX(-50%); transform-origin: left top; font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.actp { margin: 0; min-width: 0; }
+.actp figcaption { text-align: center; font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 13px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px; }
+.acts { width: 100%; height: auto; display: block; overflow: visible; font-family: 'Tinos', 'Times New Roman', Times, serif; }
+.acts .grid { stroke: #B9B9B9; stroke-width: .75; stroke-dasharray: 3 3; opacity: .7; }
+.acts .frame { fill: none; stroke: var(--ink); stroke-width: 1.05; }
+.acts .tk { font-size: 9px; fill: var(--ink); }
+.acts .xt { font-size: 10.5px; font-weight: 700; fill: var(--ink); }
+.acts .bars { transform: scaleY(0); transform-origin: 50% 260px; transform-box: view-box; transition: transform 1.1s var(--ease); transition-delay: var(--d, 0s); }
+.in .acts .bars { transform: none; }
+.acts .cur { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 2; pointer-events: none; }
+.acts .hit { pointer-events: all; cursor: crosshair; }
+.actleg { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin-top: 12px; font-size: 12px; color: var(--ink-2); }
+.actleg .al { display: inline-flex; align-items: center; gap: 6px; }
+.actleg .al i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.tip .tt td i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: -0.5px; }
+@media (max-width: 1120px) { .roundrow { grid-template-columns: 1fr; } .actrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .actrow { grid-template-columns: 1fr; } }
 @media (max-width: 1120px) { .envrow { grid-template-columns: 1fr; } .abc { grid-template-columns: 1fr; } .viorow { grid-template-columns: 1fr; } .violeg { flex-direction: row; flex-wrap: wrap; justify-content: center; } }
 @media (max-width: 760px) { .page-in { padding: 40px 16px; } }
 @media (prefers-reduced-motion: reduce) {
   .vb .bf, .vio .den { transform: none !important; transition: none; }
-  .curves .cv { stroke-dashoffset: 0 !important; transition: none; } .pt { opacity: 1 !important; transform: none !important; transition: none; }
+  .curves .cv { stroke-dashoffset: 0 !important; transition: none; } .acts .bars { transform: none !important; transition: none; } .pt { opacity: 1 !important; transform: none !important; transition: none; }
   .rlab, .vb .bv, .vb .ref, .vb .rl, .vio .box, .vio .wh, .vio .cap, .vio .med, .vio .mean, .vio .out { opacity: 1 !important; translate: none; transition: none; }
 }
