@@ -348,7 +348,7 @@
       if (e.target.id === 'barPanel') runBars();
     });
   }, { threshold: 0.25 });
-  ['pipePanel', 'donutPanel', 'barPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
+  ['pipePanel', 'agentPanel', 'donutPanel', 'barPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
 
   /* ── Components land one at a time as the section arrives ── */
   var rio = new IntersectionObserver(function (entries) {
