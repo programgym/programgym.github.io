@@ -6,12 +6,30 @@ Published with GitHub Pages at <https://programgym.github.io>.
 ## Layout
 
 ```
-index.html                    the whole page (nav, hero, footer)
+index.html                    GENERATED — do not edit, your change will be lost
+tools/tpl.html                the page itself: markup, inline script
+tools/gen.py                  chart geometry, icon sprite, cache-busting
+tools/icons/                  icon sources (see tools/icons/README.md)
 static/css/main.css           design tokens + styles, light & dark
 static/images/                generated raster assets — do not edit by hand
 icon.svg                      source artwork for every image below
-tools/                        asset pipeline
 ```
+
+## Editing the page
+
+`index.html` is written by `tools/gen.py` from `tools/tpl.html`. Editing it
+directly looks like it works until the next `gen.py` run silently reverts it,
+which is easy to miss when more than one person is in the repo.
+
+```sh
+python3 tools/gen.py          # after editing tpl.html, gen.py, or main.css
+```
+
+Run it after a `main.css` edit too: `gen.py` stamps the stylesheet's content
+hash into its `<link>` URL. Pages serves both files with `max-age=600`, so
+without a fresh stamp a visitor can pair new markup with the stylesheet they
+already had cached — new class names then match no rule and, for example, a
+tinted icon falls back to the inherited text colour.
 
 ## Assets
 

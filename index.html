@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/main.css">
+  <link rel="stylesheet" href="static/css/main.css?v=ac540bd364">
 
   <script>
     // Resolve theme before first paint so the page never flashes the wrong one.
@@ -370,7 +370,7 @@
     <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=dcf9b3f753"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
-      <span class="pipe-follow" id="pipeFollow"><span class="fl">Subagent</span></span>
+      <span>Figure 2 of the paper, replayed in 24 beats. Click a line in the rail to replay that beat.</span>
       <a href="program-env.html?v=dcf9b3f753" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
@@ -568,15 +568,7 @@
     function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme') }, '*'); }
     var skel = document.getElementById('pipeSkel');
     function reveal() { if (skel) { skel.classList.add('off'); setTimeout(function () { skel.remove(); skel = null; }, 450); } }
-    window.addEventListener('message', function (e) { if (e.data && e.data.pipeReady) reveal(); if (e.data && typeof e.data.followed === 'number') follow(e.data); });
-    var fbox = document.getElementById('pipeFollow'), fbtns = [];
-    function follow(d) {
-      if (!fbox) return;
-      if (!fbtns.length && d.names) { d.names.forEach(function (n, k) { var b = document.createElement('button'); b.type = 'button'; b.textContent = n;
-        b.addEventListener('click', function () { f.contentWindow.postMessage({ follow: k }, '*'); }); fbox.appendChild(b); fbtns.push(b); }); }
-      fbtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === d.followed ? 'true' : 'false'); });
-    }
-    f.addEventListener('load', function () { setTimeout(function () { if (f.contentWindow) f.contentWindow.postMessage({ askFollow: true }, '*'); }, 800); });
+    window.addEventListener('message', function (e) { if (e.data && e.data.pipeReady) reveal(); });
     f.addEventListener('load', function () { sync(); setTimeout(reveal, 1500); });
     new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();

@@ -159,10 +159,19 @@ rows_model = "\n".join(
 import hashlib
 # Cache-buster for the embedded walkthrough: changes exactly when program-env.html changes,
 # so a deploy never leaves the browser holding a stale 1.5 MB iframe (Pages caches for 10 min).
-_pe = os.path.join(ROOT, 'program-env.html')
-PEV = hashlib.md5(open(_pe, 'rb').read()).hexdigest()[:10] if os.path.exists(_pe) else '0'
+def _hash(*parts):
+    p = os.path.join(ROOT, *parts)
+    return hashlib.md5(open(p, 'rb').read()).hexdigest()[:10] if os.path.exists(p) else '0'
+
+PEV = _hash('program-env.html')
+# index.html and main.css are fetched separately and Pages serves both with
+# max-age=600, so without this a deploy can leave a browser pairing the new
+# markup with the stylesheet it already had — new class names matching no rule.
+# Re-run gen.py after editing main.css, or the page keeps the stale query.
+CSSV = _hash('static', 'css', 'main.css')
 tpl = open(os.path.join(ROOT, 'tools', 'tpl.html'), encoding='utf-8').read()
 out = (tpl.replace('{{PEV}}', PEV)
+          .replace('{{CSSV}}', CSSV)
           .replace('{{SPRITE}}', sprite())
           .replace('{{SEGS}}', "\n".join(segs))
           .replace('{{LEGEND}}', "\n".join(legend))
@@ -179,4 +188,4 @@ out = (tpl.replace('{{PEV}}', PEV)
           .replace('{{ROWS_MODEL}}', rows_model))
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(out)
 print(f"index.html written: {len(out)} bytes")
-print(f"donut total {TOTAL} | arcs {len(ARCS)} | bars {len(MODELS)}")
+print(f"donut total {TOTAL} | arcs {len(ARCS)} | bars {len(MODELS)} | css v{CSSV}")
