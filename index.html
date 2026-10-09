@@ -93,6 +93,7 @@
     <nav>
       <a href="#overview" class="hide-s">Results</a>
       <a href="#pipeline" class="hide-s">Pipeline</a>
+      <a href="#agent" class="hide-s">Agent</a>
       <a href="https://huggingface.co/programgym" class="hide-s">HuggingFace</a>
       <a href="#" class="navbtn" data-paper>Paper &#8599;</a>
       <button class="tbtn" id="themeBtn" aria-label="Toggle colour theme">Dark</button>
@@ -368,11 +369,32 @@
       <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="sk-msg">Loading Figure 2 walkthrough…</div>
     </div>
-    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=67226530ce"
+    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=565803866b"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
       <span class="pipe-follow" id="pipeFollow"><span class="fl">Subagent</span></span>
-      <a href="program-env.html?v=67226530ce" target="_blank" rel="noopener">Open full screen &#8599;</a>
+      <a href="program-env.html?v=565803866b" target="_blank" rel="noopener">Open full screen &#8599;</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="agent">
+  <div class="vtitle reveal" style="margin-bottom:2px">Program agent</div>
+  <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
+    How an agent rebuilds a program from its black box
+  </h2>
+
+  <div class="vpanel pipe-embed rise" id="agentPanel" style="--d:.06s">
+    <div class="pipe-skel" id="agentSkel" aria-hidden="true">
+      <div class="sk-sheet"><div class="sk-cap"></div><div class="sk-fig"></div></div>
+      <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="sk-msg">Loading the agent walkthrough…</div>
+    </div>
+    <iframe id="agentFrame" loading="lazy" src="program-agent.html?embed=1&v=d78b3ded4c"
+            title="Program agent workflow on a real run, replayed beat by beat"></iframe>
+    <div class="pipe-foot">
+      <span>The analysis &rarr; implement &rarr; review loop on a real run (psampaz/go-mod-outdated, Go, five revisions), replayed in 17 beats. Click a line in the rail to replay it; hover a box for the real file behind it.</span>
+      <a href="program-agent.html?v=d78b3ded4c" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
 </section>
@@ -403,6 +425,7 @@
           <span class="foot-h">Figures</span>
           <a href="#overview">Overview</a>
           <a href="#pipeline">Data construction</a>
+          <a href="#agent">Program agent</a>
         </div>
         <div class="foot-col">
           <span class="foot-h">Affiliations</span>
@@ -614,6 +637,18 @@
     function follow(d) { acked = true; fbtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === d.followed ? 'true' : 'false'); }); }
     /* keep asking until the walkthrough answers (it boots after a ~1.6 MB parse) */
     var tries = 0, poll = setInterval(function () { if (acked || tries++ > 40) { clearInterval(poll); return; } try { f.contentWindow.postMessage({ askFollow: true }, '*'); } catch (e) {} }, 500);
+    f.addEventListener('load', function () { sync(); setTimeout(reveal, 1500); });
+    new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+
+  /* ── Agent walkthrough (iframe) — same theme sync and skeleton ── */
+  (function () {
+    var f = document.getElementById('agentFrame');
+    if (!f) return;
+    function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme') }, '*'); }
+    var skel = document.getElementById('agentSkel');
+    function reveal() { if (skel) { skel.classList.add('off'); setTimeout(function () { skel.remove(); skel = null; }, 450); } }
+    window.addEventListener('message', function (e) { if (e.data && e.data.agentReady) reveal(); });
     f.addEventListener('load', function () { sync(); setTimeout(reveal, 1500); });
     new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
