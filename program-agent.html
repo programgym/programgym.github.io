@@ -154,6 +154,7 @@ body.embed .app{height:100vh;min-height:0}
 .railhead .k{font:600 9.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .railhead .v{font:500 10.5px/1 var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
 .steps{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+body.embed .steps{overscroll-behavior:auto}
 .phase{display:flex;align-items:center;gap:8px;padding:11px 15px 5px;font:600 9px/1 var(--sans);letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
 .phase::after{content:"";flex:1;height:1px;background:var(--rule-2)}
 .beat{display:grid;grid-template-columns:24px 1fr;gap:9px;width:100%;text-align:left;padding:7px 15px;cursor:pointer;background:none;border:0;color:inherit;font:inherit;align-items:start}
@@ -186,7 +187,7 @@ kbd{font:500 9.5px/1 var(--mono);border:1px solid var(--rule);border-radius:2px;
     <div class="brand"><h1>Program Agent</h1><span class="sub">Agent workflow · <a href="./" style="color:inherit">ProgramGym</a></span></div>
     <div class="runcfg">
       <span class="cfg">example run <b>psampaz/go-mod-outdated</b> <span style="color:var(--ink-3)">@bb79367 · Go · real data</span></span>
-      <span class="cfg"><span class="dot"></span>agent <b>claude-code-multi-v3</b> <span style="color:var(--ink-3)">deepseek-v4-flash-0731</span></span>
+      <span class="cfg"><span class="dot"></span>agent <b>ProgramGym</b> <span style="color:var(--ink-3)">deepseek-v4-flash-0731</span></span>
       <span class="cfg"><span class="dot"></span>revisions <b>5</b> <span style="color:var(--ink-3)">of max 5</span></span>
       <span class="cfg">verifier <b>341 / 350</b> <span style="color:var(--ink-3)">reward 0.997</span></span>
     </div>
