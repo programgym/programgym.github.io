@@ -174,7 +174,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ═══════════════ Hero ═══════════════ */
 
-.hero { position: relative; padding: 72px 24px 20px; }
+.hero { position: relative; padding: 46px 24px 12px; }
 .hero-in { position: relative; max-width: var(--measure); margin: 0 auto; text-align: center; }
 
 .papertitle {
@@ -187,7 +187,7 @@ a { color: inherit; text-decoration: none; }
 
 .authors {
   margin: 20px auto 0; max-width: 1020px;
-  font-size: 14.5px; line-height: 1.85; color: var(--ink-2);
+  font-size: 14.5px; line-height: 1.72; color: var(--ink-2);
   text-wrap: balance;
 }
 .authors b { font-weight: 600; color: var(--ink); }
@@ -206,7 +206,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .tagline {
-  margin: 34px auto 0; max-width: 840px;
+  margin: 22px auto 0; max-width: 840px;
   font-size: clamp(19px, 2.3vw, 28px); font-weight: 700;
   line-height: 1.32; letter-spacing: -.02em; color: var(--ink);
   text-wrap: balance;
@@ -215,7 +215,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ═══════════════ Buttons ═══════════════ */
 
-.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
 
 .btn-hero {
   display: inline-flex; align-items: center; gap: 9px; line-height: 1;
@@ -243,7 +243,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ═══════════════ Figure ═══════════════ */
 
-.section { max-width: var(--measure); margin: 0 auto; padding: 46px 24px 0; }
+.section { max-width: var(--measure); margin: 0 auto; padding: 32px 24px 0; }
 
 .figrow {
   display: grid;
@@ -523,10 +523,10 @@ footer { margin-top: 64px; padding: 22px 0; border-top: 1px solid var(--line); f
 @media (max-width: 760px) {
   .hud-in { height: 52px; padding: 0 16px; gap: 8px; }
   .hud nav a.hide-s { display: none; }
-  .hero { padding: 44px 18px 16px; }
+  .hero { padding: 32px 18px 10px; }
   .authors { font-size: 13px; }
   .affils { font-size: 10.5px; }
-  .section { padding: 34px 16px 0; }
+  .section { padding: 26px 16px 0; }
   .vpanel { padding: 18px 14px 16px; border-radius: 15px; }
 
   /* Keep all 11 columns on screen: shed the variant line, rotate the name. */
