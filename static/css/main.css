@@ -584,3 +584,10 @@ footer { margin-top: 64px; padding: 22px 0; border-top: 1px solid var(--line); f
 @keyframes skshimmer { from { background-position: 100% 0; } to { background-position: -40% 0; } }
 @media (prefers-reduced-motion: reduce) { .pipe-skel .sk-fig { animation: none; } }
 @media (max-width: 880px) { .pipe-skel { grid-template-columns: 1fr; } .pipe-skel .sk-rail { display: none; } }
+
+/* ── Walkthrough footer: subagent switch ── */
+.pipe-follow { display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.pipe-follow .fl { font-family: var(--mono); font-size: 9.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); margin-right: 4px; }
+.pipe-follow button { appearance: none; border: 1px solid var(--line-2); background: var(--panel); color: var(--ink-2); border-radius: 6px; cursor: pointer; padding: 5px 9px; font-family: var(--mono); font-size: 11px; transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast); }
+.pipe-follow button:hover { color: var(--ink); border-color: var(--ink-3); }
+.pipe-follow button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
