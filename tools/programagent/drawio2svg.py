@@ -16,28 +16,7 @@ SRC = os.path.join(ROOT, 'programagent.drawio')
 OUT = os.path.join(os.path.dirname(__file__), 'build')
 os.makedirs(OUT, exist_ok=True)
 
-LIB = '/usr/share/fonts/truetype/liberation/'
-def _ttf(name): return TTF(open(LIB + name, 'rb').read())
-FONTS = {
-    'serif': {0: _ttf('LiberationSerif-Regular.ttf'), 1: _ttf('LiberationSerif-Bold.ttf')},
-    'sans':  {0: _ttf('LiberationSans-Regular.ttf'),  1: _ttf('LiberationSans-Bold.ttf')},
-    'mono':  {0: _ttf('LiberationMono-Regular.ttf'),  1: _ttf('LiberationMono-Bold.ttf')},
-}
-FAMILY = {
-    'serif': "Tinos,'Times New Roman',Times,serif",
-    'sans':  "Inter,system-ui,-apple-system,'Segoe UI',sans-serif",
-    'mono':  "'JetBrains Mono',Consolas,ui-monospace,monospace",
-}
-def is_emoji(ch):
-    o = ord(ch)
-    return o >= 0x1F000 or 0x2600 <= o <= 0x27BF or 0x2B00 <= o <= 0x2BFF
-def measure(txt, fam, bold, fs):
-    f = FONTS[fam][1 if bold else 0]; w = 0.0
-    for ch in txt:
-        o = ord(ch)
-        if o in (0xFE0F, 0x200D): continue
-        w += 1.3 * fs if is_emoji(ch) else f.width(ch, fs)
-    return w
+from textw import FONTS, FAMILY, measure, is_emoji
 
 # ── placement: figure canvas (130,420)-(840,790) -> sheet 1280 x 760 ──
 FX, FY, FW, FH = 130.0, 420.0, 710.0, 370.0
@@ -69,26 +48,28 @@ NAME = {
 # Real run (psampaz/go-mod-outdated, Go) in place of the figure's generic C++ labels.
 # Lines are swapped again beat by beat; these are the resting labels.
 TEXT = {
-    'h-analysis': ['📂 analysis-initial/', '  📄 analysis.md', '  📄 samples/ ×2'],
-    'h-impl-tab': ['📁 implementation-001…4'],
-    'h-impl':     ['📂 implementation-005/', '  📄 delivery.md', '  📄 build.json ✓'],
-    'h-rev-tab':  ['📁 review-001…3'],
-    'h-rev':      ['📂 review-004/', '  📄 review.md', '  📄 fixtures ×7'],
-    'ws-src':     ['📂 workspace/', '  📑 main.go', '  📑 width.go', '  📑 go.mod'],
-    'ws-build':   ['📂 internal/mod', '  📑 mod.go', '  ···'],
+    'h-analysis': ['📂 analysis-initial/', ' 📄 analysis.md', ' 📄 samples/ ×2'],
+    'h-impl-tab': ['📁 implementation ×4'],
+    'h-impl':     ['📂 implementation-005/', ' 📄 delivery.md', ' 📄 build.json ✓'],
+    'h-rev-tab':  ['📁 review ×3'],
+    'h-rev':      ['📂 review-004/', ' 📄 review.md', ' 📄 fixtures ×7'],
+    'ws-src':     ['📂 workspace/', ' 📑 main.go', ' 📑 width.go', ' 📑 width_test.go'],
+    'ws-build':   ['📂 internal/mod', ' 📑 mod.go', ' 📑 go.mod'],
     'ws-compile': ['📟 compile.sh', 'go build', '→ ./executable'],
-    'rev-1':      ['📂 rev-001/', '  📁 source/', '  📟 compile.sh', '  ⚙ executable ✓'],
-    'rev-2':      ['📂 rev-005/', '  📁 source/', '  📟 compile.sh', '  ⚙ executable ✓', '  last-stable'],
+    'rev-1':      ['📂 rev-001/', ' 📁 source/', ' 📟 compile.sh', ' ⚙ executable ✓', ' @7078538'],
+    'rev-2':      ['📂 rev-005/', ' 📁 source/', ' 📟 compile.sh', ' ⚙ executable ✓', ' @ba5986d', ' last-stable'],
 }
 MONO_FS = 12.0   # the figure's Consolas 14 is a touch wide for the real file names
 # small geometry nudges so the real names fit (figure coordinates)
 GEO = {
-    'ws-src':   dict(x=258, w=118, y=706, h=70),
-    'ws-build': dict(x=384, w=126, y=706, h=70),
-    'ws-compile': dict(x=518, w=114, y=706, h=70),
+    'ws-src':   dict(x=252, w=130, y=704, h=72),
+    'ws-build': dict(x=390, w=118, y=704, h=72),
+    'ws-compile': dict(x=516, w=116, y=704, h=72),
     'h-analysis': dict(w=165),
-    'h-impl': dict(w=180),
-    'h-impl-tab': dict(w=180),
+    'h-impl': dict(w=174),      # 323..497, clear of the review column at 504
+    'h-impl-tab': dict(w=174),
+    'h-rev': dict(x=504, w=128),
+    'h-rev-tab': dict(x=504, w=128),
     'rev-1': dict(y=474, h=86),
     'rev-2': dict(y=662, h=108),
 }
@@ -180,6 +161,7 @@ for cid, c in cells.items():
             cx = tx + tw / 2 if anchor == 'start' else (tx - tw / 2 if anchor == 'end' else tx)
             cy = y0 + (n - 1) * lh / 2 - fs * 0.33
             meta.setdefault(name, {})['tc'] = [round(v, 1) for v in T(cx, cy)]
+            meta[name]['text'] = {'avail': round(w - padL - padR - 2, 1), 'fs': fs, 'fam': fam, 'bold': bold, 'lines': int((h - 2 * sp) // (fs * 1.2))}
         bb = [x, y, x + w, y + h]
     elif c.get('edge'):
         g = c.find('mxGeometry')
@@ -215,6 +197,11 @@ for cid, c in cells.items():
     m['bb'] = [round(v, 1) for v in sb]; m['c'] = [round((sb[0] + sb[2]) / 2, 1), round((sb[1] + sb[3]) / 2, 1)]
     out.append('<g class="el" data-s="a:%s" data-bb="%.1f,%.1f,%.1f,%.1f">%s</g>' % (name, sb[0], sb[1], sb[2] - sb[0], sb[3] - sb[1], ''.join(body)))
 
+CARDS = ['h-analysis', 'h-impl-tab', 'h-impl', 'h-rev-tab', 'h-rev', 'ws-src', 'ws-build', 'ws-compile', 'rev-1', 'rev-2']
+for i, a in enumerate(CARDS):
+    for b in CARDS[i + 1:]:
+        A, Bb = meta[a]['bb'], meta[b]['bb']
+        assert A[2] <= Bb[0] or Bb[2] <= A[0] or A[3] <= Bb[1] or Bb[3] <= A[1], 'cards overlap: %s %s' % (a, b)
 # draw order: ground, regions, then everything else as in the file (file order already has regions first)
 cols = sorted(set(re.findall(r'aarrow-([0-9A-Fa-f]{6})', '\n'.join(out))))
 defs = ''.join('<marker id="aarrow-%s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#%s"/></marker>' % (c, c) for c in cols)

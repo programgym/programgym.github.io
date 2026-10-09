@@ -20,18 +20,18 @@ def right(n, dx=0): b = BB(n); return [b[2] + dx, (b[1] + b[3]) / 2]
 def leg(pts, ids, **k): d = {'pts': pts, 'ids': ids}; d.update(k); return d
 def ph(name, tu, to, mi): return '%d turns · %d tool calls · %d min' % (tu, to, mi)
 def phs(k): p = PH[k]; return ph(k, p['turns'], p['tools'], p['minutes'])
-def card(folder, *files): return [folder] + ['  ' + f for f in files]
+def card(folder, *files): return [folder] + [' ' + f for f in files]
 
 ANA = 'a:analysis'; IMP = 'a:implement'; REVW = 'a:review'
 REGIONS = ['a:ground', 'a:handoff', 'a:handoff-t', 'a:ws', 'a:ws-t', 'a:rev', 'a:rev-t']
 # resting labels for every revision, swapped as the walkthrough advances
 def impl_card(n): return card('📂 implementation-%03d/' % n, '📄 delivery.md', '📄 build.json ✓')
-def rev_card(n, last=False): return card('📂 rev-%03d/' % n, '📁 source/ @' + REV[n]['commit'], '📟 compile.sh', '⚙ executable ✓') + (['  last-stable'] if last else [])
+def rev_card(n, last=False): return card('📂 rev-%03d/' % n, '📁 source/', '📟 compile.sh', '⚙ executable ✓', '@' + REV[n]['commit']) + ([' last-stable'] if last else [])
 def review_card(n, fx): return card('📂 review-%03d/' % n, '📄 review.md', fx)
-WS0 = ['📂 workspace/', '  📑 main.go', '  📑 go.mod']
-WS4 = ['📂 workspace/', '  📑 main.go', '  📑 width.go', '  📑 go.mod']
-WS5 = ['📂 workspace/', '  📑 main.go', '  📑 width.go', '  📑 width_test.go']
-BUILD = ['📂 internal/mod', '  📑 mod.go', '  ···']
+WS0 = ['📂 workspace/', ' 📑 main.go']
+WS4 = ['📂 workspace/', ' 📑 main.go', ' 📑 width.go']
+WS5 = ['📂 workspace/', ' 📑 main.go', ' 📑 width.go', ' 📑 width_test.go']
+BUILD = ['📂 internal/mod', ' 📑 mod.go', ' 📑 go.mod']
 COMPILE = ['📟 compile.sh', 'go build', '→ ./executable']
 WS_ALL = ['a:ws', 'a:ws-t', 'a:ws-src', 'a:ws-build', 'a:ws-compile']
 def snap(to, delay=0): return [{'ids': WS_ALL, 'to': to, 'delay': delay}]
@@ -86,7 +86,7 @@ beat('Revision 1', 'The reviewer runs gold against candidate',
 beat('Revision 1', 'review-001: three accepted findings',
      'F1 HIGH — Main:true modules must be dropped · F2 HIGH — Replace redirects Version/Time/Update · F3 MEDIUM — the Module/ModuleError structure for error-string parity. Each with a fixture and a generalized requirement for the next revision.',
      legs=[leg([C('a:ic-pen-r'), TC('a:h-rev')], ['a:ic-pen-r'])],
-     produce=[{'ids': ['a:h-rev'], 'delay': 0}], text={'a:h-rev': review_card(1, '📄 fixture-*.jsonl ×3')}, flag='fail', throb=['a:h-rev'],
+     produce=[{'ids': ['a:h-rev'], 'delay': 0}], text={'a:h-rev': review_card(1, '📄 fixtures ×3')}, flag='fail', throb=['a:h-rev'],
      marks=[{'at': [BB('a:h-rev')[2] - 6, BB('a:h-rev')[1] + 6], 'kind': 'fail', 'onArrive': True}])
 # ── Revisions 2–3 ──────────────────────────────────────────────────────
 # One beat per phase. The handoff cards always show the latest folder of each
@@ -94,7 +94,7 @@ beat('Revision 1', 'review-001: three accepted findings',
 beat('Revisions 2–3', 'Revision 2 implements F1–F3',
      'review-001 is now the developer\'s spec, %s. +31 lines across main.go and mod.go: Main-module drop up front, Replace redirection after the filters, a recursive *Module model. delivery.md goes to implementation-002/.' % phs('implementation-002'),
      legs=[leg([C(REVW), C('a:ic-loop'), C(IMP), C('a:ic-code'), TC('a:ws-src')], ['a:ic-loop', IMP, 'a:ic-code', 'a:ws-src'])],
-     text={'a:h-impl-tab': ['📁 implementation-001'], 'a:h-impl': impl_card(2)},
+     text={'a:h-impl-tab': ['📁 implementation ×1'], 'a:h-impl': impl_card(2)},
      produce=[{'ids': ['a:ws-src'], 'delay': 0}, {'ids': ['a:h-impl', 'a:h-impl-tab'], 'delay': 500}], throb=[IMP])
 beat('Revisions 2–3', 'rev-002: the workspace is stored as a second revision',
      'The same independent build as before: the orchestrator archives the committed tree (@%s), runs compile.sh itself and records the sha256. The dotted lines mark the live workspace each card was taken from.' % REV[2]['commit'],
@@ -103,35 +103,35 @@ beat('Revisions 2–3', 'rev-002: the workspace is stored as a second revision',
 beat('Revisions 2–3', 'Review 2: everything matches, no new findings',
      '%s. It reruns the §6 matrix and the F1–F3 fixtures on gold and candidate: all match. Its handoff says there is no new functional requirement beyond preserving this parity.' % phs('review-002'),
      legs=[leg([C(IMP), C('a:ic-loop'), C(REVW), C('a:ic-pen-r'), TC('a:h-rev')], ['a:ic-loop', REVW, 'a:ic-pen-r'])],
-     text={'a:h-rev-tab': ['📁 review-001'], 'a:h-rev': review_card(2, '📄 fixture-*.jsonl ×2')},
+     text={'a:h-rev-tab': ['📁 review ×1'], 'a:h-rev': review_card(2, '📄 fixtures ×2')},
      produce=[{'ids': ['a:h-rev', 'a:h-rev-tab'], 'delay': 0}], flag='pass', throb=[REVW],
      marks=[{'at': [BB('a:h-rev')[2] - 6, BB('a:h-rev')[1] + 6], 'kind': 'pass', 'onArrive': True}])
 beat('Revisions 2–3', 'Revision 3 changes nothing: same commit, a third build',
      '%s. No source change — the tree at @%s already satisfies every requirement, so the developer re-verifies an offline build and the regression matrix and hands off. rev-003 is byte-identical to rev-002.' % (phs('implementation-003'), REV[3]['commit']),
      legs=[leg([C(REVW), C('a:ic-loop'), C(IMP)], ['a:ic-loop', IMP])],
-     text={'a:h-impl-tab': ['📁 implementation-001…2'], 'a:h-impl': impl_card(3), 'a:rev-2': rev_card(3)},
+     text={'a:h-impl-tab': ['📁 implementation ×2'], 'a:h-impl': impl_card(3), 'a:rev-2': rev_card(3)},
      produce=[{'ids': ['a:h-impl', 'a:h-impl-tab'], 'delay': 0}, {'ids': ['a:rev-2'], 'delay': 1750}], snap=snap('a:rev-2', 500), metrics='r3')
 # ── Revisions 4–5 ──────────────────────────────────────────────────────
 beat('Revisions 4–5', 'Review 3 finds F4: Unicode display width',
      '%s. Byte len() against display width — CJK, fullwidth, emoji, combining marks. Every ASCII input still matches, so F4 is inert on realistic data but a real parity gap.' % phs('review-003'),
      legs=[leg([C(IMP), C('a:ic-loop'), C(REVW), C('a:ic-pen-r'), TC('a:h-rev')], ['a:ic-loop', REVW, 'a:ic-pen-r'])],
-     text={'a:h-rev-tab': ['📁 review-001…2'], 'a:h-rev': review_card(3, '📄 fixture-unicode.jsonl')},
+     text={'a:h-rev-tab': ['📁 review ×2'], 'a:h-rev': review_card(3, '📄 fixtures ×1')},
      produce=[{'ids': ['a:h-rev', 'a:h-rev-tab'], 'delay': 0}], flag='fail', throb=[REVW],
      marks=[{'at': [BB('a:h-rev')[2] - 6, BB('a:h-rev')[1] + 6], 'kind': 'fail', 'onArrive': True}])
 beat('Revisions 4–5', 'Revision 4 adds width.go → rev-004',
      'A hand-rolled display-width engine: contiguous wide ranges, per-rune sums. %s. %d lines of Go; the workspace is stored as rev-004.' % (phs('implementation-004'), REV[4]['go_lines']),
      legs=[leg([C(REVW), C('a:ic-loop'), C(IMP), C('a:ic-code'), TC('a:ws-src')], ['a:ic-loop', IMP, 'a:ic-code', 'a:ws-src'])],
-     text={'a:ws-src': WS4, 'a:h-impl-tab': ['📁 implementation-001…3'], 'a:h-impl': impl_card(4), 'a:rev-2': rev_card(4)},
+     text={'a:ws-src': WS4, 'a:h-impl-tab': ['📁 implementation ×3'], 'a:h-impl': impl_card(4), 'a:rev-2': rev_card(4)},
      snap=snap('a:rev-2', 700), produce=[{'ids': ['a:ws-src'], 'delay': 0}, {'ids': ['a:h-impl', 'a:h-impl-tab'], 'delay': 350}, {'ids': ['a:rev-2'], 'delay': 1950}], metrics='r4')
 beat('Revisions 4–5', 'Review 4: F5 emoji clusters, F6 numeric alignment',
      'The longest phase, %s. ZWJ sequences collapse to one cluster, Regional-Indicator pairs, a sparse emoji table; numeric cells right-align. It ships 7 fixtures: .jsonl inputs with .gold outputs captured from the gold binary.' % phs('review-004'),
      legs=[leg([C(IMP), C('a:ic-loop'), C(REVW), C('a:ic-pen-r'), TC('a:h-rev')], ['a:ic-loop', REVW, 'a:ic-pen-r'])],
-     text={'a:h-rev-tab': ['📁 review-001…3'], 'a:h-rev': review_card(4, '📄 fixtures ×7')}, produce=[{'ids': ['a:h-rev', 'a:h-rev-tab'], 'delay': 0}],
+     text={'a:h-rev-tab': ['📁 review ×3'], 'a:h-rev': review_card(4, '📄 fixtures ×7')}, produce=[{'ids': ['a:h-rev', 'a:h-rev-tab'], 'delay': 0}],
      flag='fail', throb=[REVW], marks=[{'at': [BB('a:h-rev')[2] - 6, BB('a:h-rev')[1] + 6], 'kind': 'fail', 'onArrive': True}])
 beat('Revisions 4–5', 'Revision 5: grapheme-aware width.go plus width_test.go → rev-005, the budget is spent',
      '%s. %d lines of Go. max_revisions = 5, so the workflow stops with status %s; last-stable = rev-005 @%s.' % (phs('implementation-005'), REV[5]['go_lines'], R['state']['status'], R['last_stable']['commit']),
      legs=[leg([C(REVW), C('a:ic-loop'), C(IMP), C('a:ic-code'), TC('a:ws-src')], ['a:ic-loop', IMP, 'a:ic-code', 'a:ws-src'])],
-     text={'a:ws-src': WS5, 'a:h-impl-tab': ['📁 implementation-001…4'], 'a:h-impl': impl_card(5), 'a:rev-2': rev_card(5, True)},
+     text={'a:ws-src': WS5, 'a:h-impl-tab': ['📁 implementation ×4'], 'a:h-impl': impl_card(5), 'a:rev-2': rev_card(5, True)},
      snap=snap('a:rev-2', 700), produce=[{'ids': ['a:ws-src'], 'delay': 0}, {'ids': ['a:h-impl', 'a:h-impl-tab'], 'delay': 350}, {'ids': ['a:rev-2'], 'delay': 1950}], flag='pass',
      marks=[{'at': [BB('a:rev-2')[2] - 6, BB('a:rev-2')[1] + 6], 'kind': 'pass', 'delay': 2100}], metrics='r5')
 # ── Verification ───────────────────────────────────────────────────────
@@ -183,5 +183,17 @@ for b in B:
     for pr in b.get('produce', []): ids.update(pr['ids'])
     ids.update(b.get('text', {}).keys())
 missing = sorted(i for i in ids if i[2:] not in cells)
+# every runtime label must fit its box (width and line count), like the resting labels do
+from textw import measure
+bad = []
+for i, bt in enumerate(B):
+    for k, lines in bt.get('text', {}).items():
+        t = M(k).get('text')
+        if not t or lines == EMPTY: continue
+        if len(lines) > t['lines']: bad.append('beat %d %s: %d lines > %d' % (i + 1, k, len(lines), t['lines']))
+        for ln in lines:
+            w = measure(ln, t['fam'], t['bold'], t['fs'])
+            if w > t['avail']: bad.append('beat %d %s: "%s" %.0f > %.0f' % (i + 1, k, ln, w, t['avail']))
+assert not bad, '\n'.join(bad)
 print('%d beats, %d examples, %d metric rows; missing ids: %s' % (len(B), len(EX), len(metrics['labels']), missing or 'none'))
 for i, b in enumerate(B): print('%02d %-14s %s' % (i + 1, b['ph'], b['t']))
