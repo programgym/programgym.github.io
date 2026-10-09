@@ -164,6 +164,7 @@ def _hash(*parts):
     return hashlib.md5(open(p, 'rb').read()).hexdigest()[:10] if os.path.exists(p) else '0'
 
 PEV = _hash('program-env.html')
+PAV = _hash('program-agent.html')   # the agent walkthrough iframe, same reason
 # index.html and main.css are fetched separately and Pages serves both with
 # max-age=600, so without this a deploy can leave a browser pairing the new
 # markup with the stylesheet it already had — new class names matching no rule.
@@ -171,6 +172,7 @@ PEV = _hash('program-env.html')
 CSSV = _hash('static', 'css', 'main.css')
 tpl = open(os.path.join(ROOT, 'tools', 'tpl.html'), encoding='utf-8').read()
 out = (tpl.replace('{{PEV}}', PEV)
+          .replace('{{PAV}}', PAV)
           .replace('{{CSSV}}', CSSV)
           .replace('{{SPRITE}}', sprite())
           .replace('{{SEGS}}', "\n".join(segs))

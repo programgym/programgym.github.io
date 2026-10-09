@@ -1,0 +1,342 @@
+{
+ "task": {
+  "repo": "psampaz/go-mod-outdated",
+  "commit": "bb79367",
+  "lang": "Go",
+  "what": "reads the JSON-lines output of `go list -u -m -json all` on stdin and prints a table of outdated modules"
+ },
+ "agent": {
+  "name": "claude-code-multi-v3",
+  "model": "deepseek-v4-flash-0731",
+  "claude_code": "2.1.220"
+ },
+ "tokens": {
+  "in": 15805614,
+  "out": 278493
+ },
+ "wall_minutes": 238,
+ "phases": [
+  {
+   "phase": "analysis-initial-attempt-01",
+   "role": "requirements-analysis",
+   "attempt": 1,
+   "status": "completed",
+   "error": null,
+   "turns": 109,
+   "tools": 28,
+   "bash": 25,
+   "minutes": 15,
+   "start": "23:42Z"
+  },
+  {
+   "phase": "implementation-001-attempt-01",
+   "role": "development",
+   "revision": 1,
+   "attempt": 1,
+   "status": "completed",
+   "error": null,
+   "turns": 133,
+   "tools": 37,
+   "bash": 22,
+   "minutes": 17,
+   "start": "23:58Z"
+  },
+  {
+   "phase": "review-001-attempt-01",
+   "role": "requirements-analysis",
+   "revision": 1,
+   "attempt": 1,
+   "purpose": "next-revision-requirements",
+   "status": "completed",
+   "error": null,
+   "turns": 124,
+   "tools": 32,
+   "bash": 30,
+   "minutes": 22,
+   "start": "00:14Z"
+  },
+  {
+   "phase": "implementation-002-attempt-01",
+   "role": "development",
+   "revision": 2,
+   "attempt": 1,
+   "status": "completed",
+   "error": null,
+   "turns": 89,
+   "tools": 25,
+   "bash": 16,
+   "minutes": 13,
+   "start": "00:36Z"
+  },
+  {
+   "phase": "review-002-attempt-01",
+   "role": "requirements-analysis",
+   "revision": 2,
+   "attempt": 1,
+   "purpose": "next-revision-requirements",
+   "status": "completed",
+   "error": null,
+   "turns": 101,
+   "tools": 26,
+   "bash": 25,
+   "minutes": 21,
+   "start": "00:49Z"
+  },
+  {
+   "phase": "implementation-003-attempt-01",
+   "role": "development",
+   "revision": 3,
+   "attempt": 1,
+   "status": "completed",
+   "error": null,
+   "turns": 88,
+   "tools": 23,
+   "bash": 15,
+   "minutes": 14,
+   "start": "01:10Z"
+  },
+  {
+   "phase": "review-003-attempt-01",
+   "role": "requirements-analysis",
+   "revision": 3,
+   "attempt": 1,
+   "purpose": "next-revision-requirements",
+   "status": "completed",
+   "error": null,
+   "turns": 104,
+   "tools": 27,
+   "bash": 26,
+   "minutes": 23,
+   "start": "01:24Z"
+  },
+  {
+   "phase": "implementation-004-attempt-01",
+   "role": "development",
+   "revision": 4,
+   "attempt": 1,
+   "status": "completed",
+   "error": null,
+   "turns": 132,
+   "tools": 37,
+   "bash": 16,
+   "minutes": 24,
+   "start": "01:47Z"
+  },
+  {
+   "phase": "review-004-attempt-01",
+   "role": "requirements-analysis",
+   "revision": 4,
+   "attempt": 1,
+   "purpose": "next-revision-requirements",
+   "status": "completed",
+   "error": null,
+   "turns": 148,
+   "tools": 38,
+   "bash": 33,
+   "minutes": 50,
+   "start": "02:12Z"
+  },
+  {
+   "phase": "implementation-005-attempt-01",
+   "role": "development",
+   "revision": 5,
+   "attempt": 1,
+   "status": "completed",
+   "error": null,
+   "turns": 119,
+   "tools": 33,
+   "bash": 21,
+   "minutes": 38,
+   "start": "03:02Z"
+  }
+ ],
+ "state": {
+  "schema_version": 1,
+  "max_revisions": 5,
+  "max_phase_attempts": 2,
+  "completed_revisions": 5,
+  "final_revision": 5,
+  "final_source_commit": "ba5986d483c0c045fa84b394afdb819386c0188b",
+  "status": "fixed_revision_budget_completed"
+ },
+ "last_stable": {
+  "revision": 5,
+  "commit": "ba5986d",
+  "status": "independently_built"
+ },
+ "revisions": [
+  {
+   "n": 1,
+   "files": [
+    "internal/mod/mod.go",
+    "main.go"
+   ],
+   "go_lines": 233,
+   "commit": "7078538",
+   "sha256": "67a0025fef16",
+   "built": true
+  },
+  {
+   "n": 2,
+   "files": [
+    "internal/mod/mod.go",
+    "main.go"
+   ],
+   "go_lines": 264,
+   "commit": "c2d0084",
+   "sha256": "36933113ea45",
+   "built": true
+  },
+  {
+   "n": 3,
+   "files": [
+    "internal/mod/mod.go",
+    "main.go"
+   ],
+   "go_lines": 264,
+   "commit": "c2d0084",
+   "sha256": "138196649eb5",
+   "built": true
+  },
+  {
+   "n": 4,
+   "files": [
+    "internal/mod/mod.go",
+    "main.go",
+    "width.go"
+   ],
+   "go_lines": 345,
+   "commit": "7396a61",
+   "sha256": "782b94674bbc",
+   "built": true
+  },
+  {
+   "n": 5,
+   "files": [
+    "internal/mod/mod.go",
+    "main.go",
+    "width.go",
+    "width_test.go"
+   ],
+   "go_lines": 569,
+   "commit": "ba5986d",
+   "sha256": "09450de89980",
+   "built": true
+  }
+ ],
+ "findings": [
+  {
+   "id": "F1",
+   "rev": 1,
+   "sev": "HIGH",
+   "t": "`Main: true` modules must be dropped"
+  },
+  {
+   "id": "F2",
+   "rev": 1,
+   "sev": "HIGH",
+   "t": "`Replace` redirects Version / Time / Update for display and `-ci`"
+  },
+  {
+   "id": "F3",
+   "rev": 1,
+   "sev": "MEDIUM",
+   "t": "`Module`/`ModuleError` structure must match gold for error-string parity"
+  },
+  {
+   "id": "F4",
+   "rev": 3,
+   "sev": "MEDIUM-HIGH",
+   "t": "column width, padding and header centering by Unicode display width, not bytes"
+  },
+  {
+   "id": "F5",
+   "rev": 4,
+   "sev": "MEDIUM-HIGH",
+   "t": "display-width engine incomplete: Emoji-ZWJ clusters, Regional-Indicator pairs, sparse emoji table"
+  },
+  {
+   "id": "F6",
+   "rev": 4,
+   "sev": "MEDIUM",
+   "t": "per-cell numeric right-alignment"
+  }
+ ],
+ "verifier": {
+  "total": 350,
+  "passed": 341,
+  "failed": 4,
+  "skipped": 5,
+  "branches": 9,
+  "per_branch": {
+   "0d7f74": {
+    "passed": 136,
+    "failure": 1
+   },
+   "27501e": {
+    "passed": 70
+   },
+   "3fe367": {
+    "passed": 1
+   },
+   "498523": {
+    "skipped": 5,
+    "passed": 14,
+    "failure": 3
+   },
+   "6ae19a": {
+    "passed": 13
+   },
+   "8bcffc": {
+    "passed": 8
+   },
+   "b72326": {
+    "passed": 38
+   },
+   "e0bceb": {
+    "passed": 17
+   },
+   "edbc2e": {
+    "passed": 44
+   }
+  },
+  "compile_s": 3.1,
+  "reward": 0.9965,
+  "almost_resolved": true,
+  "resolved": false,
+  "failed_names": [
+   "test_missing_update_timestamp_causes_crash",
+   "test_help_output_exact_match",
+   "test_unknown_flag_prints_usage_and_flag_error",
+   "test_malformed_json_errors_nonzero"
+  ]
+ },
+ "snips": {
+  "help": "Usage of ./executable:\n  -ci\n    \tNon-zero exit code when at least one outdated dependency was found\n  -direct\n    \tList only direct modules\n  -style string\n    \tOutput style, pass 'markdown' for a Markdown table (default \"default\")\n  -update\n    \tList only modules with updates",
+  "example_in": "{\"Path\": \"github.com/BurntSushi/locker\",\"Version\": \"v0.0.0-20171006230638-a6e239ea1c69\",\"Time\": \"2017-10-06T23:06:38Z\",\"GoMod\": \"/home/mojo/go/pkg/mod/cache/download/github.com/!burnt!sushi/locker/@v/v0.0.0-20171006230638-a6e239ea1c69.mod\"}\n{\"Path\": \"github.com/BurntSushi/toml\",\"Version\": \"v0.0.0-20170626110600-a368813c5e64\",\"Time\": \"2017-06-26T11:06:00Z\",\"Update\": {\"Path\": \"github.com/BurntSushi/toml\",\"Version\": \"v0.3.1\",\"Time\": \"2018-08-15T10:47:33Z\"},\"GoMod\": \"/home/mojo/go/pkg/mod/cache/download/github.com/!burnt!sushi/toml/@v/v0.0.0-20170626110600-a368813c5e64.mod\"}",
+  "example_out": "+------------------------------+------------------------------------+-------------+--------+------------------+\n|            MODULE            |              VERSION               | NEW VERSION | DIRECT | VALID TIMESTAMPS |\n+------------------------------+------------------------------------+-------------+--------+------------------+\n| github.com/BurntSushi/locker | v0.0.0-20171006230638-a6e239ea1c69 |             | true   | true             |\n| github.com/BurntSushi/toml   | v0.0.0-20170626110600-a368813c5e64 | v0.3.1      | true   | true             |\n+------------------------------+------------------------------------+-------------+--------+------------------+",
+  "analysis_flags": "Flags (`flag` package, defaults):\n- `-update` — list only modules that have an update.\n- `-direct` — list only direct modules (Direct = `!Indirect`).\n- `-style string` — `\"markdown\"` selects Markdown table; any other value (and\n  the default `\"default\"`) selects the ASCII table.\n- `-ci` — exit 1 if any rendered row is outdated, else 0.",
+  "analysis_exit": "Outputs:\n- stdout: the rendered table (header row + separator + data rows; ASCII mode\n  additionally has a top and bottom `+`-border).\n- stderr: Go `log` lines prefixed `YYYY/MM/DD HH:MM:SS ` on JSON/time errors;\n  Go runtime panic dump on a specific nil-deref condition.\n- Exit status: `0` success; `1` when `-ci` and an outdated row is displayed;\n  `2` on flag parse error or panic.",
+  "f1": "### F1 — HIGH — `Main: true` modules must be dropped\nInput `{\"Path\":\"mainmod\",\"Version\":\"v1\",\"Main\":true,\"Update\":{\"Version\":\"v9\"}}`\n+ `{\"Path\":\"depmod\",...}` → gold renders **only** `depmod` (main row dropped\neven though it had an update). Candidate renders both.\n- Generalized requirement: **skip any module with `Main == true` before\n  filtering, width computation, rendering, and `-ci` accounting.** A Main row\n  never appears, never triggers the nil-deref panic (verified: a Main row whose\n  own fields would panic is safely dropped, exit 0), and never contributes to\n  `-ci` (verified: main-with-update under `-ci` → exit 0). Drop applies even\n  when the module also has a `Replace`.\n- Fixture: `fixture-main-go-mod.jsonl`.",
+  "deliv2_f1": "### F1 — Main-module drop (`main.go`)\nModules with `Main == true` are skipped **up front**, before the\n`-direct`/`-update` filter. They therefore never appear as a row, never\ncontribute to width computation, never trigger the nil-deref panic, and never\ncount towards the `-ci` exit code. Verified: a main row with an update under\n`-ci` yields exit 0 and no output.",
+  "f4": "### F4 — MEDIUM-HIGH — Column width, cell padding, and header centering must use Unicode *display width*, not byte length\nThe candidate computes widths with byte `len()` and pads with `%-*s` (byte\npadding). Gold uses **display width** (East-Asian wide/fullwidth + most emoji =\n2, combining marks/ZWJ/emoji-modifiers = 0, ASCII/Ambiguous = 1) for: per-column\nwidth `cw = max(displayWidth(header), displayWidth(cell))`, data-cell padding\n`spaces = cw − displayWidth(cell)`, and header centering (headers are ASCII so\ntheir byte==display width; only `cw` feeding the formula must switch).",
+  "f5": "### F5 — MEDIUM-HIGH — Display-width engine incomplete for Emoji-ZWJ clusters, RI pairs, and sparse emoji table\nThe candidate's hand-rolled `width.go` (contiguous wide ranges; per-rune sum; RI\n= width 1) does **not** match gold for three well-defined non-ASCII classes:\n\n1. **Emoji-ZWJ grapheme sequences collapse to one cluster** of the base\n   component's width (`👨‍👩‍👧‍👦`→2, `🧑‍💻`→2, `🏳️‍🌈`→1, `🏳️‍⚧️`→1, `🏴‍☠️`→2). Candidate\n   sums per-rune (8/4/4/3/3).\n2. **Consecutive Regional Indicators pair up**: a run of `n` RIs (U+1F1E6–\n   U+1F1FF) has display width `⌈n/2⌉` (pair→1). Candidate gives each RI width 1\n   (pair→2).\n3. **Emoji table is sparse, not the contiguous `1F300–1F64F` the candidate\n   assumes**: e.g. white flag U+1F3F3 = 1 (candidate 2) while adjacent black flag\n   U+1F3F4 = 2.",
+  "rev3_note": "Accordingly this revision required **no source-code change**: the codebase at\ncommit `c2d0084` already satisfies the full cumulative requirement set. This\nrevision's work was to (a) re-verify a fresh, offline build produces a working\ncandidate; (b) re-run the consolidated regression matrix against the documented\n(analysis/review) gold behavior and confirm byte/exit/stderr parity; and (c)\nhand off cleanly.",
+  "review2": "Re-ran the high-value historical rows (analysis §6) and the review-001 F1/F2/F3\nfixtures against both gold and candidate in fresh, separate fixture dirs,\ncomparing **stdout bytes (exact), numeric exit code, and stderr first line\n(after stripping the wall-clock log prefix)**. **All matched**, including the\nF1/F2/F3 findings that this revision was meant to implement:",
+  "fixture_in": "{\"Path\":\"9\",\"Version\":\"v1\"}\n{\"Path\":\"12345\",\"Version\":\"v1\"}\n{\"Path\":\"123456\",\"Version\":\"v1\"}\n{\"Path\":\"-1.5\",\"Version\":\"v1\"}\n{\"Path\":\"1,000\",\"Version\":\"v1\"}\n{\"Path\":\"1e5\",\"Version\":\"v1\"}\n{\"Path\":\"+3\",\"Version\":\"v1\"}\n{\"Path\":\".5\",\"Version\":\"v1\"}\n{\"Path\":\"ab\",\"Version\":\"v1\"}\n{\"Path\":\"v9\",\"Version\":\"v1\"}\n{\"Path\":\"09\",\"Version\":\"v1\"}\n{\"Path\":\"1.2.3\",\"Version\":\"v1\"}",
+  "fixture_gold": "+--------+---------+-------------+--------+------------------+\n| MODULE | VERSION | NEW VERSION | DIRECT | VALID TIMESTAMPS |\n+--------+---------+-------------+--------+------------------+\n|      9 | v1      |             | true   | true             |\n|  12345 | v1      |             | true   | true             |\n| 123456 | v1      |             | true   | true             |\n|   -1.5 | v1      |             | true   | true             |\n|  1,000 | v1      |             | true   | true             |\n| 1e5    | v1      |             | true   | true             |\n| +3     | v1      |             | true   | true             |\n| .5     | v1      |             | true   | true             |\n| ab     | v1      |             | true   | true             |\n| v9     | v1      |             | true   | true             |\n|     09 | v1      |             | true   | true             |\n| 1.2.3  | v1      |             | true   | true             |\n+--------+---------+-------------+--------+------------------+",
+  "compile_sh": "#!/usr/bin/env bash\n# Builds the go-mod-outdated reimplementation offline and writes\n# /workspace/executable.\n#\n# The program uses only the Go standard library, so a single `go build`\n# suffices; no third-party modules are fetched. A Go toolchain must be present\n# on PATH (Go >= 1.16). The build never touches the network.\nset -euo pipefail\n\ncd \"$(dirname \"$0\")\"\n\n# Without GOFLAGS, `go build` may try to reach the network to update the build\n# list even for stdlib-only projects. GOVCS=off forbids any network VCS use;\n# GOFLAGS=-mod=mod keeps local-only dependency resolution in place.\nexport GOFLAGS=\"${GOFLAGS:-}\"\nexport GOVCS=off\nexport GOPROXY=off\nexport GO111MODULE=on\nexport CGO_ENABLED=0\n\ngo build -o executable .\necho \"built ./executable\" >&2",
+  "go_mod": "module github.com/psampaz/go-mod-outdated\n\ngo 1.21",
+  "main_go": "\nvar (\n\tstyle       = flag.String(\"style\", \"default\", \"Output style, pass 'markdown' for a Markdown table\")\n\tdirectOnly  = flag.Bool(\"direct\", false, \"List only direct modules\")\n\tonlyUpdates = flag.Bool(\"update\", false, \"List only modules with updates\")\n\tciMode      = flag.Bool(\"ci\", false, \"Non-zero exit code when at least one outdated dependency was found\")\n)\n\nconst columnCount = 5\n\n// headers are the display labels for the five output columns.\nvar headers = []string{\"MODULE\", \"VERSION\", \"NEW VERSION\", \"DIRECT\", \"VALID TIMESTAMPS\"}",
+  "mod_go": "// Module is one entry in the JSON-lines stream emitted by `go list -m -json`.\n// Update and Replace are recursive (the newer version and the replacement of a\n// module are each described by a full Module), mirroring the go-tool shape and\n// keeping encoding/json diagnostics identical to the reference program for\n// every malformed-field case.\ntype Module struct {\n\tPath      string\n\tVersion   string\n\tTime      *time.Time\n\tIndirect  bool\n\tUpdate    *Module\n\tError     *ModuleError\n\tReplace   *Module\n\tDir       string\n\tMain      bool\n\tGoVersion string\n\tGoMod     string\n}",
+  "width_go": "// displayWidth returns the number of terminal cells that s occupies. It is\n// computed over Unicode extended grapheme clusters: each cluster contributes\n// the display width of its leading rune (combining marks, variation\n// selectors, zero-width joiners, emoji modifiers and ZWJ-joined components all\n// contribute 0), a run of consecutive Regional Indicators contributes len/2\n// per pair, and control characters contribute 0. This matches the reference\n// program's grapheme-aware rendering.\nfunc displayWidth(s string) int {\n\tvar w int\n\ti := 0\n\tfor i < len(s) {\n\t\tr, size := utf8.DecodeRuneInString(s[i:])\n\t\tif isControlBreak(r) {\n\t\t\ti += size\n\t\t\tcontinue\n\t\t}\n\t\tif isRegionalIndicator(r) {\n\t\t\t// Consecutive Regional Indicators pair up: each pair (and a lone\n\t\t\t// unpaired RI) forms one cluster of width 1, so a run of n RIs has\n\t\t\t// display width ceil(n/2).\n\t\t\tn := 1\n\t\t\tif i+size < len(s) {\n\t\t\t\tr2, _ := utf8.DecodeRuneInString(s[i+size:])\n\t\t\t\tif isRegionalIndicator(r2) {\n\t\t\t\t\tn = 2\n\t\t\t\t}\n\t\t\t}\n\t\t\tw++",
+  "width_test": "package main\n\nimport \"testing\"\n\nfunc TestWidthClasses(t *testing.T) {\n\tcases := []struct{ s string; want int }{\n\t\t{\"👨\", 2}, {\"👩\", 2}, {\"👧\", 2}, {\"👦\", 2},\n\t\t{\"👨‍👨\", 2}, {\"👨a👨\", 5},\n\t\t{\"👨‍👩‍👧‍👦\", 2}, {\"🧑‍💻\", 2},\n\t\t{\"🏳️‍🌈\", 1}, {\"🏳️‍⚧️\", 1}, {\"🏴‍☠️\", 2},\n\t\t{\"🇵🇹\", 1}, {\"🇧🇷🇯🇵\", 2}, {\"🇵🇹🇵\", 2}, {\"🇵\", 1},\n\t\t{\"🏳\", 1}, {\"🏴\", 2},\n\t\t{\"👍🏽\", 2}, {\"1️⃣\", 1}, {\"❤️\", 1}, {\"✌\", 1},\n\t\t{\"é\", 1}, {\"中\", 2}, {\"한\", 2},\n\t\t{\"a\\nb\", 2}, {\"😀\", 2}, {\"🌈\", 2}, {\"🏁\", 2}, {\"🚩\", 2},\n\t}\n\tfor _, c := range cases {\n\t\tif g := displayWidth(c.s); g != c.want {\n\t\t\tt.Errorf(\"displayWidth(%q)=%d want %d\", c.s, g, c.want)\n\t\t}\n\t}\n}",
+  "build_json": "{\n  \"success\": true,\n  \"source_commit\": \"707853801250cb0548a41487c8f56be72e9decd8\",\n  \"candidate\": \"/var/lib/agent/workflow/builds/rev-001/source/executable\",\n  \"sha256\": \"67a0025fef169f94b44d1244891444222dc5c91686ba9472fae874d4dd547c09\"\n}",
+  "last_stable": "{\n  \"revision\": 5,\n  \"source_commit\": \"ba5986d483c0c045fa84b394afdb819386c0188b\",\n  \"candidate\": \"/var/lib/agent/workflow/builds/rev-005/source/executable\",\n  \"status\": \"independently_built\"\n}",
+  "state_json": "{\n  \"schema_version\": 1,\n  \"max_revisions\": 5,\n  \"max_phase_attempts\": 2,\n  \"completed_revisions\": 5,\n  \"final_revision\": 5,\n  \"final_source_commit\": \"ba5986d483c0c045fa84b394afdb819386c0188b\",\n  \"status\": \"fixed_revision_budget_completed\"\n}",
+  "phases_json": "[\n {\n  \"phase\": \"analysis-initial-attempt-01\",\n  \"role\": \"requirements-analysis\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"implementation-001-attempt-01\",\n  \"role\": \"development\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"review-001-attempt-01\",\n  \"role\": \"requirements-analysis\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"implementation-002-attempt-01\",\n  \"role\": \"development\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"review-002-attempt-01\",\n  \"role\": \"requirements-analysis\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"implementation-003-attempt-01\",\n  \"role\": \"development\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"review-003-attempt-01\",\n  \"role\": \"requirements-analysis\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"implementation-004-attempt-01\",\n  \"role\": \"development\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"review-004-attempt-01\",\n  \"role\": \"requirements-analysis\",\n  \"status\": \"completed\"\n },\n {\n  \"phase\": \"implementation-005-attempt-01\",\n  \"role\": \"development\",\n  \"status\": \"completed\"\n }\n]",
+  "build_cmd": "# orchestrator, after the developer session has ended (no agent process alive):\ngit -C /workspace archive --format=tar \"$commit\" | tar -C build-00N/source -xf -\ncd build-00N/source && chmod 0755 compile.sh\nenv -u HTTP_PROXY -u HTTPS_PROXY … timeout 300 bash ./compile.sh\ntest -f executable && sha256sum executable > build.json   # candidate is immutable from here",
+  "seal_cmd": "chown -R root:root /handoff/implementation-001\nchmod -R a-w,a+rX /handoff/implementation-001   # later agents read it, none can change it",
+  "verifier_sum": "0d7f74  passed 136  failure 1\n27501e  passed 70\n3fe367  passed 1\n498523  skipped 5  passed 14  failure 3\n6ae19a  passed 13\n8bcffc  passed 8\nb72326  passed 38\ne0bceb  passed 17\nedbc2e  passed 44"
+ }
+}

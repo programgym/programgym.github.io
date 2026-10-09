@@ -10,6 +10,8 @@ index.html                    GENERATED — do not edit, your change will be los
 tools/tpl.html                the page itself: markup, inline script
 tools/gen.py                  chart geometry, icon sprite, cache-busting
 tools/icons/                  icon sources (see tools/icons/README.md)
+program-agent.html            GENERATED — the agent walkthrough iframe (tools/programagent/README.md)
+tools/programagent/           its generator: drawio -> SVG, beats, page assembly
 static/css/main.css           design tokens + styles, light & dark
 static/images/                generated raster assets — do not edit by hand
 icon.svg                      source artwork for every image below
