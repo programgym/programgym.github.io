@@ -10,6 +10,9 @@ index.html                    GENERATED — do not edit, your change will be los
 tools/tpl.html                the page itself: markup, inline script
 tools/gen.py                  chart geometry, icon sprite, cache-busting
 tools/icons/                  icon sources (see tools/icons/README.md)
+tools/orgs/                   affiliation logos as supplied (PDF, Illustrator SVG)
+tools/pdf2svg.py              flat-vector PDF -> SVG, no dependencies
+static/images/orgs/           affiliation logos, web-ready
 program-agent.html            GENERATED — the agent walkthrough iframe (tools/programagent/README.md)
 tools/programagent/           its generator: drawio -> SVG, beats, page assembly
 static/css/main.css           design tokens + styles, light & dark
@@ -32,6 +35,23 @@ hash into its `<link>` URL. Pages serves both files with `max-age=600`, so
 without a fresh stamp a visitor can pair new markup with the stylesheet they
 already had cached — new class names then match no rule and, for example, a
 tinted icon falls back to the inherited text colour.
+
+## Affiliation logos
+
+`static/images/orgs/` is built from `tools/orgs/`, not edited by hand:
+
+```sh
+python3 tools/pdf2svg.py tools/orgs/xmu-logo.pdf static/images/orgs/xmu.svg
+```
+
+`unisound.svg` is the supplied Illustrator file with its `<style>` block folded
+into `fill` attributes — once inlined, `.cls-1` and `.cls-2` are global class
+names and have no business in a page. `deeplit.png` is the lab's own icon,
+reduced to 256 colours by `tools/pngquant.py`.
+
+They render on a white tile in both themes: two of the three are navy on
+transparent and vanish against the dark footer, and a tile keeps the brand
+colours correct rather than filtering them.
 
 ## Assets
 
