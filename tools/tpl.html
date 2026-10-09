@@ -72,10 +72,13 @@
 
 <div class="hud">
   <div class="hud-in">
-    <a class="wordmark" href="#top">ProgramGym</a>
+    <a class="wordmark" href="#top">
+      <img class="mark" src="static/images/favicon.png" alt="" width="26" height="26">
+      ProgramGym
+    </a>
     <nav>
-      <a href="#pipeline" class="hide-s">Pipeline</a>
       <a href="#overview" class="hide-s">Results</a>
+      <a href="#pipeline" class="hide-s">Pipeline</a>
       <a href="https://huggingface.co/programgym" class="hide-s">HuggingFace</a>
       <a href="#" class="navbtn" data-paper>Paper &#8599;</a>
       <button class="tbtn" id="themeBtn" aria-label="Toggle colour theme">Dark</button>
@@ -117,10 +120,10 @@
 
     <div class="cta rise" style="--d:.54s">
       <a class="btn-hero primary" href="https://huggingface.co/programgym">
-        <svg class="bicon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9 9 0 0 0-9 9c0 1.2.24 2.35.67 3.4a1.6 1.6 0 0 0-.3 2.2 1.63 1.63 0 0 0 .67.55c-.04.2-.04.42 0 .63.13.66.68 1.15 1.35 1.2.17.5.6.89 1.14.98.6.1 1.2-.17 1.53-.67A8.96 8.96 0 0 0 12 20c1.1 0 2.15-.2 3.11-.56.33.5.93.77 1.53.67.54-.09.97-.47 1.14-.99a1.5 1.5 0 0 0 1.35-1.19c.04-.21.04-.43 0-.63.28-.12.51-.32.67-.56a1.6 1.6 0 0 0-.3-2.19c.43-1.06.67-2.21.67-3.41a9 9 0 0 0-9-9Zm-3.2 7.2a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm6.4 0a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm-7 4.6h7.6c.3 0 .5.3.4.6a4.3 4.3 0 0 1-8.4 0c-.1-.3.1-.6.4-.6Z"/></svg>
+        <svg class="bicon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#ic-huggingface"></use></svg>
         HuggingFace
       </a>
-      <a class="btn-hero arxiv" href="#" data-paper>
+      <a class="btn-hero paper" href="#" data-paper>
         <svg class="bicon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 0h5.5L14 4.5V15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1Zm5 1.5V5h3.5L9 1.5ZM5.5 8h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1 0-1.5Zm0 3h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1 0-1.5Z"/></svg>
         Paper
       </a>
@@ -129,23 +132,12 @@
 </section>
 
 
-<section class="section" id="pipeline">
-  <div class="vtitle" style="margin-bottom:2px">Data construction</div>
-  <h2 style="font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
-    How a repository becomes an environment
+<section class="section" id="overview">
+  <div class="vtitle reveal" style="margin-bottom:2px">Overview</div>
+  <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
+    What the gym holds, and what training in it buys
   </h2>
 
-  <div class="vpanel pipe-embed rise" id="pipePanel" style="--d:.06s">
-    <iframe id="pipeFrame" src="program-env.html?embed=1&v={{PEV}}" loading="lazy"
-            title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
-    <div class="pipe-foot">
-      <span>Figure 2 of the paper, replayed in 24 beats. Click a line in the rail to replay that beat.</span>
-      <a href="program-env.html?v={{PEV}}" target="_blank" rel="noopener">Open full screen &#8599;</a>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="overview">
   <div class="figrow">
 
     <div class="vpanel rise" id="donutPanel" style="--d:.06s">
@@ -156,7 +148,6 @@
         <div class="donut" id="donut">
           <svg viewBox="0 0 260 260" role="img" aria-label="Task composition by language">
 {{SEGS}}
-{{RINGICONS}}
           </svg>
           <div class="donut-core">
             <span class="k">Program-Env</span>
@@ -186,23 +177,25 @@
         </div>
       </div>
 
-      <div class="blegend">
-        <span><i style="background:var(--c-ours)"></i>Trained in Program-Env (ours)</span>
+      <div class="blegend reveal" style="--i:1">
+        <span><i style="background:var(--c-ours)"></i>Ours</span>
         <span><i style="background:var(--c-base)"></i>Baseline</span>
-        <span><i class="dash"></i>Gain over its own baseline</span>
+        <span><i class="line"></i>Program-Env</span>
+        <span><i class="dash"></i>Program-Agent</span>
       </div>
+      <p class="baxis reveal" style="--i:2">Tests Passed Score on ProgramBench (%)</p>
     </div>
 
   </div>
 
-  <p class="figcap">
+  <p class="figcap reveal">
     <b>Figure 1. Overview of ProgramGym.</b> Program-Env contributes {{TOTAL}} executable tasks
-    across four systems languages. Training in it lifts Qwen3.8-27B by <b>+20.8</b> points and its
-    SFT variant by <b>+13.4</b> points on ProgramBench, closing much of the gap to far larger
-    proprietary models.
+    across four systems languages. Training in it carries Qwen3.8-27B from <b>34.87</b> to
+    <b>42.84</b> (solid), and running either model under Program-Agent carries it to <b>55.71</b>
+    and <b>56.25</b> (dashed) &mdash; closing much of the gap to far larger proprietary models.
   </p>
 
-  <button class="tablebtn" id="tableBtn" aria-expanded="false" aria-controls="tables">View data as table</button>
+  <button class="tablebtn reveal" style="--i:1" id="tableBtn" aria-expanded="false" aria-controls="tables">View data as table</button>
 
   <div class="datatable" id="tables" hidden>
     <table>
@@ -221,6 +214,27 @@
     </table>
   </div>
 </section>
+
+<section class="section" id="pipeline">
+  <div class="vtitle reveal" style="margin-bottom:2px">Data construction</div>
+  <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
+    How a repository becomes an environment
+  </h2>
+
+  <div class="vpanel pipe-embed rise" id="pipePanel" style="--d:.06s">
+    <div class="pipe-skel" id="pipeSkel" aria-hidden="true">
+      <div class="sk-sheet"><div class="sk-cap"></div><div class="sk-fig"></div></div>
+      <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="sk-msg">Loading Figure 2 walkthrough…</div>
+    </div>
+    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v={{PEV}}"
+            title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
+    <div class="pipe-foot">
+      <span>Figure 2 of the paper, replayed in 24 beats. Click a line in the rail to replay that beat.</span>
+      <a href="program-env.html?v={{PEV}}" target="_blank" rel="noopener">Open full screen &#8599;</a>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer>
@@ -236,7 +250,8 @@
 (function () {
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var ARCS = {{ARCS}}, Y_MAX = {{YMAX}}, TOTAL = {{TOTALNUM}};
+  var ARCS = {{ARCS}}, Y_MAX = {{YMAX}}, TOTAL = {{TOTALNUM}},
+      NS = 'http://www.w3.org/2000/svg';
 
   /* ── Theme ─────────────────────────────────────────────── */
   var btn = document.getElementById('themeBtn');
@@ -266,6 +281,16 @@
     });
   }, { threshold: 0.25 });
   ['pipePanel', 'donutPanel', 'barPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
+
+  /* ── Components land one at a time as the section arrives ── */
+  var rio = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      rio.unobserve(e.target);
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -5% 0px' });
+  document.querySelectorAll('.reveal').forEach(function (el) { rio.observe(el); });
 
   /* ── Centre total counts up alongside the ring ─────────── */
   function countUp() {
@@ -301,18 +326,26 @@
 
   function drawArc(a, done) {
     var p1 = barPoint(a.from), p2 = barPoint(a.to);
-    var lift = Math.max(34, Math.abs(p1.y - p2.y) * 0.55);
-    var cx = (p1.x + p2.x) / 2, cy = Math.min(p1.y, p2.y) - lift;
-    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('class', 'arcpath');
-    path.setAttribute('d', 'M' + p1.x + ',' + p1.y + ' Q' + cx + ',' + cy + ' ' + p2.x + ',' + p2.y);
+    var dx = p2.x - p1.x, top = Math.min(p1.y, p2.y);
+
+    // Two control points at the same height make a flat-topped arch rather than
+    // the pointy parabola a single quadratic gives. The cap keeps every apex
+    // inside the plot; `scale` nests arcs that span the same number of columns.
+    var lift = Math.min(top * 0.82, 22 + Math.abs(dx) * 0.17) * (a.scale || 1);
+    var c1x = p1.x + dx * 0.10, c2x = p2.x - dx * 0.26, cy = top - lift;
+
+    var path = document.createElementNS(NS, 'path');
+    path.setAttribute('class', 'arcpath' + (a.dashed ? ' dashed' : ''));
+    path.setAttribute('d', 'M' + p1.x + ',' + p1.y +
+                           ' C' + c1x + ',' + cy + ' ' + c2x + ',' + cy + ' ' + p2.x + ',' + p2.y);
     svg.appendChild(path);
 
-    // Arrowhead, rotated to the curve's final tangent (from control point to end).
-    var ang = Math.atan2(p2.y - cy, p2.x - cx) * 180 / Math.PI;
-    var head = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    // Concave dart, tip exactly on the bar top, body trailing back along the
+    // curve's final tangent (c2 -> end).
+    var ang = Math.atan2(p2.y - cy, p2.x - c2x) * 180 / Math.PI;
+    var head = document.createElementNS(NS, 'polygon');
     head.setAttribute('class', 'archead');
-    head.setAttribute('points', '0,-3.4 7,0 0,3.4');
+    head.setAttribute('points', '0,0 -12,-5 -8.5,0 -12,5');
     head.setAttribute('transform', 'translate(' + p2.x + ',' + p2.y + ') rotate(' + ang + ')');
     svg.appendChild(head);
 
@@ -322,14 +355,15 @@
     path.style.strokeDasharray = len + ' ' + len;
     path.style.strokeDashoffset = len;
     path.getBoundingClientRect();                       // force layout before animating
-    path.style.transition = 'stroke-dashoffset .62s cubic-bezier(.4,0,.2,1)';
+    path.style.transition = 'stroke-dashoffset .66s cubic-bezier(.4,0,.2,1)';
     path.style.strokeDashoffset = '0';
     setTimeout(function () {
-      path.style.strokeDasharray = '5 4';               // settle into the dashed look
-      path.style.strokeDashoffset = '0';
+      path.style.transition = '';                       // hand the dash pattern
+      path.style.strokeDasharray = '';                  // back to the stylesheet
+      path.style.strokeDashoffset = '';
       head.classList.add('on');
       if (done) done();
-    }, 640);
+    }, 680);
   }
 
   function sizeSvg() {
@@ -388,7 +422,10 @@
     var f = document.getElementById('pipeFrame');
     if (!f) return;
     function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme') }, '*'); }
-    f.addEventListener('load', sync);
+    var skel = document.getElementById('pipeSkel');
+    function reveal() { if (skel) { skel.classList.add('off'); setTimeout(function () { skel.remove(); skel = null; }, 450); } }
+    window.addEventListener('message', function (e) { if (e.data && e.data.pipeReady) reveal(); });
+    f.addEventListener('load', function () { sync(); setTimeout(reveal, 1500); });
     new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
 

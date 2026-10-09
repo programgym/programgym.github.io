@@ -34,8 +34,15 @@ MODELS = [
 ]
 Y_MAX = 80.0
 
-# Jump curves: (source bar index, target bar index). Each lands on an "ours" bar.
-ARCS = [(10, 6), (9, 5)]
+# Jump curves, as Figure 1 draws them: (source, target, dashed, scale).
+# Solid = the Program-Env gain, dashed = the Program-Agent gain. Each lands on
+# an "ours" bar. `scale` shrinks the lift of arcs that span the same number of
+# columns so they nest instead of landing on top of each other.
+ARCS = [
+    (10, 6, True,  1.00),   # Qwen3.8-27B            -> + Program-Agent
+    (9,  5, True,  0.58),   # Qwen3.8-27B-SFT + CC   -> + Program-Agent
+    (10, 9, False, 0.95),   # Qwen3.8-27B            -> SFT, trained in Program-Env
+]
 
 ICON_CLASS = {
     "anthropic": "i-anthropic", "openai": "i-openai", "glm": "i-glm",
@@ -45,16 +52,43 @@ ICON_CLASS = {
 
 # ── Icon sprite ─────────────────────────────────────────────────────────────
 def sprite():
-    """Fold the vendored simple-icons SVGs into one inline <symbol> sprite."""
-    out = []
+    """Fold the vendored SVGs into one inline <symbol> sprite.
+
+    Two kinds of file live in tools/icons/:
+
+      * monochrome (simple-icons, and devicon's rust) — no fill anywhere, so
+        the shapes inherit `fill: currentColor` from .mi and the .i-* colour
+        tokens tint them, which is what makes dark mode work;
+      * full-colour (devicon) — every shape carries its own fill. Those are
+        wrapped in <g fill="#000"> so the few shapes that rely on SVG's black
+        default (the gopher's outlines) keep it instead of inheriting
+        currentColor and coming out cyan.
+
+    Everything between the root <svg> and </svg> is kept, so <defs> and
+    <clipPath> survive; xlink:href is rewritten to plain href for inline HTML.
+    """
+    out, seen_ids = [], {}
     for name in sorted(os.listdir(os.path.join(ROOT, 'tools', 'icons'))):
         if not name.endswith('.svg'):
             continue
         key = name[:-4]
         raw = open(os.path.join(ROOT, 'tools', 'icons', name), encoding='utf-8').read()
-        paths = ''.join(re.findall(r'<path[^>]*/>', raw))
-        vb = re.search(r'viewBox="([^"]+)"', raw).group(1)
-        out.append(f'  <symbol id="ic-{key}" viewBox="{vb}">{paths}</symbol>')
+        raw = re.sub(r'<\?xml.*?\?>|<!DOCTYPE.*?>|<!--.*?-->', '', raw, flags=re.S)
+        head = re.search(r'<svg\b[^>]*>', raw)
+        vb = re.search(r'viewBox="([^"]+)"', head.group(0)).group(1)
+        body = raw[head.end():raw.rindex('</svg>')]
+        body = re.sub(r'<title>.*?</title>', '', body, flags=re.S)
+        body = body.replace('xlink:href=', 'href=')
+        body = re.sub(r'\s+', ' ', body).strip()
+
+        # ids leak into the page's global namespace once inlined.
+        for i in re.findall(r'\bid="([^"]+)"', body):
+            assert i not in seen_ids, f'duplicate id {i!r} in {name} and {seen_ids[i]}'
+            seen_ids[i] = name
+
+        if 'fill="' in body:
+            body = f'<g fill="#000">{body}</g>'
+        out.append(f'  <symbol id="ic-{key}" viewBox="{vb}">{body}</symbol>')
     return '\n'.join(out)
 
 def icon_svg(key, cls_extra=""):
@@ -63,10 +97,8 @@ def icon_svg(key, cls_extra=""):
 # ── Donut ───────────────────────────────────────────────────────────────────
 R, CIRC, GAP = 80.0, 2 * math.pi * 80.0, 2.0
 CX = CY = 130.0
-R_ICON = 106.0   # icon ring sits just outside the band
-ICON_PX = 26.0
 
-segs, ringicons, legend, cum = [], [], [], 0.0
+segs, legend, cum = [], [], 0.0
 for i, (name, val, col, ikey, icls) in enumerate(LANGS):
     frac = val / TOTAL
     ln = frac * CIRC
@@ -80,17 +112,8 @@ for i, (name, val, col, ikey, icls) in enumerate(LANGS):
         f'                  transform="rotate({rot:.4f} {CX:g} {CY:g})"\n'
         f'                  data-name="{name}" data-count="{val}" data-pct="{frac*100:.2f}"></circle>'
     )
-    # Icon at the segment's mid-angle, on a ring outside the band.
-    mid = math.radians(-90 + (cum + frac / 2) * 360)
-    ix = CX + R_ICON * math.cos(mid) - ICON_PX / 2
-    iy = CY + R_ICON * math.sin(mid) - ICON_PX / 2
-    ringicons.append(
-        f'          <svg class="ringicon {icls}" x="{ix:.2f}" y="{iy:.2f}" '
-        f'width="{ICON_PX:g}" height="{ICON_PX:g}" viewBox="0 0 24 24" '
-        f'style="--d:{delay}s"><use href="#ic-{ikey}"></use></svg>'
-    )
     legend.append(
-        f'            <li style="--c:{col}" data-name="{name}">\n'
+        f'            <li class="reveal" style="--c:{col};--i:{i + 1}" data-name="{name}">\n'
         f'              <span class="ic sw {icls}">{icon_svg(ikey)}</span>\n'
         f'              <span class="nm">{name}</span>\n'
         f'              <span class="ct">{val:,}</span>\n'
@@ -142,12 +165,13 @@ tpl = open(os.path.join(ROOT, 'tools', 'tpl.html'), encoding='utf-8').read()
 out = (tpl.replace('{{PEV}}', PEV)
           .replace('{{SPRITE}}', sprite())
           .replace('{{SEGS}}', "\n".join(segs))
-          .replace('{{RINGICONS}}', "\n".join(ringicons))
           .replace('{{LEGEND}}', "\n".join(legend))
           .replace('{{BHEAD}}', "\n".join(bhead))
           .replace('{{BARS}}', "\n".join(bars))
           .replace('{{GRID}}', "\n".join(grid))
-          .replace('{{ARCS}}', json.dumps([{"from": a, "to": b} for a, b in ARCS]))
+          .replace('{{ARCS}}', "[\n" + ",\n".join(
+              f'    {{ from: {a}, to: {b}, dashed: {"true" if d else "false"}, scale: {sc:.2f} }}'
+              for a, b, d, sc in ARCS) + "\n  ]")
           .replace('{{YMAX}}', f"{Y_MAX:g}")
           .replace('{{TOTAL}}', f"{TOTAL:,}")
           .replace('{{TOTALNUM}}', str(TOTAL))
@@ -155,4 +179,4 @@ out = (tpl.replace('{{PEV}}', PEV)
           .replace('{{ROWS_MODEL}}', rows_model))
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(out)
 print(f"index.html written: {len(out)} bytes")
-print(f"donut total {TOTAL} | arcs {ARCS} | bars {len(MODELS)}")
+print(f"donut total {TOTAL} | arcs {len(ARCS)} | bars {len(MODELS)}")
