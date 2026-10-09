@@ -106,6 +106,8 @@ body.embed .app{height:100vh;min-height:0}
 #fig.split .del.faded{opacity:.3}
 #fig.split .del{opacity:1}
 #fig.split .del.faded{opacity:.3}
+#fig.split .del{opacity:1}
+#fig.split .del.faded{opacity:.3}
 #fig.all #dwrap{opacity:0}
 /* figure elements: dim until the pulse has passed */
 .el{opacity:.3;transition:opacity 520ms ease}
@@ -393,15 +395,18 @@ var beatEls=[], tickEls=[], detailEls=[];
 /* ---------- metrics: real figures of the followed module ---------- */
 var metricsEl=document.getElementById('metrics'), mPrev=null, mTimers=[];
 function roundRows(r){
-  var m=MODULES[curMod];
-  var pp=r.pass.split('/'), pr=parseInt(pp[0],10)/parseInt(pp[1],10);
+  var m=MODULES[curMod], fin=Math.max(1,m.final.tests);
+  var pp=r.pass.split('/'), pr=parseInt(pp[0],10)/parseInt(pp[1],10)*100;
+  var dummy=(1-r.dummy/Math.max(1,r.tests))*100;
+  var lint=(r.lint===null)?null:(1-r.lint/Math.max(1,r.tests))*100;
+  var pct=function(x){ return x.toFixed(1)+'%'; };
   return [
-    {lb:'Tests collected', v:String(r.tests), f:Math.min(1,r.tests/320), n:r.tests},
-    {lb:'Pass check (gold)', v:r.pass, f:pr, n:pr*100},
-    {lb:'Double check', v:'2 runs ✓', f:1, n:1},
-    {lb:'Dummy check', v:(r.dummy? r.dummy+' slipped' : '0 slipped'), f:1-(r.dummy/Math.max(1,r.tests)), n:r.dummy},
-    {lb:'Lint items', v:(r.lint===null?'—':String(r.lint)), f:(r.lint===null?0:Math.min(1,r.lint/20)), n:(r.lint===null?null:r.lint)},
-    {lb:'Core line coverage', v:r.cov.toFixed(2)+'%', f:r.cov/100, n:r.cov}
+    {lb:'Tests collected', v:String(r.tests), f:Math.min(1,r.tests/fin), n:r.tests, dec:0},
+    {lb:'Pass check', v:pct(pr), f:pr/100, n:pr, dec:1},
+    {lb:'Double check', v:'100%', f:1, n:100, dec:0},
+    {lb:'Dummy rejected', v:pct(dummy), f:dummy/100, n:dummy, dec:1},
+    {lb:'Lint clean', v:(lint===null?'—':pct(lint)), f:(lint===null?0:lint/100), n:lint, dec:1},
+    {lb:'Core coverage', v:r.cov.toFixed(2)+'%', f:r.cov/100, n:r.cov, dec:2}
   ];
 }
 function setMetrics(key, animate){
@@ -428,13 +433,14 @@ function setMetrics(key, animate){
     if(changed && !reduce){
       bar.style.width=(p.f*100)+'%'; gh.style.left=(p.f*100)+'%'; gh.classList.add('on');
       var d=(row.n!==null&&p.n!==null)?(row.n-p.n):null;
-      dl.textContent = d===null?'changed':((d>0?'▲ +':'▼ ')+(Math.abs(d)%1?Math.abs(d).toFixed(2):Math.abs(d))+(i===1||i===5?' pt':''));
+      if(d===null || Math.abs(d)<0.05){ dl.textContent=''; dl.classList.remove('on'); }
+      else dl.textContent=(d>0?'+':'−')+(row.dec?Math.abs(d).toFixed(row.dec):Math.round(Math.abs(d)));
       dl.classList.add('on');
       requestAnimationFrame(function(){ requestAnimationFrame(function(){ bar.style.width=(row.f*100)+'%'; }); });
-      if(typeof row.n==='number' && typeof p.n==='number' && (i===0||i===5)){
-        var v0=p.n, v1=row.n, t0=null, dur=1400;
+      if(typeof row.n==='number' && typeof p.n==='number'){
+        var v0=p.n, v1=row.n, t0=null, dur=1400, pc=(i!==0);
         (function tick(ts){ if(t0===null) t0=ts; var k=Math.min(1,(ts-t0)/dur); k=1-Math.pow(1-k,3); var x=v0+(v1-v0)*k;
-          val.textContent = i===5 ? x.toFixed(2)+'%' : String(Math.round(x)); if(k<1) requestAnimationFrame(tick); else val.textContent=row.v; })(performance.now());
+          val.textContent = pc ? x.toFixed(row.dec)+'%' : String(Math.round(x)); if(k<1) requestAnimationFrame(tick); else val.textContent=row.v; })(performance.now());
       } else val.textContent=row.v;
     } else { bar.style.width=(row.f*100)+'%'; val.textContent=row.v; dl.classList.remove('on'); gh.classList.remove('on'); }
   });
@@ -676,7 +682,7 @@ function renderPop(ex0){
       'double check         2 runs identical\n'+
       'dummy check          '+(last.dummy?last.dummy+' slipped':'0 slipped')+'\n'+
       'lint items repaired  '+(last.lint===null?'—':last.lint)+'\n'+
-      'core line coverage   '+last.cov.toFixed(2)+'%  ('+mm.core+' core lines)\n'+
+      'core coverage        '+last.cov.toFixed(2)+'%\n'+
       'termination          '+mm.stop}]};
   }
   else if(ex0.dyn){ var m=MODULES[curMod];
