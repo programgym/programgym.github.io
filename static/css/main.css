@@ -19,6 +19,10 @@
   --t-base: .3s;
 
   --hud-h: 56px;
+  /* How far you scroll to pass one page. The pane is one screen tall, so the
+     part above 100vh is how long it holds before handing over: 125vh is a
+     quarter-screen hold. Raising this makes every page slower to leave. */
+  --stage-run: 125vh;
 }
 
 [data-theme="light"] {
@@ -233,6 +237,9 @@ a { color: inherit; text-decoration: none; }
 .btn-hero:hover { opacity: .86; transform: translateY(-1.5px); }
 .btn-hero:active { transform: translateY(0) scale(.99); }
 .btn-hero .bicon { width: 15px; height: 15px; flex: none; }
+/* HuggingFace's own mark is #FFD21E, the same yellow as the button under it.
+   A white disc is what lets the real logo read instead of a dark silhouette. */
+.btn-hero.primary .bicon { width: 21px; height: 21px; padding: 1px; background: #fff; border-radius: 50%; }
 
 /* One filled button carries the accent; the second is a quiet outline, so no
    second saturated hue sits next to the green. */
@@ -495,7 +502,7 @@ a { color: inherit; text-decoration: none; }
 .stage { position: relative; }
 
 @media (min-height: 700px) and (min-width: 761px) {
-  .stage { height: 185vh; }
+  .stage { height: var(--stage-run); }
   .stage-in {
     position: sticky; top: var(--hud-h);
     height: calc(100vh - var(--hud-h));
@@ -549,9 +556,9 @@ a { color: inherit; text-decoration: none; }
       animation-range: cover 0% cover 100%;
     }
     @keyframes stage-pass {
-      0%        { opacity: .5; transform: translateY(26px) scale(.985); }
-      28%, 66%  { opacity: 1;  transform: none; }
-      100%      { opacity: 0;  transform: translateY(-26px) scale(.965); }
+      0%        { opacity: .55; transform: translateY(22px) scale(.988); }
+      34%, 62%  { opacity: 1;   transform: none; }
+      100%      { opacity: 0;   transform: translateY(-22px) scale(.97); }
     }
   }
 }
