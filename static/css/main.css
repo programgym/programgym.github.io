@@ -469,12 +469,51 @@ a { color: inherit; text-decoration: none; }
 
 /* ═══════════════ Footer ═══════════════ */
 
-footer { margin-top: 64px; padding: 22px 0; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
-.footer-in {
-  max-width: var(--measure); margin: 0 auto; padding: 0 24px;
-  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+footer {
+  margin-top: 72px; border-top: 1px solid var(--line);
+  background: var(--bg1); font-size: 12px; color: var(--ink-3);
+  transition: background var(--t-base) var(--ease-soft), border-color var(--t-base) var(--ease-soft);
 }
-.footer-in a:hover { color: var(--accent); }
+.footer-in { max-width: var(--measure); margin: 0 auto; padding: 36px 24px 0; }
+
+/* Brand on the left, link columns on the right. */
+.foot-top {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: 32px; align-items: start;
+}
+.foot-brand .wordmark { font-size: 15px; }
+.foot-blurb {
+  margin-top: 11px; max-width: 340px;
+  font-size: 12.5px; line-height: 1.7; color: var(--ink-3);
+}
+
+.foot-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.foot-col { display: flex; flex-direction: column; align-items: start; gap: 7px; }
+.foot-h {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 2px;
+}
+.foot-col a {
+  font-size: 13px; color: var(--ink-2);
+  transition: color var(--t-fast) var(--ease-soft);
+}
+.foot-col a:hover { color: var(--accent); }
+/* Mark the links that leave the site, as the nav's Paper button does. */
+.foot-col a[target]::after { content: "\2009\2197"; color: var(--ink-3); font-size: .9em; }
+
+.foot-addr {
+  display: flex; align-items: flex-start; gap: 9px;
+  margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line);
+  font-size: 12.5px; line-height: 1.6; color: var(--ink-2);
+}
+.foot-addr .pin { width: 15px; height: 15px; flex: none; margin-top: 2px; fill: var(--ink-3); }
+.foot-addr span { display: block; margin-top: 3px; font-size: 11.5px; color: var(--ink-3); }
+
+.foot-btm {
+  margin-top: 20px; padding: 14px 0 22px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: var(--ink-3);
+}
 
 /* ═══════════════ Entrance ═══════════════ */
 
@@ -541,7 +580,11 @@ footer { margin-top: 64px; padding: 22px 0; border-top: 1px solid var(--line); f
   .ic { width: 15px; height: 15px; }
   .plot { height: 210px; }
   .bval { font-size: 8px; margin-bottom: -14px; }
-  .footer-in { flex-direction: column; text-align: center; padding: 0 16px; }
+  .footer-in { padding: 28px 16px 0; }
+  .foot-top { grid-template-columns: 1fr; gap: 26px; }
+  .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .foot-blurb { max-width: none; }
+  .foot-btm { flex-direction: column; align-items: flex-start; }
 }
 
 /* ═══════════════════════════════════════════════════════════
