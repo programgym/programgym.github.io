@@ -360,8 +360,10 @@ function snap(ids,toId,done){
   fx.appendChild(fl); setTimeout(function(){ if(fl.parentNode) fl.parentNode.removeChild(fl); },800);
   var g=document.createElementNS(SVGNS,'g'); g.setAttribute('class','flyer');
   var bg=document.createElementNS(SVGNS,'rect'); bg.setAttribute('class','snapbg'); bg.setAttribute('x',bb[0]-4); bg.setAttribute('y',bb[1]-4); bg.setAttribute('width',bb[2]-bb[0]+8); bg.setAttribute('height',bb[3]-bb[1]+8); bg.setAttribute('rx','8'); g.appendChild(bg);
-  nodes(ids).forEach(function(e){ var c=e.cloneNode(true); c.setAttribute('class','el lit'); g.appendChild(c); });
-  fx.appendChild(g);
+  /* the clones leave #afig, so they need its translate+scale again or they land in raw figure coordinates */
+  var inner=document.createElementNS(SVGNS,'g'); var afig=document.getElementById('afig'); if(afig) inner.setAttribute('transform',afig.getAttribute('transform'));
+  nodes(ids).forEach(function(e){ var c=e.cloneNode(true); c.setAttribute('class','el lit'); inner.appendChild(c); });
+  g.appendChild(inner); fx.appendChild(g);
   var t0=null, dur=1250, lit=false;
   (function step(ts){ if(t0===null) t0=ts; var k=Math.min(1,(ts-t0)/dur), e=easeInOut(k);
     var x=cx0+(cx1-cx0)*e, y=cy0+(cy1-cy0)*e, s=1+(sc-1)*e;
