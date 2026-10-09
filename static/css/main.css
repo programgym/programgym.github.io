@@ -968,3 +968,124 @@ footer {
   .vb .bf, .vio .den { transform: none !important; transition: none; }
   .rlab, .vb .bv, .vb .ref, .vb .rl, .vio .box, .vio .wh, .vio .cap, .vio .med, .vio .mean, .vio .out { opacity: 1 !important; translate: none; transition: none; }
 }
+
+/* ═══════════════ Program-Env · Results — full-screen pages, one wheel tick per page ═══════════════ */
+
+.pages { position: relative; height: 100vh; }
+.pages-stage { position: relative; height: 100vh; overflow: hidden; background: var(--bg0); }
+.page { position: absolute; inset: 0; display: flex; align-items: center; padding: 64px 24px 48px; overflow: hidden;
+  background: var(--bg0); opacity: 0; transform: translateY(6%); pointer-events: none; visibility: hidden;
+  transition: opacity .75s var(--ease), transform .75s var(--ease), visibility 0s linear .75s; }
+.page.alt { background: var(--bg1); }
+.page.is-prev { transform: translateY(-6%); }
+.page.is-active { opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition-delay: 0s; }
+.page .page-in { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease) .18s, transform .8s var(--ease) .18s; }
+.page.is-active .page-in { opacity: 1; transform: none; }
+.pager { position: absolute; right: 22px; top: 50%; translate: 0 -50%; display: flex; flex-direction: column; gap: 10px; z-index: 5; }
+.pager button { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-3); background: transparent; padding: 0; cursor: pointer; transition: background .3s var(--ease-soft), border-color .3s var(--ease-soft), transform .3s var(--ease-pop); }
+.pager button[aria-current="true"] { background: var(--accent); border-color: var(--accent); transform: scale(1.25); }
+.pager button:hover { border-color: var(--accent); }
+.page-hint { position: absolute; left: 50%; bottom: 16px; translate: -50% 0; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); opacity: .8; display: flex; align-items: center; gap: 6px; }
+.page-hint i { display: block; width: 1px; height: 18px; background: var(--ink-3); animation: hintdrop 1.6s var(--ease) infinite; }
+@keyframes hintdrop { 0% { transform: scaleY(0); transform-origin: top; opacity: 0; } 40% { transform: scaleY(1); opacity: .9; } 100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; } }
+.page-in { max-width: var(--measure); width: 100%; margin: 0 auto; }
+.page-head { max-width: 760px; margin: 0 auto 30px; text-align: center; }
+.page-head .eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.page-head h2 { font-size: clamp(28px, 4vw, 44px); line-height: 1.08; letter-spacing: -.03em; font-weight: 700; color: var(--ink); margin: 0 0 14px; text-wrap: balance; }
+.page-head h2 b { color: var(--accent); font-weight: 700; }
+.page-head p { font-size: 15.5px; line-height: 1.65; color: var(--ink-2); margin: 0; }
+.figsub { font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); text-align: center; margin: 12px 0 0; }
+.figsub.top { text-align: left; margin: 0 0 12px; }
+.envrow { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); align-items: stretch; }
+#envIntPanel { display: flex; flex-direction: column; justify-content: center; }
+#envCatPanel { display: flex; flex-direction: column; }
+#envCatPanel .ringfig { flex: 1; display: flex; align-items: center; }
+#envCatPanel .vtitle, #envIntPanel .vtitle, #envTokPanel .vtitle, #envDistPanel .vtitle { margin-bottom: 10px; }
+
+/* Figure 4: ring with labels around it, Times, paper teal ramp */
+.ringfig svg { width: 100%; height: auto; display: block; overflow: visible; font-family: 'Tinos', 'Times New Roman', Times, serif; }
+.ringbg { fill: none; stroke: #DCEDEA; stroke-width: 3; opacity: .7; }
+.cseg { stroke-width: 36; }
+.rlab polyline { fill: none; stroke: #7A8F8B; stroke-width: .8; }
+.rlab .rn { font-size: 12px; font-weight: 700; fill: var(--ink); }
+.rlab .rv { font-size: 10px; font-weight: 700; fill: var(--ink-2); }
+.rlab { opacity: 0; translate: 0 6px; transition: opacity .7s var(--ease), translate .7s var(--ease); transition-delay: var(--d, 0s); }
+.in .rlab { opacity: 1; translate: 0 0; }
+.rc-n { font-size: 30px; font-weight: 700; fill: var(--ink); letter-spacing: -.02em; }
+.rc-u { font-size: 11.5px; fill: var(--ink-3); }
+.ringfig .cseg:hover { stroke-width: 40; }
+
+/* Table 1, set like the paper */
+.ptable { width: 100%; border-collapse: collapse; font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 15.5px; color: var(--ink); }
+.ptable th { text-align: left; font-weight: 700; padding: 10px 12px; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.ptable td { padding: 9px 12px; }
+.ptable tbody tr:last-child td { border-bottom: 1.5px solid var(--ink); }
+.ptable .n { text-align: right; font-variant-numeric: tabular-nums; }
+.ptable tbody tr { transition: background var(--t-fast) var(--ease-soft); }
+.ptable tbody tr:hover { background: var(--bg2); }
+.ptable tr.reveal { display: table-row; }
+
+/* (a)(b)(c): one figure, paper colours */
+.abc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: end; }
+.abc .pl { font-family: 'Tinos', 'Times New Roman', Times, serif; font-weight: 700; font-size: 13px; text-align: center; color: var(--ink); margin-top: 4px; }
+.abc .abcnote { font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 11.5px; color: var(--ink); text-align: left; padding-left: 48px; margin-bottom: -14px; position: relative; z-index: 1; }
+.vb { width: 100%; height: auto; display: block; overflow: visible; font-family: 'Tinos', 'Times New Roman', Times, serif; }
+.vb .grid { stroke: var(--grid); stroke-width: 1; stroke-dasharray: 2 3; }
+.vb .axis { stroke: var(--ink); stroke-width: 1; }
+.vb .tk { font-size: 9px; font-weight: 700; fill: var(--ink); text-anchor: end; }
+.vb .yt { font-size: 10px; font-weight: 700; fill: var(--ink); text-anchor: middle; }
+.vb .bf { stroke-width: 1; transform: scaleY(0); transition: transform 1.05s var(--ease); transition-delay: var(--d, 0s); }
+.in .vb .bf { transform: scaleY(1); }
+.vb .bv { font-size: 9.5px; font-weight: 700; fill: var(--ink); text-anchor: middle; opacity: 0; transition: opacity .5s var(--ease-soft); transition-delay: calc(var(--d, 0s) + .7s); }
+.in .vb .bv { opacity: 1; }
+.vb .bl { font-size: 10px; font-weight: 700; fill: var(--ink); text-anchor: middle; }
+.vb .bs { font-size: 9px; font-weight: 700; fill: var(--ink); text-anchor: middle; }
+.vb .bar:hover .bf { filter: brightness(.96); }
+.vb .ref { stroke: #D1322E; stroke-width: 1.2; opacity: 0; transition: opacity .6s var(--ease-soft); transition-delay: 1s; }
+.vb .ref.dash { stroke-dasharray: 5 3; }
+.in .vb .ref { opacity: 1; }
+.vb .rl { font-size: 8.5px; font-weight: 700; fill: #D1322E; text-anchor: start; opacity: 0; transition: opacity .6s var(--ease-soft); transition-delay: 1.1s; }
+.in .vb .rl { opacity: 1; }
+[data-theme="dark"] .vb .bf { filter: saturate(.9); }
+
+/* Figure 5: violins in the paper's pastels, legend at the right */
+.viorow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) 150px; gap: 14px; align-items: center; }
+.vio { width: 100%; height: auto; display: block; overflow: visible; font-family: 'Tinos', 'Times New Roman', Times, serif; }
+.vio .grid { stroke: var(--grid); stroke-width: 1; stroke-dasharray: 2 3; }
+.vio .axis { stroke: var(--ink); stroke-width: 1; }
+.vio .tk { font-size: 9px; font-weight: 700; fill: var(--ink); text-anchor: end; }
+.vio .yt { font-size: 10px; font-weight: 700; fill: var(--ink); text-anchor: middle; }
+.vio .bl { font-size: 10px; font-weight: 700; fill: var(--ink); text-anchor: middle; }
+.vio .bs { font-size: 9px; font-weight: 700; fill: var(--ink); text-anchor: middle; }
+.vio .den { fill: var(--f); fill-opacity: .9; stroke: var(--c); stroke-opacity: .5; stroke-width: .6; transform: scaleX(0); transition: transform 1.1s var(--ease); transition-delay: var(--d, 0s); }
+.in .vio .den { transform: scaleX(1); }
+.vio .box { fill: var(--f); stroke: var(--c); stroke-width: 1.4; }
+.vio .wh, .vio .cap { stroke: #6B7A86; stroke-width: 1; }
+.vio .med { stroke: #E98A6B; stroke-width: 1.8; }
+.vio .mean { fill: #3A4A5A; }
+.vio .out { fill: none; stroke: #6B7A86; stroke-width: .7; }
+.vio .box, .vio .wh, .vio .cap, .vio .med, .vio .mean, .vio .out { opacity: 0; transition: opacity .6s var(--ease-soft); transition-delay: calc(var(--d, 0s) + .55s); }
+.in .vio .box, .in .vio .wh, .in .vio .cap, .in .vio .med, .in .vio .mean, .in .vio .out { opacity: 1; }
+.vio .vl:hover .den { fill-opacity: 1; stroke-opacity: 1; }
+.violeg { display: flex; flex-direction: column; gap: 10px; font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 11.5px; font-weight: 700; color: var(--ink); padding-left: 6px; }
+.violeg span { display: inline-flex; align-items: center; gap: 8px; }
+.violeg i { display: inline-block; width: 16px; height: 11px; }
+.violeg .l-den { background: #E6D3F0; border: 1px solid #B89BD0; border-radius: 6px; }
+.violeg .l-box { border: 1.4px solid #B89BD0; background: #E6D3F0; border-radius: 1px; }
+.violeg .l-med { height: 0; border-top: 2px solid #E98A6B; }
+.violeg .l-mean { width: 8px; height: 8px; background: #3A4A5A; transform: rotate(45deg); margin-left: 4px; }
+.violeg .l-wh { height: 0; border-top: 1px solid #6B7A86; }
+.violeg .l-out { width: 7px; height: 7px; border: 1px solid #6B7A86; border-radius: 50%; margin-left: 4px; }
+
+@media (max-width: 1120px) { .envrow { grid-template-columns: 1fr; } .abc { grid-template-columns: 1fr; } .viorow { grid-template-columns: 1fr; } .violeg { flex-direction: row; flex-wrap: wrap; justify-content: center; } }
+/* phones and reduced motion: plain stacked pages, no pinning */
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .pages { height: auto; } .pages-stage { position: static; height: auto; overflow: visible; }
+  .page { position: relative; inset: auto; transform: none !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto; min-height: 0; padding: 40px 16px; overflow: visible; }
+  .page .page-in { opacity: 1; transform: none; }
+  .pager, .page-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vb .bf, .vio .den { transform: none !important; transition: none; }
+  .rlab, .vb .bv, .vb .ref, .vb .rl, .vio .box, .vio .wh, .vio .cap, .vio .med, .vio .mean, .vio .out { opacity: 1 !important; translate: none; transition: none; }
+}
