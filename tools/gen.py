@@ -20,9 +20,9 @@ TOTAL = sum(v for _, v, _, _, _ in LANGS)
 
 # (short name, variant, full name, score, is_ours, icon id or None for mascot)
 MODELS = [
-    ("Opus 4.8",    "xhigh",         "Claude Opus 4.8 (xhigh)",              70.90, False, "anthropic"),
+    ("Opus 4.8",    "xhigh",         "Claude Opus 4.8 (xhigh)",              70.90, False, "claude"),
     ("GPT-5.6",     "xhigh",         "GPT-5.6 Sol (xhigh)",                  69.90, False, "openai"),
-    ("GLM-5.2",     "",              "GLM-5.2",                              64.60, False, "glm"),
+    ("GLM-5.2",     "",              "GLM-5.2",                              64.60, False, "zai"),
     ("Gemini 3.7",  "Flash",         "Gemini 3.7 Flash",                     61.20, False, "google"),
     ("DS-V4",       "Flash-0731",    "DeepSeek-V4-Flash-0731",               57.68, False, "deepseek"),
     ("Qwen3.8-SFT", "Program-Agent", "Qwen3.8-27B-SFT + Program-Agent",      56.25, True,  None),
@@ -45,7 +45,7 @@ ARCS = [
 ]
 
 ICON_CLASS = {
-    "anthropic": "i-anthropic", "openai": "i-openai", "glm": "i-glm",
+    "claude": "i-claude", "openai": "i-openai", "zai": "i-zai",
     "google": "i-google", "deepseek": "i-deepseek", "qwen": "i-qwen",
     "kimi": "i-kimi", "go": "i-go", "cplusplus": "i-cpp", "rust": "i-rust", "c": "i-c",
 }

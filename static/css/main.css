@@ -51,9 +51,9 @@
   --grid: rgba(21, 24, 29, .07);
 
   /* Brand icon inks */
-  --i-anthropic: #191919;
+  --i-claude:    #d97757;
   --i-openai:    #000000;
-  --i-glm:       #1a1a1a;
+  --i-zai:       #2d2d2d;
   --i-google:    #4285f4;
   --i-deepseek:  #4d6bfe;
   --i-qwen:      #6950ef;
@@ -93,9 +93,9 @@
   --bval-base: #e7ecf3;
   --grid: rgba(231, 236, 243, .07);
 
-  --i-anthropic: #e8e3dc;
+  --i-claude:    #d97757;
   --i-openai:    #ffffff;
-  --i-glm:       #ffffff;
+  --i-zai:       #ffffff;
   --i-google:    #7cadf8;
   --i-deepseek:  #7d9dff;
   --i-qwen:      #9b87f5;
@@ -271,9 +271,9 @@ a { color: inherit; text-decoration: none; }
 .mi { width: 100%; height: 100%; fill: currentColor; display: block; }
 .ic { display: block; width: 20px; height: 20px; margin: 0 auto 5px; }
 .ic img { width: 100%; height: 100%; display: block; object-fit: contain; }
-.i-anthropic { color: var(--i-anthropic); }
+.i-claude    { color: var(--i-claude); }
 .i-openai    { color: var(--i-openai); }
-.i-glm       { color: var(--i-glm); }
+.i-zai       { color: var(--i-zai); }
 .i-google    { color: var(--i-google); }
 .i-deepseek  { color: var(--i-deepseek); }
 .i-qwen      { color: var(--i-qwen); }

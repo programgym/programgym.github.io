@@ -6,7 +6,7 @@ whether the file declares a `fill`:
 
 | file | source | kind |
 | --- | --- | --- |
-| `anthropic` `deepseek` `docker` `github` `glm` `huggingface` `kimi` `openai` `qwen` | [simple-icons](https://github.com/simple-icons/simple-icons) | monochrome |
+| `claude` `deepseek` `docker` `github` `huggingface` `kimi` `openai` `qwen` `zai` | [simple-icons](https://github.com/simple-icons/simple-icons) | monochrome |
 | `rust` | [devicon](https://github.com/devicons/devicon) `rust-original` | monochrome |
 | `cplusplus` `go` `google` | devicon `*-original` | full colour |
 | `c` | derived — see below | full colour |
