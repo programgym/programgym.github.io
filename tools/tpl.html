@@ -286,13 +286,25 @@
           <a href="#pipeline">Data construction</a>
           <a href="#agent">Program agent</a>
         </div>
-        <div class="foot-col">
-          <span class="foot-h">Affiliations</span>
-          <a href="https://www.xmu.edu.cn/" target="_blank" rel="noopener">Xiamen University</a>
-          <a href="https://xmudeeplit.github.io/" target="_blank" rel="noopener">XMU-DeepLIT</a>
-          <a href="https://www.unisound.com" target="_blank" rel="noopener">Unisound</a>
-        </div>
       </nav>
+    </div>
+
+    <div class="foot-orgs">
+      <span class="foot-h">Affiliations</span>
+      <div class="orgrow">
+        <a class="org" href="https://www.xmu.edu.cn/" target="_blank" rel="noopener"
+           aria-label="Xiamen University" data-org="Xiamen University" data-sub="厦门大学">
+          <img src="static/images/orgs/xmu.svg" alt="" width="30" height="30" loading="lazy">
+        </a>
+        <a class="org" href="https://xmudeeplit.github.io/" target="_blank" rel="noopener"
+           aria-label="XMU-DeepLIT" data-org="XMU-DeepLIT" data-sub="厦门大学语言智能技术课题组">
+          <img src="static/images/orgs/deeplit.png" alt="" width="30" height="30" loading="lazy">
+        </a>
+        <a class="org" href="https://www.unisound.com" target="_blank" rel="noopener"
+           aria-label="Unisound" data-org="Unisound" data-sub="云知声">
+          <img src="static/images/orgs/unisound.svg" alt="" width="30" height="30" loading="lazy">
+        </a>
+      </div>
     </div>
 
     <div class="foot-btm">
@@ -538,6 +550,15 @@
     });
     b.addEventListener('mousemove', moveTip);
     b.addEventListener('mouseleave', hideTip);
+  });
+
+  document.querySelectorAll('.org').forEach(function (a) {
+    a.addEventListener('mouseenter', function (ev) {
+      showTip('<span class="t">' + a.dataset.org + '</span>' + a.dataset.sub, ev);
+    });
+    a.addEventListener('mousemove', moveTip);
+    a.addEventListener('mouseleave', hideTip);
+    a.addEventListener('focus', hideTip);
   });
 
   var segs = Array.prototype.slice.call(document.querySelectorAll('.seg'));
