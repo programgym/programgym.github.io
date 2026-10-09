@@ -259,7 +259,8 @@
 </section>
 <!-- env-results:start -->
 <section class="pages" id="env-results">
-  <div class="page" id="pg-repos">
+ <div class="pages-stage">
+  <div class="page is-active" id="pg-repos">
     <div class="page-in">
       <div class="page-head reveal"><span class="eyebrow">Program-Env &middot; Results</span>
         <h2>1,648 repositories, eight domains, one contract.</h2>
@@ -322,6 +323,8 @@
   </div>
     </div>
   </div>
+  <nav class="pager" aria-label="Results pages"><button type="button" data-i="0" aria-label="Repositories" aria-current="true"></button><button type="button" data-i="1" aria-label="Cost and quality"></button><button type="button" data-i="2" aria-label="Distributions"></button></nav>
+ </div>
 </section>
 
 <script>
@@ -336,18 +339,48 @@
     (function tick(ts) { if (t0 === null) t0 = ts; var k = Math.min(1, (ts - t0) / dur); k = 1 - Math.pow(1 - k, 3);
       el.textContent = Math.round(to * k).toLocaleString('en-US'); if (k < 1) requestAnimationFrame(tick); })(performance.now());
   }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('in');
-      e.target.querySelectorAll('.reveal').forEach(function (r) { r.classList.add('in'); });
-      var n = e.target.querySelector('[data-to]'); if (n) countUp(n);
-      io.unobserve(e.target);
-    });
-  }, { threshold: 0.22 });
-  ids.forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
-  var sec = document.getElementById('env-results');
-  document.querySelectorAll('#env-results .page-head').forEach(function (h) { var o = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { h.classList.add('in'); o.disconnect(); } }); }, { threshold: 0.3 }); o.observe(h); });
+  var sec = document.getElementById('env-results'), stage = sec && sec.querySelector('.pages-stage');
+  var pages = sec ? Array.prototype.slice.call(sec.querySelectorAll('.page')) : [], dots = sec ? Array.prototype.slice.call(sec.querySelectorAll('.pager button')) : [];
+  var lit = {};
+  function activate(i) {
+    pages.forEach(function (pg, j) { pg.classList.toggle('is-active', j === i); });
+    dots.forEach(function (d, j) { d.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    if (lit[i]) return; lit[i] = true;
+    var pg = pages[i];
+    pg.querySelectorAll('.page-head, .vpanel, .reveal').forEach(function (el) { el.classList.add('in'); });
+    pg.querySelectorAll('[data-to]').forEach(countUp);
+  }
+  var pinned = window.matchMedia('(min-width: 761px)').matches && !reduce;
+  if (!pinned) {
+    /* stacked fallback: reveal on scroll like the rest of the page */
+    var io2 = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { activate(pages.indexOf(e.target)); io2.unobserve(e.target); } }); }, { threshold: 0.2 });
+    pages.forEach(function (pg) { io2.observe(pg); });
+  } else {
+    var N = pages.length, cur = -1, snapT = null, travel = 0, top0 = 0;
+    function metrics() { var r = sec.getBoundingClientRect(); top0 = r.top + window.scrollY; travel = sec.offsetHeight - window.innerHeight; }
+    function ease(x) { return x < 0 ? -ease(-x) : (1 - Math.pow(1 - x, 2)); }
+    function render() {
+      var t = Math.min(1, Math.max(0, (window.scrollY - top0) / (travel * (N - 1) / N))) * (N - 1);
+      pages.forEach(function (pg, i) {
+        var d = Math.max(-1, Math.min(1, t - i));           /* 0 = on stage, +1 = already gone up, -1 = still below */
+        var y = -ease(d) * 100, k = 1 - Math.abs(d);
+        pg.style.transform = 'translateY(' + y.toFixed(2) + '%) scale(' + (0.97 + 0.03 * k).toFixed(4) + ')';
+        pg.style.opacity = Math.max(0, Math.min(1, 1.35 * k - 0.1)).toFixed(3);
+      });
+      var i = Math.round(t); if (i !== cur) { cur = i; activate(i); }
+    }
+    function snap() {
+      var t = (window.scrollY - top0) / (travel * (N - 1) / N);
+      if (t < -0.02 || t > N - 1 + 0.02) return;
+      var i = Math.round(t), target = top0 + i * travel / N;
+      if (Math.abs(window.scrollY - target) > 2) window.scrollTo({ top: target, behavior: 'smooth' });
+    }
+    var raf = null;
+    window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = null; render(); }); clearTimeout(snapT); snapT = setTimeout(snap, 170); }, { passive: true });
+    window.addEventListener('resize', function () { metrics(); render(); });
+    dots.forEach(function (d) { d.addEventListener('click', function () { window.scrollTo({ top: top0 + (+d.dataset.i) * travel / N, behavior: 'smooth' }); }); });
+    metrics(); render();
+  }
 
   /* tooltip (shares the page's #tip element) */
   var segs0 = document.querySelectorAll('#catDonut .cseg');
