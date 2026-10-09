@@ -2,3 +2,8 @@
 githubtoken
 *.token
 .env
+
+# figure-generation code and data stay private (kept in outside this repository)
+tools/gen_env_results.py
+tools/env_results_extra.py
+tools/env_results.html
