@@ -267,9 +267,6 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--mono); font-size: 10.5px; font-weight: 600;
   letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px;
 }
-/* Program-Env and Program-Agent are the paper's own system names, not section
-   labels, so they take the accent and a touch more size than a plain vtitle. */
-.vtitle.sys { color: var(--accent); font-size: 11.5px; letter-spacing: .10em; }
 .vsub { font-size: 12.5px; color: var(--ink-3); margin-bottom: 14px; }
 
 /* ── Icons ── */
@@ -447,7 +444,8 @@ a { color: inherit; text-decoration: none; }
   position: fixed; z-index: 200; pointer-events: none;
   background: var(--panel); border: 1px solid var(--line-2);
   border-radius: 10px; padding: 9px 12px; box-shadow: var(--shadow-lg);
-  font-size: 12px; color: var(--ink-2); max-width: 260px;
+  font-size: 12px; color: var(--ink-2);
+  width: max-content; max-width: min(380px, calc(100vw - 28px));
   opacity: 0; translate: 0 4px;
   transition: opacity .16s var(--ease-soft), translate .16s var(--ease-soft);
 }
@@ -506,7 +504,13 @@ a { color: inherit; text-decoration: none; }
 
   /* The walkthrough iframes grow into whatever is left under the heading. */
   .stage-in .pipe-embed { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-  .stage-in .pipe-embed iframe { flex: 1; min-height: 0; height: auto; }
+  /* Without a floor the frame loses its height race against the heading and
+     collapses to a bare rectangle as the window shrinks. */
+  .stage-in .pipe-embed iframe { flex: 1; min-height: min(330px, 46vh); height: auto; }
+
+  .stage-in .page-head { margin-bottom: clamp(12px, 2.2vh, 30px); }
+  .stage-in .page-head h2 { font-size: clamp(23px, 3.3vh, 40px); }
+  .stage-in .page-head p { font-size: clamp(13px, 1.7vh, 15.5px); }
 
   /* Figure 1 is two cards rather than one frame, so its parts scale instead. */
   .stage-in .figrow { flex: 1; min-height: 0; }
@@ -515,6 +519,28 @@ a { color: inherit; text-decoration: none; }
   .stage-in .donut { max-width: min(292px, 30vh); }
   .stage-in .barchart { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   .stage-in .plot { flex: 1; min-height: 160px; height: auto; }
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-height: 700px) and (min-width: 761px) {
+    .stage { view-timeline-name: --stage; view-timeline-axis: block; }
+    .stage-in > .section,
+    .stage-in > .page-in {
+      /* longhands on purpose: the `animation` shorthand resets
+         animation-timeline and animation-duration back to their initials */
+      animation-name: stage-pass;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --stage;
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes stage-pass {
+      0%        { opacity: .5; transform: translateY(26px) scale(.985); }
+      28%, 66%  { opacity: 1;  transform: none; }
+      100%      { opacity: 0;  transform: translateY(-26px) scale(.965); }
+    }
+  }
 }
 
 /* ═══════════════ Footer ═══════════════ */
@@ -661,7 +687,7 @@ footer {
   padding: 10px 16px; border-top: 1px solid var(--line);
   font-size: 12px; color: var(--ink-3);
 }
-.pipe-foot a { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.pipe-foot a { color: var(--accent); font-weight: 600; white-space: nowrap; margin-left: auto; }
 @media (max-width: 720px) {
   .pipe-embed iframe { height: 88vh; }
   .pipe-foot { flex-direction: column; align-items: flex-start; }
@@ -781,7 +807,8 @@ footer {
 .vio .vl:hover .den { fill-opacity: 1; stroke-opacity: 1; }
 .vio .hit { fill: transparent; pointer-events: all; }
 .tip .tt { border-collapse: collapse; margin-top: 4px; }
-.tip .tt td { padding: 1px 10px 1px 0; color: var(--ink-3); font-size: 11.5px; white-space: nowrap; }
+.tip .tt td { padding: 1px 10px 1px 0; color: var(--ink-3); font-size: 11.5px; }
+.tip .tt td.v { white-space: nowrap; }
 .tip .tt td.v { padding-right: 0; text-align: right; }
 .violeg { display: flex; flex-direction: column; gap: 10px; font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 11.5px; font-weight: 700; color: var(--ink); padding-left: 6px; }
 .violeg span { display: inline-flex; align-items: center; gap: 8px; }
@@ -794,7 +821,7 @@ footer {
 .violeg .l-out { width: 7px; height: 7px; border: 1px solid #6B7A86; border-radius: 50%; margin-left: 4px; }
 
 /* ── Experiments: survival curves (paper colours), scatter with broken axis, K-rounds plot, summary table ── */
-.curvewrap { position: relative; max-width: 820px; margin: 0 auto; }
+.curvewrap { position: relative; max-width: min(760px, 72vh); margin: 0 auto; }
 .curves, .scat, .kplot { width: 100%; height: auto; display: block; overflow: visible; font-family: 'Tinos', 'Times New Roman', Times, serif; }
 .curves .grid, .kplot .grid, .scat .grid { stroke: #B9B9B9; stroke-width: .75; stroke-dasharray: 3 3; opacity: .8; }
 .curves .frame, .kplot .frame, .scat .frame { fill: none; stroke: var(--ink); stroke-width: 1.15; }

@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/main.css?v=59d8d995d2">
+  <link rel="stylesheet" href="static/css/main.css?v=4990292f81">
 
   <script>
     // Resolve theme before first paint so the page never flashes the wrong one.
@@ -363,10 +363,10 @@
 <section class="stage" id="pipeline">
   <div class="stage-in">
     <div class="section">
-  <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Env</div>
-  <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
-    How a repository becomes an environment
-  </h2>
+  <div class="page-head reveal"><span class="eyebrow">Program-Env &middot; Construction</span>
+    <h2>Every environment starts as a repository someone really wrote.</h2>
+    <p>Figure 2, replayed in 24 beats: a GitHub project is pinned to a commit, rebuilt behind a sealed
+    network, and handed a black-box test suite. Click any line in the rail to replay that beat.</p></div>
 
   <div class="vpanel pipe-embed rise" id="pipePanel" style="--d:.06s">
     <div class="pipe-skel" id="pipeSkel" aria-hidden="true">
@@ -388,10 +388,11 @@
 <section class="stage" id="agent">
   <div class="stage-in">
     <div class="section">
-  <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Agent</div>
-  <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
-    How an agent rebuilds a program from its black box
-  </h2>
+  <div class="page-head reveal"><span class="eyebrow">Program-Agent &middot; The loop</span>
+    <h2>The agent rebuilds a program it can only probe from the outside.</h2>
+    <p>The analysis &rarr; implement &rarr; review loop on a real run (psampaz/go-mod-outdated, Go, five
+    revisions), replayed in 17 beats. Click a line in the rail to replay it; hover a box for the real
+    file behind it.</p></div>
 
   <div class="vpanel pipe-embed rise" id="agentPanel" style="--d:.06s">
     <div class="pipe-skel" id="agentSkel" aria-hidden="true">
@@ -402,7 +403,6 @@
     <iframe id="agentFrame" loading="lazy" src="program-agent.html?embed=1&v=242b9efb11"
             title="Program agent workflow on a real run, replayed beat by beat"></iframe>
     <div class="pipe-foot">
-      <span>The analysis &rarr; implement &rarr; review loop on a real run (psampaz/go-mod-outdated, Go, five revisions), replayed in 17 beats. Click a line in the rail to replay it; hover a box for the real file behind it.</span>
       <a href="program-agent.html?v=242b9efb11" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
@@ -478,7 +478,7 @@
   <div class="stage page alt" id="pg-curves"><div class="stage-in">
     <div class="page-in">
       <div class="page-head reveal"><span class="eyebrow">Program-Agent &middot; Results on ProgramBench</span>
-        <h2>Training in the gym: <b>34.87 &rarr; 42.84</b>. Running under Program-Agent: <b>&rarr; 56.25</b>.</h2>
+        <h2>Training lifts the whole curve. <b>Program-Agent</b> lifts it again.</h2>
         <p>Share of the 200 ProgramBench instances whose rebuilt program passes at least a given fraction of the behavioural tests. Program-Agent lifts the whole curve for both the base and the fine-tuned model; the fine-tuned model under Program-Agent keeps the most instances above the high thresholds.</p></div>
       <div class="vpanel rise" id="expCurvePanel" style="--d:.06s">
         <div class="vtitle">Test pass-rate distribution &middot; hover for the exact values at any threshold</div>
