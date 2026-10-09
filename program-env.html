@@ -66,6 +66,8 @@ body.embed .app{height:100vh;min-height:0}
 #fig.split .del.faded{opacity:.3}
 #fig.split .del{opacity:1}
 #fig.split .del.faded{opacity:.3}
+#fig.split .del{opacity:1}
+#fig.split .del.faded{opacity:.3}
 #fig.all #dwrap{opacity:0}
 /* figure elements: dim until the pulse has passed */
 .el{opacity:.3;transition:opacity 520ms ease}
@@ -572,9 +574,6 @@ EX.forEach(function(ex){
     n.addEventListener('mouseleave',scheduleHide);
     n.addEventListener('click',function(e){ e.stopPropagation(); if(!pop.hidden&&popKey===ex.key) hidePop(); else showPop(ex,n); });
   });
-  /* a small { } hint next to the first element of each example */
-  var bb=bboxOf(ex.ids.filter(function(i){ return String(i).indexOf('d:')!==0; }));
-  if(bb){ var t=document.createElementNS(SVGNS,'text'); t.setAttribute('class','hint'); t.setAttribute('x',bb[2]-2); t.setAttribute('y',bb[1]+9); t.textContent='{ }'; document.getElementById('hints').appendChild(t); }
 });
 pop.addEventListener('mouseenter',function(){ if(popTimer){ clearTimeout(popTimer); popTimer=null; } });
 pop.addEventListener('mouseleave',scheduleHide);
