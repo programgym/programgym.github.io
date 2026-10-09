@@ -110,6 +110,8 @@ body.embed .app{height:100vh;min-height:0}
 #fig.split .del.faded{opacity:.3}
 #fig.split .del{opacity:1}
 #fig.split .del.faded{opacity:.3}
+#fig.split .del{opacity:1}
+#fig.split .del.faded{opacity:.3}
 #fig.all #dwrap{opacity:0}
 /* figure elements: dim until the pulse has passed */
 .el{opacity:.3;transition:opacity 520ms ease}
@@ -407,7 +409,7 @@ function roundRows(r){
     {lb:'Pass check', v:pct(pr), f:pr/100, n:pr, dec:1},
     {lb:'Double check', v:'100%', f:1, n:100, dec:0},
     {lb:'Dummy rejected', v:pct(dummy), f:dummy/100, n:dummy, dec:1},
-    {lb:'Lint clean', v:(lint===null?'—':pct(lint)), f:(lint===null?0:lint/100), n:lint, dec:1},
+    {lb:'Lint pass', v:(lint===null?'—':pct(lint)), f:(lint===null?0:lint/100), n:lint, dec:1},
     {lb:'Core coverage', v:r.cov.toFixed(2)+'%', f:r.cov/100, n:r.cov, dec:2}
   ];
 }
