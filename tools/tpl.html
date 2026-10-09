@@ -558,36 +558,39 @@
     requestAnimationFrame(function () { el.classList.add('in'); });
   });
 
+  /* Panels arm themselves again on the way out, so a figure you scroll back
+     to draws itself again rather than sitting there already finished. */
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('in');
-      io.unobserve(e.target);
-      if (e.target.id === 'donutPanel') countUp();
-      if (e.target.id === 'barPanel') runBars();
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        if (e.target.id === 'donutPanel') countUp();
+        if (e.target.id === 'barPanel') runBars();
+      } else {
+        e.target.classList.remove('in');
+        if (e.target.id === 'barPanel') resetBars();
+      }
     });
   }, { threshold: 0.25 });
   ['pipePanel', 'agentPanel', 'donutPanel', 'barPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
 
   /* ── Components land one at a time as the section arrives ── */
   var rio = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('in');
-      rio.unobserve(e.target);
-    });
+    entries.forEach(function (e) { e.target.classList.toggle('in', e.isIntersecting); });
   }, { threshold: 0.2, rootMargin: '0px 0px -5% 0px' });
   document.querySelectorAll('.reveal').forEach(function (el) { rio.observe(el); });
 
   /* ── Centre total counts up alongside the ring ─────────── */
+  var countToken = 0;
   function countUp() {
-    var el = document.getElementById('totalNum');
+    var el = document.getElementById('totalNum'), mine = ++countToken;
     if (reduce) { el.textContent = TOTAL.toLocaleString(); return; }
     var start = null, dur = 1500;
     function step(ts) {
       if (start === null) start = ts;
       var p = Math.min((ts - start) / dur, 1);
       var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);   // easeOutExpo
+      if (mine !== countToken) return;                  // a newer visit took over
       el.textContent = Math.round(e * TOTAL).toLocaleString();
       if (p < 1) requestAnimationFrame(step);
     }
@@ -644,13 +647,13 @@
     path.getBoundingClientRect();                       // force layout before animating
     path.style.transition = 'stroke-dashoffset .66s cubic-bezier(.4,0,.2,1)';
     path.style.strokeDashoffset = '0';
-    setTimeout(function () {
+    after(680, function () {
       path.style.transition = '';                       // hand the dash pattern
       path.style.strokeDasharray = '';                  // back to the stylesheet
       path.style.strokeDashoffset = '';
       head.classList.add('on');
       if (done) done();
-    }, 680);
+    });
   }
 
   function sizeSvg() {
@@ -658,9 +661,18 @@
     svg.setAttribute('viewBox', '0 0 ' + pr.width + ' ' + pr.height);
   }
 
-  var ran = false;
+  var ran = false, barTimers = [];
+  function resetBars() {
+    ran = false;
+    barTimers.forEach(clearTimeout); barTimers = [];
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    bars.forEach(function (b) { b.classList.remove('on', 'pop'); });
+  }
+  function after(ms, fn) { barTimers.push(setTimeout(fn, ms)); }
+
   function runBars() {
     if (ran) return; ran = true;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
     sizeSvg();
 
     var base = bars.filter(function (b) { return !b.dataset.ours; });
@@ -674,19 +686,19 @@
     }
 
     base.forEach(function (b, i) {
-      setTimeout(function () { b.classList.add('on'); }, i * 70);
+      after(i * 70, function () { b.classList.add('on'); });
     });
 
     var t0 = base.length * 70 + 620;
     ours.forEach(function (b, i) {
-      setTimeout(function () {
+      after(t0 + i * 780, function () {
         var arc = ARCS.filter(function (a) { return String(a.to) === b.dataset.idx; })[0];
         if (arc) {
           drawArc(arc, function () { b.classList.add('on', 'pop'); });
         } else {
           b.classList.add('on', 'pop');
         }
-      }, t0 + i * 780);
+      });
     });
   }
 
