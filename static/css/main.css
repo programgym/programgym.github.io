@@ -265,6 +265,9 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--mono); font-size: 10.5px; font-weight: 600;
   letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px;
 }
+/* Program-Env and Program-Agent are the paper's own system names, not section
+   labels, so they take the accent and a touch more size than a plain vtitle. */
+.vtitle.sys { color: var(--accent); font-size: 11.5px; letter-spacing: .10em; }
 .vsub { font-size: 12.5px; color: var(--ink-3); margin-bottom: 14px; }
 
 /* ── Icons ── */
