@@ -238,7 +238,11 @@ function setStates(){
   document.getElementById('sl-n').textContent=b.ph; document.getElementById('sl-t').textContent=b.t; document.getElementById('sl-x').hidden=!b.metrics;
   document.getElementById('counter').textContent=((Math.max(cur,0))+1<10?'0':'')+(Math.max(cur,0)+1)+' / '+BEATS.length;
   var r=beatEls[Math.max(cur,0)].getBoundingClientRect(), p=stepsEl.getBoundingClientRect();
-  if(r.top<p.top||r.bottom>p.bottom) beatEls[Math.max(cur,0)].scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});
+  /* scrollIntoView walks every scrollport up to and including the parent
+     document, so embedded it drags the host page back to this figure on
+     every beat. Scroll the rail itself instead. */
+  if(r.top<p.top||r.bottom>p.bottom){ var dy=r.top<p.top?r.top-p.top:r.bottom-p.bottom;
+    stepsEl.scrollTo({top:stepsEl.scrollTop+dy, behavior:reduce?'auto':'smooth'}); }
 }
 function endOf(i){ var b=BEATS[i]; if(!b.legs.length) return b.at||startPoint(i); var l=b.legs[0]; return l.pts[l.pts.length-1]; }
 function startPoint(i){ if(BEATS[i].start) return BEATS[i].start; if(i===0) return [0,0]; return endOf(i-1); }
@@ -388,6 +392,7 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape') hidePop();
 if(/[?&]embed=1/.test(location.search)) document.body.classList.add('embed');
 function applyTheme(t){ if(t==='dark'||t==='light') document.documentElement.setAttribute('data-theme',t); }
 window.addEventListener('message',function(e){ if(e.data&&e.data.theme) applyTheme(e.data.theme); });
+window.addEventListener('message',function(e){ if(e.data&&e.data.pause&&playing){ playing=false; clearAll(); syncBtn(); } });
 window.addEventListener('storage',function(e){ if(e.key==='theme') applyTheme(e.newValue); });
 })();
 </script>

@@ -90,7 +90,7 @@
       ProgramGym
     </a>
     <nav>
-      <a href="#overview" class="hide-s">Results</a>
+      <a href="#overview" class="hide-s">Overview</a>
       <a href="#pipeline" class="hide-s">Program-Env</a>
       <a href="#agent" class="hide-s">Program-Agent</a>
       <a href="https://huggingface.co/programgym" class="hide-s">HuggingFace</a>
@@ -372,11 +372,11 @@
       <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="sk-msg">Loading Figure 2 walkthrough…</div>
     </div>
-    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=2573fa9dd4"
+    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=bcf0ed7970"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
       <span class="pipe-follow" id="pipeFollow"><span class="fl">Subagent</span></span>
-      <a href="program-env.html?v=2573fa9dd4" target="_blank" rel="noopener">Open full screen &#8599;</a>
+      <a href="program-env.html?v=bcf0ed7970" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
     </div>
@@ -713,6 +713,17 @@
     });
   }, { threshold: 0.25 });
   ['pipePanel', 'agentPanel', 'donutPanel', 'barPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
+
+  /* A walkthrough left behind stops playing — which also means the two can
+     never be running at the same time, since only one is ever on screen. */
+  var pio2 = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) return;
+      var f = e.target.querySelector('iframe');
+      if (f && f.contentWindow) { try { f.contentWindow.postMessage({ pause: true }, '*'); } catch (err) {} }
+    });
+  }, { threshold: 0.3 });
+  ['pipePanel', 'agentPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) pio2.observe(n); });
 
   /* ── Components land one at a time as the section arrives ── */
   var rio = new IntersectionObserver(function (entries) {
