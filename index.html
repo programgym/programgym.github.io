@@ -147,7 +147,7 @@
     How a repository becomes an environment
   </h2>
 
-  <div class="vpanel pipe-embed rise" style="--d:.06s">
+  <div class="vpanel pipe-embed rise" id="pipePanel" style="--d:.06s">
     <iframe id="pipeFrame" src="program-env.html?embed=1&v=27c7d34f63" loading="lazy"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
@@ -407,7 +407,7 @@
       if (e.target.id === 'barPanel') runBars();
     });
   }, { threshold: 0.25 });
-  ['donutPanel', 'barPanel'].forEach(function (id) { io.observe(document.getElementById(id)); });
+  ['pipePanel', 'donutPanel', 'barPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
 
   /* ── Centre total counts up alongside the ring ─────────── */
   function countUp() {
