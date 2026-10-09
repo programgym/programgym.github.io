@@ -223,10 +223,8 @@
 <section class="stage" id="pipeline">
   <div class="stage-in">
     <div class="section">
-  <div class="page-head reveal"><span class="eyebrow">Program-Env &middot; Construction</span>
-    <h2>Every environment starts as a repository someone really wrote.</h2>
-    <p>Figure 2, replayed in 24 beats: a GitHub project is pinned to a commit, rebuilt behind a sealed
-    network, and handed a black-box test suite. Click any line in the rail to replay that beat.</p></div>
+  <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Env</div>
+  <h2 class="reveal fighead" style="--i:1">How a repository becomes an environment</h2>
 
   <div class="vpanel pipe-embed rise" id="pipePanel" style="--d:.06s">
     <div class="pipe-skel" id="pipeSkel" aria-hidden="true">
@@ -248,11 +246,8 @@
 <section class="stage" id="agent">
   <div class="stage-in">
     <div class="section">
-  <div class="page-head reveal"><span class="eyebrow">Program-Agent &middot; The loop</span>
-    <h2>The agent rebuilds a program it can only probe from the outside.</h2>
-    <p>The analysis &rarr; implement &rarr; review loop on a real run (psampaz/go-mod-outdated, Go, five
-    revisions), replayed in 17 beats. Click a line in the rail to replay it; hover a box for the real
-    file behind it.</p></div>
+  <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Agent</div>
+  <h2 class="reveal fighead" style="--i:1">How an agent rebuilds a program from its black box</h2>
 
   <div class="vpanel pipe-embed rise" id="agentPanel" style="--d:.06s">
     <div class="pipe-skel" id="agentSkel" aria-hidden="true">
@@ -263,6 +258,7 @@
     <iframe id="agentFrame" loading="lazy" src="program-agent.html?embed=1&v={{PAV}}"
             title="Program agent workflow on a real run, replayed beat by beat"></iframe>
     <div class="pipe-foot">
+      <span>The analysis &rarr; implement &rarr; review loop on a real run (psampaz/go-mod-outdated, Go, five revisions), replayed in 17 beats. Click a line in the rail to replay it; hover a box for the real file behind it.</span>
       <a href="program-agent.html?v={{PAV}}" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
