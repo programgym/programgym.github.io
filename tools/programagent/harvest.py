@@ -69,8 +69,8 @@ table_block = re.search(r'```\n(\+-{10,}.*?)```', ana, re.S).group(1).rstrip()
 run = {
     'task': {'repo': 'psampaz/go-mod-outdated', 'commit': 'bb79367', 'lang': 'Go',
              'what': 'reads the JSON-lines output of `go list -u -m -json all` on stdin and prints a table of outdated modules'},
-    # shown on the page as the ProgramGym agent; the harness id (claude-code-multi-v3) is kept for provenance
-    'agent': {'name': 'ProgramGym', 'harness': res['agent_info']['name'], 'model': res['agent_info']['model_info']['name'], 'claude_code': res['agent_info']['version']},
+    # shown on the page as ProgramAgent; the harness id (claude-code-multi-v3) is kept for provenance
+    'agent': {'name': 'ProgramAgent', 'harness': res['agent_info']['name'], 'model': res['agent_info']['model_info']['name'], 'claude_code': res['agent_info']['version']},
     'tokens': {'in': res['agent_result']['n_input_tokens'], 'out': res['agent_result']['n_output_tokens']},
     'wall_minutes': round((ts(res['agent_execution']['finished_at']) - ts(res['agent_execution']['started_at'])).total_seconds() / 60),
     'phases': [dict(p, **sess.get(p['phase'].replace('-attempt-01', ''), {})) for p in phases],

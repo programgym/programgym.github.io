@@ -24,7 +24,7 @@ python3 tools/gen.py
 `node tools/programagent/check.js` drives the engine headlessly through every
 beat (a small DOM shim, no browser); run it after touching body.html.
 
-The example run is the ProgramGym agent (harness claude-code-multi-v3, model deepseek-v4-flash) on
+The example run is ProgramAgent (harness claude-code-multi-v3, model deepseek-v4-flash) on
 psampaz/go-mod-outdated: analysis → five implement/review revisions → verifier,
 341 of 350 hidden tests. Labels in the figure follow that run beat by beat; the
 figure's own generic labels (`***.cpp`, `Makefile`) are replaced in

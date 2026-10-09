@@ -6,7 +6,7 @@
   "what": "reads the JSON-lines output of `go list -u -m -json all` on stdin and prints a table of outdated modules"
  },
  "agent": {
-  "name": "ProgramGym",
+  "name": "ProgramAgent",
   "harness": "claude-code-multi-v3",
   "model": "deepseek-v4-flash-0731",
   "claude_code": "2.1.220"
