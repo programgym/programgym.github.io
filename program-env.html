@@ -108,6 +108,8 @@ body.embed .app{height:100vh;min-height:0}
 #fig.split .del.faded{opacity:.3}
 #fig.split .del{opacity:1}
 #fig.split .del.faded{opacity:.3}
+#fig.split .del{opacity:1}
+#fig.split .del.faded{opacity:.3}
 #fig.all #dwrap{opacity:0}
 /* figure elements: dim until the pulse has passed */
 .el{opacity:.3;transition:opacity 520ms ease}
@@ -687,7 +689,7 @@ function renderPop(ex0){
   }
   else if(ex0.dyn){ var m=MODULES[curMod];
     if(ex0.dyn==='tests') ex={key:ex0.key,title:m.repair.title,src:m.repair.src,blocks:[{lang:'as flagged (before)',diff:true,code:m.repair.before},{lang:'repaired (after)',diff:true,code:m.repair.after}]};
-    else ex={key:ex0.key,title:'summary.md — '+m.name+' (iteration '+m.rounds[2].it+')',src:'what the subagent recorded for the next round',blocks:[{lang:'summary.md',code:'# Eval Summary\n## Assignment\n- Module: '+m.name+' ('+m.files+')\n- Iteration: '+m.rounds[2].it+'\n## Validation Repairs\n- '+(m.rounds[2].lint===null?'none required':m.rounds[2].lint+' repair items, all resolved before new coverage')+'\n## Coverage\n- core-focused line coverage: '+m.rounds[2].cov.toFixed(2)+'% ('+m.core+' core lines)\n- '+m.stop+'\n## Final collected tests: '+m.final.tests+(m.final.ignored?' ('+m.final.ignored+' still flagged by lint)':'')}]};
+    else ex={key:ex0.key,title:'summary.md — '+m.name+' (iteration '+m.rounds[2].it+')',src:'what the subagent recorded for the next round',blocks:[{lang:'summary.md',code:'# Eval Summary\n## Assignment\n- Module: '+m.name+' ('+m.files+')\n- Iteration: '+m.rounds[2].it+'\n## Validation Repairs\n- '+(m.rounds[2].lint===null?'none required':m.rounds[2].lint+' repair items, all resolved before new coverage')+'\n## Coverage\n- core-focused line coverage: '+m.rounds[2].cov.toFixed(2)+'%\n- '+m.stop+'\n## Final collected tests: '+m.final.tests+(m.final.ignored?' ('+m.final.ignored+' still flagged by lint)':'')}]};
   }
   var h='<div class="ph"><span class="pt">'+esc(ex.title)+'</span><button type="button" class="px" aria-label="Close">×</button></div><div class="ps">'+esc(ex.src)+'</div>';
   ex.blocks.forEach(function(bl){
