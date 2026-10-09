@@ -396,8 +396,8 @@ a { color: inherit; text-decoration: none; }
 /* Value sits inside the bar, just under its top edge — as in the paper figure. */
 .bval {
   position: absolute; left: 0; right: 0; bottom: var(--h);
-  margin-bottom: -18px;
-  font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+  margin-bottom: -22px;
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
   color: var(--bval-base); text-align: center;
   font-variant-numeric: tabular-nums; pointer-events: none;
   opacity: 0; transition: opacity .45s var(--ease-soft) .45s;
@@ -639,7 +639,7 @@ footer {
   }
   .ic { width: 15px; height: 15px; }
   .plot { height: 210px; }
-  .bval { font-size: 8px; margin-bottom: -14px; }
+  .bval { font-size: 9.5px; margin-bottom: -16px; }
   .pages .page-in { padding: 40px 16px; }
   .footer-in { padding: 28px 16px 0; }
   .foot-top { grid-template-columns: 1fr; gap: 26px; }
