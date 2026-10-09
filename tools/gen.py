@@ -133,8 +133,14 @@ rows_model = "\n".join(
     for _, _, full, s, o, _ in MODELS)
 
 # ── Emit ────────────────────────────────────────────────────────────────────
+import hashlib
+# Cache-buster for the embedded walkthrough: changes exactly when program-env.html changes,
+# so a deploy never leaves the browser holding a stale 1.5 MB iframe (Pages caches for 10 min).
+_pe = os.path.join(ROOT, 'program-env.html')
+PEV = hashlib.md5(open(_pe, 'rb').read()).hexdigest()[:10] if os.path.exists(_pe) else '0'
 tpl = open(os.path.join(ROOT, 'tools', 'tpl.html'), encoding='utf-8').read()
-out = (tpl.replace('{{SPRITE}}', sprite())
+out = (tpl.replace('{{PEV}}', PEV)
+          .replace('{{SPRITE}}', sprite())
           .replace('{{SEGS}}', "\n".join(segs))
           .replace('{{RINGICONS}}', "\n".join(ringicons))
           .replace('{{LEGEND}}', "\n".join(legend))
