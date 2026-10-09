@@ -33,6 +33,8 @@ WS4 = ['📂 workspace/', '  📑 main.go', '  📑 width.go', '  📑 go.mod']
 WS5 = ['📂 workspace/', '  📑 main.go', '  📑 width.go', '  📑 width_test.go']
 BUILD = ['📂 internal/mod', '  📑 mod.go', '  ···']
 COMPILE = ['📟 compile.sh', 'go build', '→ ./executable']
+WS_ALL = ['a:ws', 'a:ws-t', 'a:ws-src', 'a:ws-build', 'a:ws-compile']
+def snap(to, delay=0): return [{'ids': WS_ALL, 'to': to, 'delay': delay}]
 EMPTY = ['']
 
 B = []
@@ -72,8 +74,8 @@ beat('Revision 1', 'Source lands in the workspace',
 beat('Revision 1', 'Independent build → rev-001',
      'Once the developer session has ended, the orchestrator archives the committed tree (@%s), runs compile.sh itself and records the sha256 in build.json. The candidate binary is immutable from here on.' % REV[1]['commit'],
      legs=[leg([C('a:ws-compile'), [C('a:ic-archive')[0], C('a:ws-compile')[1]], C('a:ic-archive'), P('a:arrow-store', 1), TC('a:rev-1')], ['a:rev', 'a:rev-t', 'a:ic-archive', 'a:arrow-store', 'a:rev-1'])],
-     text={'a:rev-1': rev_card(1)}, produce=[{'ids': ['a:rev-1'], 'delay': 0}], flag='pass',
-     marks=[{'at': [BB('a:rev-1')[2] - 6, BB('a:rev-1')[1] + 6], 'kind': 'pass', 'onArrive': True}], metrics='r1')
+     text={'a:rev-1': rev_card(1)}, snap=snap('a:rev-1'), produce=[{'ids': ['a:rev-1'], 'delay': 1250}], flag='pass',
+     marks=[{'at': [BB('a:rev-1')[2] - 6, BB('a:rev-1')[1] + 6], 'kind': 'pass', 'delay': 1400}], metrics='r1')
 beat('Revision 1', 'delivery.md goes into the handoff',
      'What was built, which files changed, the developer\'s own test results, known limitations. The orchestrator adds independent-build.json and seals implementation-001/ read-only.',
      legs=[leg([C(IMP), C('a:ic-pen-i'), TC('a:h-impl')], ['a:ic-pen-i'])],
@@ -89,14 +91,15 @@ beat('Revision 1', 'review-001: three accepted findings',
 # ── Revisions 2–3 ──────────────────────────────────────────────────────
 beat('Revisions 2–3', 'Loop: revision 2 implements F1–F3',
      'The reviewer\'s handoff becomes the developer\'s spec, %s. +31 lines across main.go and mod.go: Main-module drop up front, Replace redirection after the filters, a recursive *Module model. rev-002 builds independently.' % phs('implementation-002'),
-     legs=[leg([C(REVW), C('a:ic-loop'), C(IMP)], ['a:ic-loop', IMP]), leg([TC('a:ws-src')], ['a:ws-src'], **{'from': C(IMP)}), leg([TC('a:rev-2')], ['a:rev-2', 'a:link-top', 'a:link-bot', 'a:ic-copy'], **{'from': C('a:ws-compile')})],
+     legs=[leg([C(REVW), C('a:ic-loop'), C(IMP)], ['a:ic-loop', IMP]), leg([TC('a:ws-src')], ['a:ws-src'], **{'from': C(IMP)})],
      text={'a:h-impl-tab': ['📁 implementation-001'], 'a:h-impl': impl_card(2), 'a:h-rev-tab': ['📁 review-001'], 'a:h-rev': EMPTY, 'a:rev-2': rev_card(2)},
-     light=['a:h-impl-tab', 'a:h-rev-tab'], produce=[{'ids': ['a:rev-2'], 'delay': 900}], parallel=True, metrics='r2', speed=1.3)
+     light=['a:h-impl-tab', 'a:h-rev-tab', 'a:ic-copy'], snap=snap('a:rev-2', 400), produce=[{'ids': ['a:rev-2'], 'delay': 1650}], parallel=True, metrics='r2', speed=1.3)
 beat('Revisions 2–3', 'Review 2 confirms; revision 3 changes nothing',
      'review-002 reruns everything: all match, no new defects. implementation-003 therefore re-verifies and re-delivers the same tree (rev-003 is the same commit @%s). %s.' % (REV[3]['commit'], phs('implementation-003')),
      legs=[leg([C(IMP), C('a:ic-loop'), C(REVW)], [REVW])],
      text={'a:h-rev': review_card(2, '📄 fixture-*.jsonl ×2'), 'a:h-impl-tab': ['📁 implementation-001…2'], 'a:h-impl': impl_card(3), 'a:rev-2': rev_card(3)},
-     flag='pass', marks=[{'at': [BB(REVW)[2] - 4, BB(REVW)[1] + 4], 'kind': 'pass', 'onArrive': True}], metrics='r3', throb=['a:h-rev'])
+     flag='pass', marks=[{'at': [BB(REVW)[2] - 4, BB(REVW)[1] + 4], 'kind': 'pass', 'onArrive': True}], metrics='r3', throb=['a:h-rev'],
+     snap=snap('a:rev-2', 600), produce=[{'ids': ['a:rev-2'], 'delay': 1850}])
 # ── Revisions 4–5 ──────────────────────────────────────────────────────
 beat('Revisions 4–5', 'Review 3 finds F4: Unicode display width',
      'Byte len() against display width — CJK, fullwidth, emoji, combining marks. Every ASCII input still matches, so F4 is inert on realistic data but a real parity gap. %s.' % phs('review-003'),
@@ -106,7 +109,7 @@ beat('Revisions 4–5', 'Revision 4 adds width.go',
      'A hand-rolled display-width engine: contiguous wide ranges, per-rune sums. %s. %d lines of Go; rev-004 builds.' % (phs('implementation-004'), REV[4]['go_lines']),
      legs=[leg([C(REVW), C('a:ic-loop'), C(IMP), C('a:ic-code'), TC('a:ws-src')], [IMP, 'a:ic-code', 'a:ws-src'])],
      text={'a:ws-src': WS4, 'a:h-impl-tab': ['📁 implementation-001…3'], 'a:h-impl': impl_card(4), 'a:rev-2': rev_card(4)},
-     produce=[{'ids': ['a:ws-src'], 'delay': 0}, {'ids': ['a:rev-2'], 'delay': 700}], metrics='r4')
+     snap=snap('a:rev-2', 700), produce=[{'ids': ['a:ws-src'], 'delay': 0}, {'ids': ['a:rev-2'], 'delay': 1950}], metrics='r4')
 beat('Revisions 4–5', 'Review 4: F5 emoji clusters, F6 numeric alignment',
      'The longest phase, %s. ZWJ sequences collapse to one cluster, Regional-Indicator pairs, a sparse emoji table; numeric cells right-align. It ships 7 fixtures: .jsonl inputs with .gold outputs captured from the gold binary.' % phs('review-004'),
      legs=[leg([C(IMP), C('a:ic-loop'), C(REVW), C('a:ic-pen-r'), TC('a:h-rev')], [REVW, 'a:ic-pen-r', 'a:h-rev'])],
@@ -114,10 +117,10 @@ beat('Revisions 4–5', 'Review 4: F5 emoji clusters, F6 numeric alignment',
      flag='fail', marks=[{'at': [BB('a:h-rev')[2] - 6, BB('a:h-rev')[1] + 6], 'kind': 'fail', 'onArrive': True}])
 beat('Revisions 4–5', 'Revision 5: grapheme-aware width.go, plus width_test.go — the budget is spent',
      '%s. %d lines of Go. max_revisions = 5, so the workflow stops with status %s; last-stable = rev-005 @%s.' % (phs('implementation-005'), REV[5]['go_lines'], R['state']['status'], R['last_stable']['commit']),
-     legs=[leg([C(REVW), C('a:ic-loop'), C(IMP), C('a:ic-code'), TC('a:ws-src')], [IMP, 'a:ws-src']), leg([TC('a:rev-2')], ['a:rev-2'], **{'from': C('a:ws-compile')})],
+     legs=[leg([C(REVW), C('a:ic-loop'), C(IMP), C('a:ic-code'), TC('a:ws-src')], [IMP, 'a:ws-src'])],
      text={'a:ws-src': WS5, 'a:h-impl-tab': ['📁 implementation-001…4'], 'a:h-impl': impl_card(5), 'a:rev-2': rev_card(5, True)},
-     produce=[{'ids': ['a:ws-src'], 'delay': 0}, {'ids': ['a:rev-2'], 'delay': 500}], flag='pass', parallel=True,
-     marks=[{'at': [BB('a:rev-2')[2] - 6, BB('a:rev-2')[1] + 6], 'kind': 'pass', 'onArrive': True}], metrics='r5')
+     snap=snap('a:rev-2', 700), produce=[{'ids': ['a:ws-src'], 'delay': 0}, {'ids': ['a:rev-2'], 'delay': 1950}], flag='pass',
+     marks=[{'at': [BB('a:rev-2')[2] - 6, BB('a:rev-2')[1] + 6], 'kind': 'pass', 'delay': 2100}], metrics='r5')
 # ── Verification ───────────────────────────────────────────────────────
 beat('Verification', 'The verifier builds rev-005 and runs %d hidden test branches' % V['branches'],
      'compile.sh → ./executable in %.1f s, then %d test cases: %d passed, %d failed, %d skipped. The misses: one missing-timestamp crash case, and in a single branch the help text, the unknown-flag usage and the malformed-JSON exit code. Reward %.4f — almost resolved.' % (V['compile_s'], V['total'], V['passed'], V['failed'], V['skipped'], V['reward']),

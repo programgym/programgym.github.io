@@ -56,6 +56,9 @@ body.embed .app{height:100vh;min-height:0}
 .el.pop{animation:pop .9s cubic-bezier(.34,1.56,.64,1);transform-box:fill-box;transform-origin:center}
 @keyframes pop{0%{transform:scale(.55);opacity:.2}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
 .flyer{pointer-events:none}
+.shutter{fill:#fff;animation:shutter .8s ease-out forwards;pointer-events:none}
+@keyframes shutter{0%{opacity:.95}100%{opacity:0}}
+.snapbg{fill:#fff;stroke:var(--pass);stroke-width:2;stroke-dasharray:6 5}
 
 /* pulse */
 .dot .halo{fill:url(#glow);opacity:.9}
