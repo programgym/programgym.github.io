@@ -99,8 +99,9 @@ var beatEls=[], tickEls=[];
 })();
 
 /* ---------- metrics: the real figures of each revision ---------- */
-var metricsEl=document.getElementById('metrics'), mPrev=null, mTimers=[];
+var metricsEl=document.getElementById('metrics'), sheetEl=document.querySelector('.sheet'), mPrev=null, mTimers=[];
 function setMetrics(key, animate){
+  if(sheetEl) sheetEl.classList.toggle('mon', !!key);
   if(!key){ metricsEl.classList.remove('on'); mPrev=null; return; }
   mTimers.forEach(clearTimeout); mTimers=[];
   var rows=document.getElementById('m-rows'), fin=document.getElementById('m-final');
