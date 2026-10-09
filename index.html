@@ -367,11 +367,11 @@
       <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="sk-msg">Loading Figure 2 walkthrough…</div>
     </div>
-    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=7a43a427b4"
+    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=c60630a4d8"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
-      <span>Figure 2 of the paper, replayed in 24 beats. Click a line in the rail to replay that beat.</span>
-      <a href="program-env.html?v=7a43a427b4" target="_blank" rel="noopener">Open full screen &#8599;</a>
+      <span class="pipe-follow" id="pipeFollow"><span class="fl">Subagent</span></span>
+      <a href="program-env.html?v=c60630a4d8" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
 </section>
@@ -568,7 +568,16 @@
     function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme') }, '*'); }
     var skel = document.getElementById('pipeSkel');
     function reveal() { if (skel) { skel.classList.add('off'); setTimeout(function () { skel.remove(); skel = null; }, 450); } }
-    window.addEventListener('message', function (e) { if (e.data && e.data.pipeReady) reveal(); });
+    window.addEventListener('message', function (e) { if (e.data && e.data.pipeReady) reveal(); if (e.data && typeof e.data.followed === 'number') follow(e.data); });
+    var fbox = document.getElementById('pipeFollow'), fbtns = [], NAMES = ['src/main', 'src/modes', 'src/config', 'src/init', 'tests/cli'], acked = false;
+    function send(k) { try { f.contentWindow.postMessage({ follow: k }, '*'); } catch (e) {} }
+    if (fbox) NAMES.forEach(function (n, k) { var b = document.createElement('button'); b.type = 'button'; b.textContent = n;
+      b.setAttribute('aria-pressed', k === 1 ? 'true' : 'false');
+      b.addEventListener('click', function () { send(k); fbtns.forEach(function (x, j) { x.setAttribute('aria-pressed', j === k ? 'true' : 'false'); }); });
+      fbox.appendChild(b); fbtns.push(b); });
+    function follow(d) { acked = true; fbtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === d.followed ? 'true' : 'false'); }); }
+    /* keep asking until the walkthrough answers (it boots after a ~1.6 MB parse) */
+    var tries = 0, poll = setInterval(function () { if (acked || tries++ > 40) { clearInterval(poll); return; } try { f.contentWindow.postMessage({ askFollow: true }, '*'); } catch (e) {} }, 500);
     f.addEventListener('load', function () { sync(); setTimeout(reveal, 1500); });
     new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
