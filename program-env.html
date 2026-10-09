@@ -92,6 +92,10 @@ body.embed .app{height:100vh;min-height:0}
 #fig.split .del.faded{opacity:.3}
 #fig.split .del{opacity:1}
 #fig.split .del.faded{opacity:.3}
+#fig.split .del{opacity:1}
+#fig.split .del.faded{opacity:.3}
+#fig.split .del{opacity:1}
+#fig.split .del.faded{opacity:.3}
 #fig.all #dwrap{opacity:0}
 /* figure elements: dim until the pulse has passed */
 .el{opacity:.3;transition:opacity 520ms ease}
@@ -179,9 +183,14 @@ body.embed .app{height:100vh;min-height:0}
 .pop .pc .del::before{content:"− ";color:#e08a7d;text-decoration:none}
 .pop .pn{font:400 10.5px/1.45 var(--sans);color:#7E9191;margin-top:8px}
 @media (max-width:880px){ .pop{width:min(92%,470px)} }
-/* module chips are interactive */
-.el.modchip{cursor:pointer}
-.el.modchip:hover{filter:drop-shadow(0 0 3px rgba(21,120,92,.6))}
+/* follow buttons */
+.follow{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.follow .fl{font:600 9.5px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-right:3px}
+.fbtn{appearance:none;border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);border-radius:3px;cursor:pointer;padding:5px 8px;font:500 10.5px/1 var(--mono)}
+.fbtn:hover{border-color:var(--accent);color:var(--accent)}
+.fbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.fbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body.embed .follow{display:none}
 .mfinal{padding:4px 0 2px}
 .mfinal .fk{font:600 9.5px/1 var(--mono,var(--mono));letter-spacing:.09em;text-transform:uppercase;color:#0d5242}
 .mfinal .fv{font:700 30px/1.1 var(--sans);color:#121A1A;letter-spacing:-.02em;margin:6px 0 4px;font-variant-numeric:tabular-nums}
@@ -263,6 +272,7 @@ kbd{font:500 9.5px/1 var(--mono);border:1px solid var(--rule);border-radius:2px;
       <button class="btn" id="next" title="Next beat">▶</button>
       <div class="ticks" id="ticks"></div>
       <span class="counter" id="counter">01 / 29</span>
+      <span class="follow" id="follow"><span class="fl">Subagent</span></span>
       <button class="btn" id="showall">Show all</button>
       <button class="btn" id="reset">Replay</button>
     </div>
@@ -321,7 +331,7 @@ function applyModuleText(){
   setStates();
 }
 function setModule(k){
-  if(k===curMod) return; curMod=k; applyModuleText();
+  if(k===curMod) return; curMod=k; applyModuleText(); if(typeof syncFollow==='function') syncFollow();
   if(metricsEl.classList.contains('on') && mPrev && mPrev!=='final') setMetrics(mPrev,false);
   hidePop();
 }
@@ -626,7 +636,16 @@ document.addEventListener('keydown',function(e){
 });
 applyModuleText(); showAll();
 /* the five module chips (and their icons) switch the followed subagent */
-MODULES.forEach(function(m,k){ nodes(m.bar).forEach(function(n){ n.classList.add('modchip'); n.addEventListener('click',function(e){ e.stopPropagation(); setModule(k); }); n.setAttribute('tabindex','0'); }); });
+/* follow buttons in the transport bar; the landing page mirrors them via postMessage */
+(function(){
+  var box=document.getElementById('follow'); if(!box) return;
+  MODULES.forEach(function(m,k){ var bt=document.createElement('button'); bt.type='button'; bt.className='fbtn'; bt.textContent=m.name; bt.setAttribute('aria-pressed',k===curMod?'true':'false');
+    bt.addEventListener('click',function(){ setModule(k); }); box.appendChild(bt); });
+})();
+function syncFollow(){ var bs=document.querySelectorAll('#follow .fbtn'); for(var i=0;i<bs.length;i++) bs[i].setAttribute('aria-pressed', i===curMod?'true':'false');
+  try{ if(window.parent!==window) window.parent.postMessage({followed:curMod, names:MODULES.map(function(m){return m.name;})},'*'); }catch(e){} }
+window.addEventListener('message',function(e){ if(e.data && typeof e.data.follow==='number') setModule(e.data.follow); if(e.data && e.data.askFollow) syncFollow(); });
+syncFollow();
 (function(){
   var done=false;
   function ready(){ if(done) return; done=true; try{ if(window.parent!==window) window.parent.postMessage({pipeReady:true},'*'); }catch(e){} }
@@ -639,7 +658,17 @@ var pop=document.getElementById('pop'), sheet=document.querySelector('.sheet'), 
 function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function renderPop(ex0){
   var ex=ex0;
-  if(ex0.dyn){ var m=MODULES[curMod];
+  if(ex0.dyn==='module'){ var mm=MODULES[ex0.k], last=mm.rounds[2];
+    ex={key:ex0.key,title:mm.name+' — final figures',src:mm.files+' · '+mm.desc,blocks:[{lang:'after its last round (iteration '+last.it+')',code:
+      'tests collected      '+mm.final.tests+(mm.final.ignored?'   ('+mm.final.ignored+' flagged by lint)':'')+'\n'+
+      'pass check (gold)    '+last.pass+'\n'+
+      'double check         2 runs identical\n'+
+      'dummy check          '+(last.dummy?last.dummy+' slipped':'0 slipped')+'\n'+
+      'lint items repaired  '+(last.lint===null?'—':last.lint)+'\n'+
+      'core line coverage   '+last.cov.toFixed(2)+'%  ('+mm.core+' core lines)\n'+
+      'termination          '+mm.stop}]};
+  }
+  else if(ex0.dyn){ var m=MODULES[curMod];
     if(ex0.dyn==='tests') ex={key:ex0.key,title:m.repair.title,src:m.repair.src,blocks:[{lang:'as flagged (before)',diff:true,code:m.repair.before},{lang:'repaired (after)',diff:true,code:m.repair.after}]};
     else ex={key:ex0.key,title:'summary.md — '+m.name+' (iteration '+m.rounds[2].it+')',src:'what the subagent recorded for the next round',blocks:[{lang:'summary.md',code:'# Eval Summary\n## Assignment\n- Module: '+m.name+' ('+m.files+')\n- Iteration: '+m.rounds[2].it+'\n## Validation Repairs\n- '+(m.rounds[2].lint===null?'none required':m.rounds[2].lint+' repair items, all resolved before new coverage')+'\n## Coverage\n- core-focused line coverage: '+m.rounds[2].cov.toFixed(2)+'% ('+m.core+' core lines)\n- '+m.stop+'\n## Final collected tests: '+m.final.tests+(m.final.ignored?' ('+m.final.ignored+' still flagged by lint)':'')}]};
   }
@@ -674,6 +703,7 @@ function showPop(ex, anchor){
 }
 function hidePop(){ pop.hidden=true; popKey=null; }
 function scheduleHide(){ if(popTimer) clearTimeout(popTimer); popTimer=setTimeout(hidePop,260); }
+MODULES.forEach(function(m,k){ EX.push({key:'mod'+k, dyn:'module', k:k, ids:m.bar, title:m.name, src:m.files, blocks:[]}); });
 EX.forEach(function(ex){
   var ns=nodes(ex.ids);
   ns.forEach(function(n){
