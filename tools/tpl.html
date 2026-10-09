@@ -133,7 +133,9 @@
 </section>
 
 
-<section class="section" id="overview">
+<section class="stage" id="overview">
+  <div class="stage-in">
+    <div class="section">
   <div class="vtitle reveal" style="margin-bottom:2px">Overview</div>
   <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
     What the gym holds, and what training in it buys
@@ -214,9 +216,13 @@
       </tbody>
     </table>
   </div>
+    </div>
+  </div>
 </section>
 
-<section class="section" id="pipeline">
+<section class="stage" id="pipeline">
+  <div class="stage-in">
+    <div class="section">
   <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Env</div>
   <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
     How a repository becomes an environment
@@ -235,9 +241,13 @@
       <a href="program-env.html?v={{PEV}}" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
+    </div>
+  </div>
 </section>
 
-<section class="section" id="agent">
+<section class="stage" id="agent">
+  <div class="stage-in">
+    <div class="section">
   <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Agent</div>
   <h2 class="reveal" style="--i:1;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px">
     How an agent rebuilds a program from its black box
@@ -254,6 +264,8 @@
     <div class="pipe-foot">
       <span>The analysis &rarr; implement &rarr; review loop on a real run (psampaz/go-mod-outdated, Go, five revisions), replayed in 17 beats. Click a line in the rail to replay it; hover a box for the real file behind it.</span>
       <a href="program-agent.html?v={{PAV}}" target="_blank" rel="noopener">Open full screen &#8599;</a>
+    </div>
+  </div>
     </div>
   </div>
 </section>
@@ -430,6 +442,26 @@
     '<table class="tt"><tr><td>Mean</td><td class="v">' + d.mean + '</td></tr><tr><td>Median</td><td class="v">' + d.median + '</td></tr>' +
     '<tr><td>Q1 – Q3</td><td class="v">' + d.q1 + ' – ' + d.q3 + '</td></tr><tr><td>1.5 IQR whiskers</td><td class="v">' + d.wlo + ' – ' + d.whi + '</td></tr>' +
     '<tr><td>Min – Max</td><td class="v">' + d.min + ' – ' + d.max + '</td></tr><tr><td>Outliers</td><td class="v">' + d.out + '</td></tr></table>'; });
+
+  /* survival curves: measure for the draw-in, crosshair with the four values */
+  var cw = document.querySelector('.curvewrap');
+  if (cw) {
+    var cvs = cw.querySelectorAll('.cv'); cvs.forEach(function (p) { try { p.style.setProperty('--len', (p.getTotalLength() + 2).toFixed(1)); } catch (e) {} });
+    var SER = JSON.parse(cw.getAttribute('data-series')), L0 = +cw.getAttribute('data-l'), PW = +cw.getAttribute('data-pw');
+    var svg = cw.querySelector('svg'), cursor = svg.querySelector('#cvCursor'), hit = svg.querySelector('#cvHit'), dotsC = cursor.querySelectorAll('circle');
+    function frac(vals, thr) { var lo = 0, hi = vals.length; while (lo < hi) { var mid = (lo + hi) >> 1; if (vals[mid] < thr) lo = mid + 1; else hi = mid; } return (vals.length - lo) / vals.length; }
+    hit.addEventListener('mousemove', function (ev) {
+      var pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY; var p = pt.matrixTransform(svg.getScreenCTM().inverse());
+      var thr = Math.max(0, Math.min(1, (p.x - L0) / PW)); var x = L0 + thr * PW;
+      cursor.hidden = false; cursor.querySelector('line').setAttribute('x1', x); cursor.querySelector('line').setAttribute('x2', x);
+      var rowsH = '';
+      SER.forEach(function (s, i) { var f = frac(s.values, thr); var y = 18 + (1 - f) * (520 - 18 - 62); dotsC[i].setAttribute('cx', x); dotsC[i].setAttribute('cy', y);
+        rowsH += '<tr><td><i style="display:inline-block;width:10px;height:3px;background:' + s.color + ';margin-right:6px;vertical-align:middle"></i>' + s.label + '</td><td class="v">' + (f * 100).toFixed(1) + '%</td></tr>'; });
+      show('<span class="t">Pass rate &ge; ' + (thr * 100).toFixed(0) + '%</span><table class="tt">' + rowsH + '</table>', ev);
+    });
+    hit.addEventListener('mouseleave', function () { cursor.hidden = true; hide(); });
+  }
+  bind('#env-results .pt', function (el) { var d = el.dataset; return '<span class="t">' + d.name + (d.sub ? ' <span style="font-weight:400;color:var(--ink-3)">&middot; ' + d.sub + '</span>' : '') + '</span><table class="tt"><tr><td>Test passed</td><td class="v">' + d.score + '%</td></tr><tr><td>Output tokens / task</td><td class="v">' + d.tokens + '</td></tr></table>'; });
 
   /* legend ↔ ring link */
   var labs = document.querySelectorAll('#catDonut .rlab'), segs = document.querySelectorAll('#catDonut .cseg');
