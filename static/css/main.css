@@ -35,6 +35,8 @@
   --accent: #15785c;
   --accent-soft: rgba(21, 120, 92, .10);
   --on-accent: #ffffff;
+  --hf: #ffd21e;
+  --on-hf: #15181d;
 
   --hud-bg: rgba(255, 255, 255, .82);
   --shadow: 0 1px 2px rgba(16, 20, 28, .04), 0 8px 24px -12px rgba(16, 20, 28, .12);
@@ -80,6 +82,8 @@
   --accent: #46b98f;
   --accent-soft: rgba(70, 185, 143, .14);
   --on-accent: #06130e;
+  --hf: #ffd21e;
+  --on-hf: #15181d;
 
   --hud-bg: rgba(11, 15, 21, .80);
   --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
@@ -233,7 +237,7 @@ a { color: inherit; text-decoration: none; }
 /* One filled button carries the accent; the second is a quiet outline, so no
    second saturated hue sits next to the green. */
 .btn-hero.primary { position: relative; overflow: hidden;
-  background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  background: var(--hf); border-color: var(--hf); color: var(--on-hf); }
 .btn-hero.primary::after {
   content: ""; position: absolute; top: 0; bottom: 0; left: -45%; width: 34%;
   background: linear-gradient(105deg, transparent, rgba(255,255,255,.55), transparent);
@@ -268,7 +272,10 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px;
 }
 .vtitle.sys { color: var(--accent); font-size: 11.5px; letter-spacing: .10em; }
-.fighead { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; margin-bottom: 16px; }
+.fighead { margin-bottom: 16px; }
+.figname { font-size: clamp(26px, 3.4vh, 40px); font-weight: 700; color: var(--accent);
+           letter-spacing: -.025em; line-height: 1.04; }
+.fignote { margin-top: 5px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
 .vsub { font-size: 12.5px; color: var(--ink-3); margin-bottom: 14px; }
 
 /* ── Icons ── */
@@ -516,7 +523,7 @@ a { color: inherit; text-decoration: none; }
 
   /* The walkthrough pages spend their height on the figure. */
   #pipeline .section, #agent .section { padding-top: 10px; padding-bottom: 10px; }
-  #pipeline .fighead, #agent .fighead { margin-bottom: clamp(8px, 1.4vh, 16px); }
+  #pipeline .fighead, #agent .fighead { margin-bottom: clamp(8px, 1.6vh, 18px); }
 
   /* Figure 1 is two cards rather than one frame, so its parts scale instead. */
   .stage-in .figrow { flex: 1; min-height: 0; }

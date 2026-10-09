@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/main.css?v=0d2bb5049e">
+  <link rel="stylesheet" href="static/css/main.css?v=798f0d952f">
 
   <script>
     // Resolve theme before first paint so the page never flashes the wrong one.
@@ -363,8 +363,10 @@
 <section class="stage" id="pipeline">
   <div class="stage-in">
     <div class="section">
-  <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Env</div>
-  <h2 class="reveal fighead" style="--i:1">How a repository becomes an environment</h2>
+  <div class="fighead reveal">
+    <h2 class="figname">Program-Env</h2>
+    <p class="fignote">How a repository becomes an environment</p>
+  </div>
 
   <div class="vpanel pipe-embed rise" id="pipePanel" style="--d:.06s">
     <div class="pipe-skel" id="pipeSkel" aria-hidden="true">
@@ -386,8 +388,10 @@
 <section class="stage" id="agent">
   <div class="stage-in">
     <div class="section">
-  <div class="vtitle sys reveal" style="margin-bottom:2px">Program-Agent</div>
-  <h2 class="reveal fighead" style="--i:1">How an agent rebuilds a program from its black box</h2>
+  <div class="fighead reveal">
+    <h2 class="figname">Program-Agent</h2>
+    <p class="fignote">How an agent rebuilds a program from its black box</p>
+  </div>
 
   <div class="vpanel pipe-embed rise" id="agentPanel" style="--d:.06s">
     <div class="pipe-skel" id="agentSkel" aria-hidden="true">
@@ -398,7 +402,7 @@
     <iframe id="agentFrame" loading="lazy" src="program-agent.html?embed=1&v=242b9efb11"
             title="Program agent workflow on a real run, replayed beat by beat"></iframe>
     <div class="pipe-foot">
-      <span>The analysis &rarr; implement &rarr; review loop on a real run (psampaz/go-mod-outdated, Go, five revisions), replayed in 17 beats. Click a line in the rail to replay it; hover a box for the real file behind it.</span>
+      <span>psampaz/go-mod-outdated &middot; Go &middot; five revisions, in 19 beats. Click a line to replay it; hover a box for its file.</span>
       <a href="program-agent.html?v=242b9efb11" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
