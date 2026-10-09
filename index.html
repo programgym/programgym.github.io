@@ -362,11 +362,16 @@
   </h2>
 
   <div class="vpanel pipe-embed rise" id="pipePanel" style="--d:.06s">
-    <iframe id="pipeFrame" src="program-env.html?embed=1&v=726403e504" loading="lazy"
+    <div class="pipe-skel" id="pipeSkel" aria-hidden="true">
+      <div class="sk-sheet"><div class="sk-cap"></div><div class="sk-fig"></div></div>
+      <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="sk-msg">Loading Figure 2 walkthrough…</div>
+    </div>
+    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=1be54de2e5"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
       <span>Figure 2 of the paper, replayed in 24 beats. Click a line in the rail to replay that beat.</span>
-      <a href="program-env.html?v=726403e504" target="_blank" rel="noopener">Open full screen &#8599;</a>
+      <a href="program-env.html?v=1be54de2e5" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
 </section>
@@ -560,7 +565,10 @@
     var f = document.getElementById('pipeFrame');
     if (!f) return;
     function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme') }, '*'); }
-    f.addEventListener('load', sync);
+    var skel = document.getElementById('pipeSkel');
+    function reveal() { if (skel) { skel.classList.add('off'); setTimeout(function () { skel.remove(); skel = null; }, 450); } }
+    window.addEventListener('message', function (e) { if (e.data && e.data.pipeReady) reveal(); });
+    f.addEventListener('load', function () { sync(); setTimeout(reveal, 1500); });
     new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
 

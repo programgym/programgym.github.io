@@ -68,6 +68,8 @@ body.embed .app{height:100vh;min-height:0}
 #fig.split .del.faded{opacity:.3}
 #fig.split .del{opacity:1}
 #fig.split .del.faded{opacity:.3}
+#fig.split .del{opacity:1}
+#fig.split .del.faded{opacity:.3}
 #fig.all #dwrap{opacity:0}
 /* figure elements: dim until the pulse has passed */
 .el{opacity:.3;transition:opacity 520ms ease}
@@ -530,6 +532,12 @@ document.addEventListener('keydown',function(e){
   else if(e.key===' '){ e.preventDefault(); document.getElementById('play').click(); }
 });
 showAll();
+(function(){
+  var done=false;
+  function ready(){ if(done) return; done=true; try{ if(window.parent!==window) window.parent.postMessage({pipeReady:true},'*'); }catch(e){} }
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ requestAnimationFrame(ready); }); else ready();
+  setTimeout(ready,4000);
+})();
 
 /* ---------- hover examples ---------- */
 var pop=document.getElementById('pop'), sheet=document.querySelector('.sheet'), popTimer=null, popKey=null;
