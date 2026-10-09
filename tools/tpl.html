@@ -323,7 +323,6 @@
   </div>
     </div>
   </div>
-  <div class="page-hint"><i></i>scroll</div>
   <nav class="pager" aria-label="Results pages"><button type="button" data-i="0" aria-label="Repositories" aria-current="true"></button><button type="button" data-i="1" aria-label="Cost and quality"></button><button type="button" data-i="2" aria-label="Distributions"></button></nav>
  </div>
 </section>
@@ -343,13 +342,17 @@
   var sec = document.getElementById('env-results'), stage = sec && sec.querySelector('.pages-stage');
   var pages = sec ? Array.prototype.slice.call(sec.querySelectorAll('.page')) : [], dots = sec ? Array.prototype.slice.call(sec.querySelectorAll('.pager button')) : [];
   var lit = {};
-  function activate(i) {
+  function play(pg) {
+    var els = pg.querySelectorAll('.page-head, .vpanel, .reveal');
+    els.forEach(function (el) { el.classList.remove('in'); });
+    void pg.offsetWidth;                                   /* restart the CSS transitions */
+    requestAnimationFrame(function () { els.forEach(function (el) { el.classList.add('in'); }); pg.querySelectorAll('[data-to]').forEach(countUp); });
+  }
+  function activate(i, replay) {
     pages.forEach(function (pg, j) { pg.classList.toggle('is-active', j === i); });
     dots.forEach(function (d, j) { d.setAttribute('aria-current', j === i ? 'true' : 'false'); });
-    if (lit[i]) return; lit[i] = true;
-    var pg = pages[i];
-    pg.querySelectorAll('.page-head, .vpanel, .reveal').forEach(function (el) { el.classList.add('in'); });
-    pg.querySelectorAll('[data-to]').forEach(countUp);
+    if (lit[i] && !replay) return; lit[i] = true;
+    play(pages[i]);
   }
   var pinned = window.matchMedia('(min-width: 761px)').matches && !reduce;
   if (!pinned) {
@@ -357,36 +360,35 @@
     pages.forEach(function (pg) { io2.observe(pg); });
   } else {
     /* fullPage behaviour: while the block fills the window, one wheel tick = one page; past the ends it hands scrolling back */
-    var N = pages.length, cur = 0, locked = false, busy = false, acc = 0, lastT = 0, touchY = null, hint = sec.querySelector('.page-hint');
+    var N = pages.length, cur = 0, locked = false, busy = false, acc = 0, lastT = 0, touchY = null;
     function goTo(i) {
       i = Math.max(0, Math.min(N - 1, i)); if (i === cur) return;
       pages.forEach(function (pg, j) { pg.classList.toggle('is-prev', j < i); });
-      cur = i; activate(i); busy = true; setTimeout(function () { busy = false; }, 800);
-      if (hint) hint.style.opacity = i === N - 1 ? '0' : '';
+      cur = i; activate(i, true); busy = true; setTimeout(function () { busy = false; }, 800);
     }
     function top() { return sec.getBoundingClientRect().top; }
-    function lock() { if (locked) return; locked = true; acc = 0; window.scrollTo({ top: window.scrollY + top(), behavior: 'auto' }); }
-    function unlock() { locked = false; acc = 0; }
+    var released = 0;
+    function lock() { if (locked || Date.now() - released < 700) return; locked = true; acc = 0; window.scrollTo({ top: window.scrollY + top(), behavior: 'auto' }); activate(cur, true); }
+    function unlock() { locked = false; acc = 0; released = Date.now(); }
     function step(dir) {
       if (busy) return true;
-      if (dir > 0 && cur === N - 1) { unlock(); return false; }
-      if (dir < 0 && cur === 0) { unlock(); return false; }
+      if ((dir > 0 && cur === N - 1) || (dir < 0 && cur === 0)) { unlock(); return false; }
       goTo(cur + dir); return true;
     }
     window.addEventListener('wheel', function (e) {
-      var t = top(), vh = window.innerHeight;
-      if (!locked) {
-        /* arriving: lock once the block covers most of the window and the wheel moves toward it */
-        if ((e.deltaY > 0 && t > -vh * 0.15 && t < vh * 0.35) || (e.deltaY < 0 && t < vh * 0.15 && t > -vh * 0.35)) {
-          if (e.deltaY < 0 && cur === 0 && t > -vh * 0.15) return;      /* leaving upward from page 1: let it go */
-          if (e.deltaY > 0 && cur === N - 1 && t < vh * 0.15) return;   /* leaving downward from the last page */
-          e.preventDefault(); lock(); return;
-        }
+      var t = top(), vh = window.innerHeight, dir = e.deltaY > 0 ? 1 : -1;
+      if (locked) {
+        /* at either end, let this very event scroll the document and release the lock */
+        if ((dir < 0 && cur === 0) || (dir > 0 && cur === N - 1)) { unlock(); return; }
+        e.preventDefault();
+        var now = Date.now(); if (now - lastT > 400) acc = 0; lastT = now; acc += e.deltaY;
+        if (Math.abs(acc) >= 24 && !busy) { acc = 0; step(dir); }
         return;
       }
-      e.preventDefault();
-      var now = Date.now(); if (now - lastT > 400) acc = 0; lastT = now; acc += e.deltaY;
-      if (Math.abs(acc) >= 24) { var d = acc > 0 ? 1 : -1; acc = 0; if (!step(d)) { /* released: scroll a little so the user feels it */ window.scrollBy({ top: d * 80, behavior: 'smooth' }); } }
+      if (Date.now() - released < 700) return;
+      /* arriving from above with cur at the first page, or from below with cur at the last page: lock onto the block */
+      if (dir > 0 && t > -vh * 0.1 && t < vh * 0.4) { e.preventDefault(); lock(); }
+      else if (dir < 0 && t < vh * 0.1 && t > -vh * 0.4) { e.preventDefault(); lock(); }
     }, { passive: false });
     window.addEventListener('keydown', function (e) {
       if (!locked || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
