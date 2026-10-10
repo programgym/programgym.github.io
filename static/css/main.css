@@ -41,6 +41,7 @@
   --on-accent: #ffffff;
   --hf: #ffd21e;
   --on-hf: #15181d;
+  --arxiv: #b31b1b;
 
   --hud-bg: rgba(255, 255, 255, .82);
   --shadow: 0 1px 2px rgba(16, 20, 28, .04), 0 8px 24px -12px rgba(16, 20, 28, .12);
@@ -88,6 +89,7 @@
   --on-accent: #06130e;
   --hf: #ffd21e;
   --on-hf: #15181d;
+  --arxiv: #c62828;
 
   --hud-bg: rgba(11, 15, 21, .80);
   --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
@@ -241,18 +243,20 @@ a { color: inherit; text-decoration: none; }
    A white disc is what lets the real logo read instead of a dark silhouette. */
 .btn-hero.primary .bicon { width: 21px; height: 21px; padding: 1px; background: #fff; border-radius: 50%; }
 
-/* One filled button carries the accent; the second is a quiet outline, so no
-   second saturated hue sits next to the green. */
-.btn-hero.primary { position: relative; overflow: hidden;
-  background: var(--hf); border-color: var(--hf); color: var(--on-hf); }
-.btn-hero.primary::after {
+/* Each hero button wears the colour of what it links to: HuggingFace yellow,
+   arXiv red. The nav's Paper keeps its quiet outline — a red pill up there is
+   the half of this pairing that looked wrong. */
+.btn-hero.primary, .btn-hero.paper { position: relative; overflow: hidden; }
+.btn-hero.primary { background: var(--hf); border-color: var(--hf); color: var(--on-hf); }
+.btn-hero.paper { background: var(--arxiv); border-color: var(--arxiv); color: #fff; }
+/* the arXiv glyph is all thin strokes — it needs a little more than 15px */
+.btn-hero.paper .bicon { width: 17px; height: 17px; }
+.btn-hero.primary::after, .btn-hero.paper::after {
   content: ""; position: absolute; top: 0; bottom: 0; left: -45%; width: 34%;
   background: linear-gradient(105deg, transparent, rgba(255,255,255,.55), transparent);
   transform: skewX(-18deg); transition: left .6s var(--ease-soft);
 }
-.btn-hero.primary:hover::after { left: 125%; }
-.btn-hero.paper { background: transparent; border-color: var(--line-2); color: var(--ink); }
-.btn-hero.paper:hover { opacity: 1; background: var(--bg2); border-color: var(--ink-3); }
+.btn-hero.primary:hover::after, .btn-hero.paper:hover::after { left: 125%; }
 
 /* ═══════════════ Figure ═══════════════ */
 
@@ -651,7 +655,7 @@ footer {
   .seg { stroke-dashoffset: 0 !important; transition: none; }
   .bfill { height: var(--h) !important; transition: none; animation: none !important; }
   .bval { opacity: 1 !important; transition: none; }
-  .btn-hero.primary::after { display: none; }
+  .btn-hero.primary::after, .btn-hero.paper::after { display: none; }
   *, *::before, *::after {
     animation-duration: .01ms !important; animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
