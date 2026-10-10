@@ -271,6 +271,7 @@ a { color: inherit; text-decoration: none; }
 
 .vpanel {
   position: relative;
+  min-width: 0;
   background: var(--panel); border: 1px solid var(--line);
   border-radius: 18px; padding: 20px 22px 18px;
   box-shadow: var(--shadow);
@@ -464,13 +465,21 @@ a { color: inherit; text-decoration: none; }
 .tip {
   position: fixed; z-index: 200; pointer-events: none;
   background: var(--panel); border: 1px solid var(--line-2);
-  border-radius: 10px; padding: 9px 12px; box-shadow: var(--shadow-lg);
+  border-radius: 10px; padding: 9px 38px 9px 12px; box-shadow: var(--shadow-lg);
   font-size: 12px; color: var(--ink-2);
   width: max-content; max-width: min(380px, calc(100vw - 28px));
+  max-height: calc(100dvh - 24px); overflow: auto; overflow-wrap: anywhere;
+  visibility: hidden;
   opacity: 0; translate: 0 4px;
   transition: opacity .16s var(--ease-soft), translate .16s var(--ease-soft);
 }
-.tip.on { opacity: 1; translate: 0 0; }
+.tip.on { opacity: 1; translate: 0 0; visibility: visible; pointer-events: auto; }
+.tip-close {
+  position: absolute; top: 4px; right: 4px; width: 28px; height: 28px;
+  border: 0; border-radius: 5px; background: transparent; color: var(--ink-2);
+  font: 20px/1 var(--sans); cursor: pointer;
+}
+.tip-close:hover, .tip-close:focus-visible { background: var(--bg2); color: var(--ink); }
 .tip .t { font-weight: 700; color: var(--ink); display: block; margin-bottom: 2px; }
 .tip .v { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
 
@@ -675,7 +684,7 @@ footer {
 /* ═══════════════ Responsive ═══════════════ */
 
 @media (max-width: 1120px) {
-  .figrow { grid-template-columns: 1fr; }
+  .figrow { grid-template-columns: minmax(0, 1fr); }
   .donut { max-width: 248px; }
 }
 
@@ -795,6 +804,7 @@ footer {
 
 /* Table 1, set like the paper */
 .ptable { width: 100%; border-collapse: collapse; font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 15.5px; color: var(--ink); }
+.ptable-scroll { min-width: 0; max-width: 100%; overflow-x: auto; }
 .ptable th { text-align: left; font-weight: 700; padding: 10px 12px; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--ink); }
 .ptable td { padding: 9px 12px; }
 .ptable tbody tr:last-child td { border-bottom: 1.5px solid var(--ink); }
@@ -922,8 +932,13 @@ footer {
 .tip .tt td i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: -0.5px; }
 @media (max-width: 1120px) { .actrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .actrow { grid-template-columns: 1fr; } }
-@media (max-width: 1120px) { .envrow { grid-template-columns: 1fr; } .abc { grid-template-columns: 1fr; } .viorow { grid-template-columns: 1fr; } .violeg { flex-direction: row; flex-wrap: wrap; justify-content: center; } }
-@media (max-width: 760px) { .page-in { padding: 40px 16px; } }
+@media (max-width: 1120px) { .envrow { grid-template-columns: minmax(0, 1fr); } .abc { grid-template-columns: minmax(0, 1fr); } .viorow { grid-template-columns: minmax(0, 1fr); } .violeg { flex-direction: row; flex-wrap: wrap; justify-content: center; } }
+@media (max-width: 760px) {
+  .page-in { padding: 40px 16px; }
+  .ringfig { min-width: 0; width: 100%; }
+  .ptable { font-size: 13px; }
+  .ptable th, .ptable td { padding: 8px 6px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .vb .bf, .vio .den { transform: none !important; transition: none; }
   .curves .cv { stroke-dashoffset: 0 !important; transition: none; } .acts .bars { transform: none !important; transition: none; } .pt { opacity: 1 !important; transform: none !important; transition: none; }

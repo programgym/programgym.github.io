@@ -126,6 +126,7 @@ for i, (name, val, col, ikey, icls) in enumerate(LANGS):
 bhead, bars = [], []
 for i, (short, var, full, score, ours, ikey) in enumerate(MODELS):
     h = score / Y_MAX * 100
+    ours_attr = ' data-ours="1"' if ours else ''
     mark = (f'<span class="ic"><img src="static/images/favicon.png" alt=""></span>'
             if ikey is None else
             f'<span class="ic {ICON_CLASS[ikey]}">{icon_svg(ikey)}</span>')
@@ -137,7 +138,7 @@ for i, (short, var, full, score, ours, ikey) in enumerate(MODELS):
     bars.append(
         f'            <div class="bar{" ours" if ours else ""}" style="--h:{h:.3f}%"\n'
         f'                 data-idx="{i}" data-name="{full}" data-score="{score:g}"'
-        f'{" data-ours=\"1\"" if ours else ""}>\n'
+        f'{ours_attr}>\n'
         f'              <span class="bval">{score:g}</span>\n'
         f'              <i class="bfill"></i>\n'
         f'            </div>'
@@ -170,10 +171,12 @@ PAV = _hash('program-agent.html')   # the agent walkthrough iframe, same reason
 # markup with the stylesheet it already had — new class names matching no rule.
 # Re-run gen.py after editing main.css, or the page keeps the stale query.
 CSSV = _hash('static', 'css', 'main.css')
+TIPV = _hash('static', 'js', 'tooltips.js')
 tpl = open(os.path.join(ROOT, 'tools', 'tpl.html'), encoding='utf-8').read()
 out = (tpl.replace('{{PEV}}', PEV)
           .replace('{{PAV}}', PAV)
           .replace('{{CSSV}}', CSSV)
+          .replace('{{TIPV}}', TIPV)
           .replace('{{SPRITE}}', sprite())
           .replace('{{SEGS}}', "\n".join(segs))
           .replace('{{LEGEND}}', "\n".join(legend))

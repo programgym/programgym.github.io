@@ -84,6 +84,15 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
+With Playwright and Chromium available, run `node tools/check-responsive.cjs`
+against that preview. It checks 320–1920px layouts, both themes, embedded
+walkthrough controls, and mouse/touch/keyboard tooltip dismissal. `BASE_URL`,
+`PLAYWRIGHT_MODULE`, and `CHROMIUM_EXECUTABLE` can select an existing preview
+or browser installation.
+
+Chart tooltips share `static/js/tooltips.js`. Re-run `python3 tools/gen.py`
+after editing it to refresh its content hash, just as for `main.css`.
+
 ## Theming
 
 Colours are CSS custom properties defined once per theme at the top of

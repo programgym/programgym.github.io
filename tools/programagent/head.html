@@ -177,6 +177,19 @@ kbd{font:500 9.5px/1 var(--mono);border:1px solid var(--rule);border-radius:2px;
 @media (max-width:880px){
   .app{grid-template-columns:1fr;grid-template-rows:auto minmax(320px,56vh) minmax(0,1fr);height:auto;min-height:100vh}
   .rail{border-left:0;border-top:1px solid var(--rule)} .runcfg{margin-left:0}
-  .sheetlabel{max-width:80%} .sheetlabel .t{font-size:14px} .metrics{display:none}
+  /* The caption gets its own row so it cannot cover the scaled diagram. */
+  .sheet{display:flex;flex-direction:column}
+  .sheetlabel{position:static;flex:none;max-width:none;margin:8px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 9px;padding:8px 10px}
+  .sheetlabel .t{font-size:14px;overflow-wrap:anywhere}
+  .sheetlabel .n{font-size:10px}
+  .sheetlabel .x{grid-column:1/-1;justify-self:start;white-space:normal}
+  .sheet > svg{flex:1;min-height:0}
+  .metrics{display:none}
+  .transport{flex-wrap:wrap;gap:8px}
+  .ticks{order:1;flex-basis:100%}
+  /* The embedded topbar is hidden: allocate two rows, not three. */
+  body.embed .app{grid-template-rows:minmax(320px,52vh) minmax(0,1fr)}
+  .brand,.cfg{flex-wrap:wrap;min-width:0;overflow-wrap:anywhere}
+  .brand .sub{white-space:normal}
 }
 </style>
