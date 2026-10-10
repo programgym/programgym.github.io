@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """Pull the real figures and snippets of one ProgramBench agent run into run.json.
 
-The run directory is an internal path (internal trial of claude-code-multi-v3 on
-psampaz/go-mod-outdated); run.json is committed so the page can be rebuilt
-without it. Nothing from config.json (hosts, proxies, keys) is read.
+Takes the run directory as its one argument. That path is internal and is
+deliberately not written down here; run.json is committed so the page can be
+rebuilt without it. Nothing from config.json (hosts, proxies, keys) is read.
 """
 import json, os, re, glob, sys, collections, datetime as dt
-RUN = sys.argv[1] if len(sys.argv) > 1 else (
-    '<internal run directory, not recorded>'
-    '')
+if len(sys.argv) < 2:
+    sys.exit('usage: harvest.py <run-directory>\n'
+             'The run directory is internal and is not recorded here; run.json is\n'
+             'committed so the page can be rebuilt without it.')
+RUN = sys.argv[1]
 A = os.path.join(RUN, 'agent'); W = os.path.join(A, 'workflow'); H = os.path.join(A, 'handoff'); V = os.path.join(RUN, 'verifier')
 OUT = os.path.join(os.path.dirname(__file__), 'run.json')
 rd = lambda *p: open(os.path.join(*p), encoding='utf-8').read()
