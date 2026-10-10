@@ -395,14 +395,23 @@
   }
   var sec = document.getElementById('env-results');
   var pages = sec ? Array.prototype.slice.call(sec.querySelectorAll('.page')) : [];
+  /* Each page draws itself on arrival and clears once it is off screen, so the
+     curves, bars and violins have actually run backwards by the time you
+     return to them. Resetting a frame before replaying leaves every transition
+     sitting at its finished value, which is a jump rather than a replay. */
   function play(pg) {
-    var els = pg.querySelectorAll('.page-head, .vpanel, .reveal');
-    els.forEach(function (el) { el.classList.remove('in'); });
-    void pg.offsetWidth;
-    requestAnimationFrame(function () { els.forEach(function (el) { el.classList.add('in'); }); pg.querySelectorAll('[data-to]').forEach(countUp); });
+    pg.querySelectorAll('.page-head, .vpanel, .reveal').forEach(function (el) { el.classList.add('in'); });
+    pg.querySelectorAll('[data-to]').forEach(countUp);
   }
-  /* each page plays when its sticky pane comes into view, and again whenever it comes back */
-  var io2 = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) play(e.target); }); }, { threshold: 0.35 });
+  function rewind(pg) {
+    pg.querySelectorAll('.page-head, .vpanel, .reveal').forEach(function (el) { el.classList.remove('in'); });
+  }
+  var io2 = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.intersectionRatio >= 0.35) play(e.target);
+      else if (e.intersectionRatio <= 0.02) rewind(e.target);
+    });
+  }, { threshold: [0.02, 0.35] });
   pages.forEach(function (pg) { io2.observe(pg.querySelector('.stage-in') || pg); });
 
   /* tooltip (shares the page's #tip element) */
@@ -413,6 +422,8 @@
   function show(html, ev) { if (!tipEl()) return; tip.innerHTML = html; tip.classList.add('on'); move(ev); }
   function move(ev) { if (!tipEl()) return; var x = ev.clientX + 14, y = ev.clientY + 14; var r = tip.getBoundingClientRect();
     if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - 14; if (y + r.height > window.innerHeight - 8) y = ev.clientY - r.height - 14;
+    x = Math.max(8, Math.min(x, window.innerWidth - r.width - 8));
+    y = Math.max(8, Math.min(y, window.innerHeight - r.height - 8));
     tip.style.left = x + 'px'; tip.style.top = y + 'px'; }
   function hide() { if (tipEl()) tip.classList.remove('on'); }
   function bind(sel, html) {
@@ -563,16 +574,16 @@
      to draws itself again rather than sitting there already finished. */
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      if (e.isIntersecting) {
+      if (e.intersectionRatio >= 0.25) {
         e.target.classList.add('in');
         if (e.target.id === 'donutPanel') countUp();
         if (e.target.id === 'barPanel') runBars();
-      } else {
+      } else if (e.intersectionRatio <= 0.02) {
         e.target.classList.remove('in');
         if (e.target.id === 'barPanel') resetBars();
       }
     });
-  }, { threshold: 0.25 });
+  }, { threshold: [0.02, 0.25] });
   ['pipePanel', 'agentPanel', 'donutPanel', 'barPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
 
   /* A walkthrough left behind stops playing — which also means the two can
@@ -607,8 +618,11 @@
 
   /* ── Components land one at a time as the section arrives ── */
   var rio = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { e.target.classList.toggle('in', e.isIntersecting); });
-  }, { threshold: 0.2, rootMargin: '0px 0px -5% 0px' });
+    entries.forEach(function (e) {
+      if (e.intersectionRatio >= 0.2) e.target.classList.add('in');
+      else if (e.intersectionRatio <= 0.01) e.target.classList.remove('in');
+    });
+  }, { threshold: [0.01, 0.2], rootMargin: '0px 0px -5% 0px' });
   document.querySelectorAll('.reveal').forEach(function (el) { rio.observe(el); });
 
   /* ── Centre total counts up alongside the ring ─────────── */
@@ -788,6 +802,8 @@
     var x = ev.clientX + 14, y = ev.clientY - r.height - 10;
     if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - 14;
     if (y < 8) y = ev.clientY + 18;
+    x = Math.max(8, Math.min(x, window.innerWidth - r.width - 8));
+    y = Math.max(8, Math.min(y, window.innerHeight - r.height - 8));
     tip.style.left = x + 'px'; tip.style.top = y + 'px';
   }
   function hideTip() { tip.classList.remove('on'); }
