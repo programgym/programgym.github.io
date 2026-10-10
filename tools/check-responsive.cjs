@@ -11,6 +11,15 @@ const assert=require('assert/strict');
   page.on('pageerror',e=>errors.push(`${width}: ${e.message}`));
   await page.route('https://fonts.googleapis.com/**',r=>r.abort());
   await page.goto(baseURL,{waitUntil:'load'});
+  assert.equal(await page.evaluate(()=>scrollY),0,`${width}: fresh visit must start at the introduction`);
+  if(mobile){
+   await page.locator('#overview').scrollIntoViewIfNeeded();
+   await page.reload({waitUntil:'load'}); await page.waitForTimeout(250);
+   assert.equal(await page.evaluate(()=>scrollY),0,`${width}: reload restored the overview scroll position`);
+   const ring=await page.locator('#catDonut').evaluate(e=>({width:e.clientWidth,scroll:e.scrollWidth,view:e.querySelector('svg').getAttribute('viewBox'),items:document.querySelectorAll('.cat-legend li').length}));
+   assert(ring.scroll<=ring.width+1,`${width}: category ring needs horizontal scrolling`);
+   assert.equal(ring.view,'176 80 288 288'); assert.equal(ring.items,8);
+  }
   for(const theme of ['light','dark']){
    await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);
    await page.waitForTimeout(50);
@@ -23,6 +32,7 @@ const assert=require('assert/strict');
     const geometry=await frame.evaluate(()=>{const rect=s=>{let r=document.querySelector(s).getBoundingClientRect();return{x:r.x,right:r.right,y:r.y,bottom:r.bottom,width:r.width,height:r.height}};return{width:innerWidth,scroll:document.documentElement.scrollWidth,label:rect('.sheetlabel'),fig:rect('#fig'),buttons:[...document.querySelectorAll('.transport .btn')].map(e=>({id:e.id,right:e.getBoundingClientRect().right,bottom:e.getBoundingClientRect().bottom})),transport:rect('.transport'),theme:document.documentElement.dataset.theme};});
     assert(geometry.scroll<=geometry.width+1,`${width}/${theme}/${id}: frame overflow ${JSON.stringify(geometry)}`);
     assert.equal(geometry.theme,theme);
+    if(id==='pipeFrame' && geometry.width<=880)assert(Math.abs(geometry.fig.height-geometry.fig.width*946.88/1280)<2,`${width}: Program-Env diagram is squashed`);
     if(geometry.width<=880){assert(geometry.label.bottom<=geometry.fig.y+1,`${width}/${id}: caption overlap`);assert(geometry.fig.height>80,`${width}/${id}: figure too short`);}
     for(const button of geometry.buttons){assert(button.right<=geometry.width+1,`${width}/${id}: clipped ${button.id}`);assert(button.bottom<=geometry.transport.bottom+1,`${width}/${id}: button below transport`);}
     await frame.locator('#next').click(); await frame.locator('#showall').click();

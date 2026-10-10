@@ -282,6 +282,12 @@ kbd{font:500 9.5px/1 var(--mono);border:1px solid var(--rule);border-radius:2px;
   body.embed .app{grid-template-rows:minmax(320px,52vh) minmax(0,1fr)}
   .brand,.cfg{flex-wrap:wrap;min-width:0;overflow-wrap:anywhere}
   .brand .sub{white-space:normal}
+  /* Let the complete diagram use the available width, including in landscape. */
+  .app{grid-template-rows:auto auto minmax(260px,1fr)}
+  .stage{padding:10px 10px 0;gap:8px}
+  .sheet{flex:none}
+  .sheet > svg{flex:none;height:auto;aspect-ratio:1280 / 946.88}
+  body.embed .app{height:auto;grid-template-rows:auto 260px}
 }
 </style>
 
@@ -779,6 +785,23 @@ pop.addEventListener('mouseleave',scheduleHide);
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') hidePop(); });
 /* embed + theme sync with the landing page */
 if(/[?&]embed=1/.test(location.search)) document.body.classList.add('embed');
+/* The host reserves this natural height instead of shrinking the diagram to
+   a fraction of the phone's viewport. Desktop keeps its existing sizing. */
+(function(){
+  if(window.parent===window) return;
+  var compact=matchMedia('(max-width:880px)'), app=document.querySelector('.app'), previous='';
+  function reportSize(){
+    var size={compact:compact.matches,height:Math.ceil(app.getBoundingClientRect().height)}, key=JSON.stringify(size);
+    if(key===previous) return; previous=key;
+    window.parent.postMessage({pipeSize:size},location.origin);
+  }
+  new ResizeObserver(reportSize).observe(app);
+  compact.addEventListener('change',reportSize);
+  window.addEventListener('message',function(e){
+    if(e.source===window.parent && e.data && e.data.askSize){ previous=''; reportSize(); }
+  });
+  reportSize();
+})();
 function applyTheme(t){ if(t==='dark'||t==='light') document.documentElement.setAttribute('data-theme',t); }
 window.addEventListener('message',function(e){ if(e.data&&e.data.theme) applyTheme(e.data.theme); });
 window.addEventListener('message',function(e){ if(e.data&&e.data.pause&&playing){ playing=false; clearAll(); syncBtn(); } });

@@ -712,10 +712,9 @@ footer {
   .pages .page-in { padding: 40px 16px; }
 
   /* Wide figures stay legible and pan sideways rather than shrinking away. */
-  .scatwrap, .kwrap, .curvewrap, .ringfig { overflow-x: auto; overscroll-behavior-x: contain; }
+  .scatwrap, .kwrap, .curvewrap { overflow-x: auto; overscroll-behavior-x: contain; }
   .scatwrap .scat { min-width: 680px; }
   .kwrap .kplot, .curvewrap .curves { min-width: 500px; }
-  .ringfig svg { min-width: 460px; }
   .footer-in { padding: 28px 16px 0; }
   .foot-top { grid-template-columns: 1fr; gap: 26px; }
   .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
@@ -731,6 +730,7 @@ footer {
   display: block; width: 100%; border: 0; background: var(--bg1);
   height: clamp(560px, 78vh, 760px);
 }
+.pipe-embed.compact iframe { flex: none; height: var(--walkthrough-height); }
 .pipe-foot {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 10px 16px; border-top: 1px solid var(--line);
@@ -801,6 +801,7 @@ footer {
 .rc-n { font-size: 30px; font-weight: 700; fill: var(--ink); letter-spacing: -.02em; }
 .rc-u { font-size: 11.5px; fill: var(--ink-3); }
 .ringfig .cseg:hover { stroke-width: 40; }
+.cat-legend { display: none; }
 
 /* Table 1, set like the paper */
 .ptable { width: 100%; border-collapse: collapse; font-family: 'Tinos', 'Times New Roman', Times, serif; font-size: 15.5px; color: var(--ink); }
@@ -881,8 +882,14 @@ footer {
 .scat .yt, .scat .xt { font-size: 30px; font-weight: 700; fill: var(--ink); }
 .curves .lg { font-size: 9.5px; fill: var(--ink); }
 .curves .legbg { fill: var(--panel); fill-opacity: .92; stroke: #D0D0D0; }
-.curves .cv { fill: none; stroke: var(--c); stroke-width: 2.4; stroke-linejoin: round; stroke-dasharray: var(--len, 3000); stroke-dashoffset: var(--len, 3000); transition: stroke-dashoffset 1.9s var(--ease); transition-delay: var(--d, 0s); }
-.in .curves .cv { stroke-dashoffset: 0; }
+.curves .cv { fill: none; stroke: var(--c); stroke-width: 2.4; stroke-linejoin: round; }
+/* Reveal all four series at the same horizontal pace. Keep their data intact. */
+.curves .curve-reveal { clip-path: inset(0 100% 0 0); opacity: 0; }
+.in .curves .curve-reveal {
+  clip-path: inset(0);
+  opacity: 1;
+  transition: clip-path 2.6s cubic-bezier(.4, 0, .2, 1) .15s, opacity .7s ease .15s;
+}
 .curves .cv.dim { opacity: .25; }
 .curves .cursor line { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 3; }
 .curves .cursor circle { stroke: #fff; stroke-width: 1.5; }
@@ -936,10 +943,19 @@ footer {
 @media (max-width: 760px) {
   .page-in { padding: 40px 16px; }
   .ringfig { min-width: 0; width: 100%; }
+  #envCatPanel .ringfig { flex: none; }
+  .ringfig svg { max-width: 270px; margin: 0 auto; }
+  .ringfig .rlab { display: none; }
+  .cat-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; margin-top: 12px; list-style: none; }
+  .cat-legend li { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 0 7px; align-content: start; font-size: 11.5px; line-height: 1.4; }
+  .cat-legend i { width: 10px; height: 10px; border-radius: 2px; margin-top: 3px; border: 1px solid rgba(0, 0, 0, .1); }
+  .cat-legend .name { color: var(--ink); }
+  .cat-legend .value { grid-column: 2; color: var(--ink-2); font-size: 10.5px; font-variant-numeric: tabular-nums; }
   .ptable { font-size: 13px; }
   .ptable th, .ptable td { padding: 8px 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .curves .curve-reveal { clip-path: none !important; opacity: 1 !important; transition: none !important; }
   .vb .bf, .vio .den { transform: none !important; transition: none; }
   .curves .cv { stroke-dashoffset: 0 !important; transition: none; } .acts .bars { transform: none !important; transition: none; } .pt { opacity: 1 !important; transform: none !important; transition: none; }
   .rlab, .vb .bv, .vb .ref, .vb .rl, .vio .box, .vio .wh, .vio .cap, .vio .med, .vio .mean, .vio .out { opacity: 1 !important; translate: none; transition: none; }

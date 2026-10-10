@@ -27,10 +27,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/main.css?v=ea05359d65">
+  <link rel="stylesheet" href="static/css/main.css?v=3c73ce5aa6">
   <script src="static/js/tooltips.js?v=6d27b225ba"></script>
 
   <script>
+    // A fresh mobile visit/reload starts at the introduction. Keep explicit
+    // anchors and back/forward navigation, and never undo a visitor's scroll.
+    (function () {
+      var nav = performance.getEntriesByType('navigation')[0];
+      if (!matchMedia('(max-width: 760px)').matches || location.hash || (nav && nav.type === 'back_forward')) return;
+      history.scrollRestoration = 'manual';
+      var interacted = false;
+      ['touchstart', 'pointerdown', 'wheel', 'keydown'].forEach(function (name) {
+        window.addEventListener(name, function () { interacted = true; }, { once: true, passive: true });
+      });
+      window.addEventListener('pageshow', function (e) {
+        if (!e.persisted && !interacted && !location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }, { once: true });
+      window.addEventListener('pagehide', function () { history.scrollRestoration = 'auto'; });
+    })();
     // Resolve theme before first paint so the page never flashes the wrong one.
     (function () {
       var t = localStorage.getItem('theme') ||
@@ -376,11 +391,11 @@
       <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="sk-msg">Loading Figure 2 walkthrough…</div>
     </div>
-    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=07d89a1b6c"
+    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=f9cb84bf69"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
       <span class="pipe-follow" id="pipeFollow"><span class="fl">Subagent</span></span>
-      <a href="program-env.html?v=07d89a1b6c" target="_blank" rel="noopener">Open full screen &#8599;</a>
+      <a href="program-env.html?v=f9cb84bf69" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
     </div>
@@ -558,6 +573,21 @@
 
   /* All statistics use the same mouse, touch and keyboard lifecycle. */
   var segs0 = document.querySelectorAll('#catDonut .cseg');
+  var cat = document.getElementById('catDonut'), catSvg = cat.querySelector('svg');
+  var catView = catSvg.getAttribute('viewBox'), catMobile = matchMedia('(max-width: 760px)');
+  var catLegend = document.createElement('ul'); catLegend.className = 'cat-legend';
+  catLegend.setAttribute('aria-label', 'Repository categories');
+  segs0.forEach(function (seg) {
+    var li = document.createElement('li'), swatch = document.createElement('i');
+    swatch.style.background = seg.getAttribute('stroke'); swatch.setAttribute('aria-hidden', 'true');
+    var name = document.createElement('span'); name.className = 'name'; name.textContent = seg.dataset.name;
+    var value = document.createElement('span'); value.className = 'value';
+    value.textContent = Number(seg.dataset.count).toLocaleString('en-US') + ' · ' + seg.dataset.pct + '%';
+    li.append(swatch, name, value); catLegend.appendChild(li);
+  });
+  cat.after(catLegend);
+  function fitCategoryRing() { catSvg.setAttribute('viewBox', catMobile.matches ? '176 80 288 288' : catView); }
+  fitCategoryRing(); catMobile.addEventListener('change', fitCategoryRing);
   function bind(sel, html) {
     document.querySelectorAll(sel).forEach(function (el) {
       ProgramGymTooltip.bind(el, function () { return html(el); });
@@ -572,10 +602,12 @@
     '<tr><td>Q1 – Q3</td><td class="v">' + d.q1 + ' – ' + d.q3 + '</td></tr><tr><td>1.5 IQR whiskers</td><td class="v">' + d.wlo + ' – ' + d.whi + '</td></tr>' +
     '<tr><td>Min – Max</td><td class="v">' + d.min + ' – ' + d.max + '</td></tr><tr><td>Outliers</td><td class="v">' + d.out + '</td></tr></table>'; });
 
-  /* survival curves: measure for the draw-in, crosshair with the four values */
+  /* Survival curves share one horizontal reveal; axes and legend stay still. */
   var cw = document.querySelector('.curvewrap');
   if (cw) {
-    var cvs = cw.querySelectorAll('.cv'); cvs.forEach(function (p) { try { p.style.setProperty('--len', (p.getTotalLength() + 2).toFixed(1)); } catch (e) {} });
+    var cvs = cw.querySelectorAll('.cv'), reveal = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    reveal.setAttribute('class', 'curve-reveal'); cvs[0].before(reveal);
+    cvs.forEach(function (p) { reveal.appendChild(p); });
     var SER = JSON.parse(cw.getAttribute('data-series')), L0 = +cw.getAttribute('data-l'), PW = +cw.getAttribute('data-pw');
     var svg = cw.querySelector('svg'), cursor = svg.querySelector('#cvCursor'), hit = svg.querySelector('#cvHit'), dotsC = cursor.querySelectorAll('circle');
     function frac(vals, thr) { var lo = 0, hi = vals.length; while (lo < hi) { var mid = (lo + hi) >> 1; if (vals[mid] < thr) lo = mid + 1; else hi = mid; } return (vals.length - lo) / vals.length; }
@@ -900,7 +932,15 @@
   (function () {
     var f = document.getElementById('pipeFrame');
     if (!f) return;
-    function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme') }, '*'); }
+    window.addEventListener('message', function (e) {
+      if (e.source !== f.contentWindow || e.origin !== location.origin || !e.data || !e.data.pipeSize) return;
+      var size = e.data.pipeSize, panel = f.parentElement;
+      if (!size.compact && !panel.classList.contains('compact')) return;
+      panel.classList.toggle('compact', size.compact === true);
+      if (size.compact && Number.isFinite(size.height)) panel.style.setProperty('--walkthrough-height', Math.ceil(size.height) + 'px');
+      fitStages();
+    });
+    function sync() { if (f.contentWindow) f.contentWindow.postMessage({ theme: document.documentElement.getAttribute('data-theme'), askSize: true }, '*'); }
     var skel = document.getElementById('pipeSkel');
     function reveal() { if (skel) { skel.classList.add('off'); setTimeout(function () { if (skel) { skel.remove(); skel = null; } }, 450); } }
     window.addEventListener('message', function (e) { if (e.data && e.data.pipeReady) reveal(); if (e.data && typeof e.data.followed === 'number') follow(e.data); });
