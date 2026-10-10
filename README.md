@@ -90,6 +90,12 @@ walkthrough controls, and mouse/touch/keyboard tooltip dismissal. `BASE_URL`,
 `PLAYWRIGHT_MODULE`, and `CHROMIUM_EXECUTABLE` can select an existing preview
 or browser installation.
 
+Run `node tools/check-walkthrough-scroll.cjs` with the same settings to check
+step-list buttons, W/S shortcuts, complete list access, and native page scrolling.
+Set `BROWSER_TYPE=webkit` to run this interaction check with Playwright WebKit.
+The embedded walkthroughs accept W/S only while their frame has focus; they do
+not bind keyboard up/down arrows or intercept wheel/touch gestures.
+
 Chart tooltips share `static/js/tooltips.js`. Re-run `python3 tools/gen.py`
 after editing it to refresh its content hash, just as for `main.css`.
 

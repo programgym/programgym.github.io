@@ -238,15 +238,21 @@ body.embed .follow{display:none}
 .btn.primary:hover{color:#fff;filter:brightness(1.08)}
 .counter{font:500 11px/1 var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
 .rail{min-height:0;display:flex;flex-direction:column;background:var(--panel);border-left:1px solid var(--rule)}
-.railhead{padding:12px 15px 9px;border-bottom:1px solid var(--rule-2);display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.railhead{padding:12px 15px 9px;border-bottom:1px solid var(--rule-2);display:flex;align-items:center;justify-content:space-between;gap:8px}
 .railhead .k{font:600 9.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .railhead .v{font:500 10.5px/1 var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.railtitle{display:grid;gap:6px;min-width:0}
+.railscroll{display:flex;gap:4px;flex:none}
+.railscroll .btn{width:44px;height:44px;padding:0;justify-content:center;gap:5px}
+.railscroll .btn[aria-disabled="true"]{opacity:.35;cursor:default}
+.railscroll .btn[aria-disabled="true"]:hover{border-color:var(--rule);color:var(--ink)}
+.railscroll kbd{border:0;background:none;padding:0;font-size:10px}
 .steps{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
 /* Embedded, the rail is a display, not a scroller: it holds every beat, so
    it would take about three of its own heights of wheel before the host
    page moved at all. overflow:hidden still scrolls programmatically, which
    is how the active beat follows along. Full screen keeps it scrollable. */
-body.embed .steps{overflow:hidden}
+body.embed .steps{overflow:hidden;overscroll-behavior:auto}
 .phase{display:flex;align-items:center;gap:8px;padding:11px 15px 5px;font:600 9px/1 var(--sans);letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
 .phase::after{content:"";flex:1;height:1px;background:var(--rule-2)}
 .beat{display:grid;grid-template-columns:24px 1fr;gap:9px;width:100%;text-align:left;padding:7px 15px;cursor:pointer;background:none;border:0;color:inherit;font:inherit;align-items:start}
@@ -326,7 +332,13 @@ kbd{font:500 9.5px/1 var(--mono);border:1px solid var(--rule);border-radius:2px;
     </div>
   </main>
   <aside class="rail">
-    <div class="railhead"><span class="k">Walkthrough</span><span class="v" id="rh-v">29 beats</span></div>
+    <div class="railhead">
+      <div class="railtitle"><span class="k">Walkthrough</span><span class="v" id="rh-v">29 beats</span></div>
+      <div class="railscroll" role="group" aria-label="Scroll walkthrough steps">
+        <button type="button" class="btn" id="steps-up" aria-controls="steps" aria-label="Scroll steps up (W)" aria-keyshortcuts="W" title="Scroll steps up (W)"><span aria-hidden="true">↑</span><kbd>W</kbd></button>
+        <button type="button" class="btn" id="steps-down" aria-controls="steps" aria-label="Scroll steps down (S)" aria-keyshortcuts="S" title="Scroll steps down (S)"><span aria-hidden="true">↓</span><kbd>S</kbd></button>
+      </div>
+    </div>
     <div class="steps" id="steps"></div>
     <div class="railfoot"><span>Click a line to replay it · click a module chip in the bar to follow that subagent</span><kbd>←</kbd><kbd>→</kbd><kbd>space</kbd></div>
   </aside>
@@ -685,11 +697,38 @@ document.getElementById('next').addEventListener('click',function(){ go(Math.min
 document.getElementById('prev').addEventListener('click',function(){ go(Math.max(cur-1,0),'beat'); });
 document.getElementById('reset').addEventListener('click',function(){ go(0,'all'); });
 document.getElementById('showall').addEventListener('click',showAll);
+// Browse only this rail. Wheel, touch gestures and the native up/down keys
+// remain untouched; keyboard events reach us only while this document is focused.
+var scrollUp=document.getElementById('steps-up'), scrollDown=document.getElementById('steps-down');
+function syncRailScroll(){
+  scrollUp.setAttribute('aria-disabled',stepsEl.scrollTop<=1?'true':'false');
+  scrollDown.setAttribute('aria-disabled',stepsEl.scrollTop+stepsEl.clientHeight>=stepsEl.scrollHeight-1?'true':'false');
+}
+function scrollSteps(direction, immediate){
+  var limit=stepsEl.scrollHeight-stepsEl.clientHeight;
+  if(direction<0?stepsEl.scrollTop<=1:stepsEl.scrollTop>=limit-1) return;
+  if(playing){ playing=false; clearAll(); syncBtn(); }
+  stepsEl.scrollBy({top:direction*Math.max(80,stepsEl.clientHeight*.65),behavior:reduce||immediate?'auto':'smooth'});
+}
+scrollUp.addEventListener('click',function(){ scrollSteps(-1); });
+scrollDown.addEventListener('click',function(){ scrollSteps(1); });
+stepsEl.addEventListener('scroll',syncRailScroll,{passive:true});
+if(typeof ResizeObserver!=='undefined'){
+  var railSize=new ResizeObserver(syncRailScroll);
+  railSize.observe(stepsEl);
+  Array.prototype.forEach.call(stepsEl.children,function(el){ railSize.observe(el); });
+}
+window.addEventListener('load',syncRailScroll);
+requestAnimationFrame(syncRailScroll);
 document.addEventListener('keydown',function(e){
-  if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
+  if(e.defaultPrevented||e.ctrlKey||e.metaKey||e.altKey||e.isComposing) return;
+  if(e.target&&(e.target.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))) return;
+  if(e.key.toLowerCase()==='w'||e.key.toLowerCase()==='s'){
+    e.preventDefault(); scrollSteps(e.key.toLowerCase()==='w'?-1:1,e.repeat); return;
+  }
   if(e.key==='ArrowRight'){ e.preventDefault(); document.getElementById('next').click(); }
   else if(e.key==='ArrowLeft'){ e.preventDefault(); document.getElementById('prev').click(); }
-  else if(e.key===' '){ e.preventDefault(); document.getElementById('play').click(); }
+  else if(e.key===' '&&!e.target.closest('.railscroll')){ e.preventDefault(); document.getElementById('play').click(); }
 });
 applyModuleText(); showAll();
 /* the five module chips (and their icons) switch the followed subagent */
