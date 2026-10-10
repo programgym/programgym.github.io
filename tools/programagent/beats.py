@@ -86,7 +86,7 @@ beat('Revision 1', 'Independent build → rev-001',
      legs=[leg([C('a:ws-compile'), [C('a:ic-archive')[0], C('a:ws-compile')[1]], C('a:ic-archive'), P('a:arrow-store', 1), TC('a:rev-1')], ['a:rev', 'a:rev-t', 'a:ic-archive', 'a:arrow-store', 'a:rev-1'])],
      text={'a:rev-1': rev_card(1)}, snap=snap('a:rev-1'), produce=[{'ids': ['a:rev-1'], 'delay': 1250}], flag='pass',
      marks=[{'at': [BB('a:rev-1')[2] - 6, BB('a:rev-1')[1] + 6], 'kind': 'pass', 'delay': 1400}], metrics='r1')
-beat('Revision 1', 'delivery.md goes into the handoff',
+beat('Revision 1', 'The developer writes delivery.md; the orchestrator seals the handoff',
      'What was built, which files changed, the developer\'s own test results, known limitations. The orchestrator adds independent-build.json and seals implementation-001/ read-only.',
      legs=[leg([C(IMP), C('a:ic-pen-i'), TC('a:h-impl')], ['a:ic-pen-i'])], start=C(IMP),
      produce=[{'ids': ['a:h-impl'], 'delay': 0}], text={'a:h-impl': impl_card(1)}, throb=['a:h-impl'], frame=[[IMP], ['a:h-impl']])
@@ -104,7 +104,7 @@ beat('Revision 1', 'review-001: three accepted findings',
 # workspace; a reviewer beat runs delivery.md + the candidate -> Review ->
 # review.md. The handoff cards always show the latest folder of each kind;
 # earlier ones collapse into the small tab above.
-beat('Revisions 2–3', 'Revision 2: review-001 is the spec, the workspace is rewritten',
+beat('Revisions 2–3', 'Revision 2: the developer rewrites the workspace against review-001',
      '%s. The developer reads review-001 (F1–F3) on top of analysis.md and changes main.go and mod.go: +31 lines — Main-module drop up front, Replace redirection after the filters, a recursive *Module model. delivery.md goes to implementation-002/.' % phs('implementation-002'),
      legs=[into(IMP, 'a:ic-pen-i', 'a:h-rev')], light=['a:ic-loop'], throb=[IMP],
      text={'a:h-impl-tab': ['📁 implementation ×1'], 'a:h-impl': impl_card(2)},
