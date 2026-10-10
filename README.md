@@ -96,6 +96,10 @@ Set `BROWSER_TYPE=webkit` to run this interaction check with Playwright WebKit.
 The embedded walkthroughs accept W/S only while their frame has focus; they do
 not bind keyboard up/down arrows or intercept wheel/touch gestures.
 
+Run `node tools/check-theme.cjs` to check the circular theme transition in
+both directions, repeated clicks, cancellation, iframe theme sync and fallbacks.
+It samples the transition frames to detect a second cross-fade at the end.
+
 Chart tooltips share `static/js/tooltips.js`. Re-run `python3 tools/gen.py`
 after editing it to refresh its content hash, just as for `main.css`.
 

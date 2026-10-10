@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ProgramGym</title>
+  <title>ProgramGym: Scaling Training Environments for Long-Horizon Program Reproduction Agents</title>
   <meta name="description" content="ProgramGym: scaling training environments for long-horizon program reproduction agents. 1,648 tasks across Go, C++, Rust and C.">
   <link rel="canonical" href="https://programgym.github.io/">
 
@@ -730,7 +730,9 @@
     localStorage.setItem('theme', next);
     syncLabel();
   }
+  var themeTransition = null;
   btn.addEventListener('click', function () {
+    if (themeTransition) return;
     var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     /* The new theme is revealed by a circle opening from the button itself, so
        the edge sweeps down across the page instead of the two themes
@@ -739,14 +741,27 @@
     var r = btn.getBoundingClientRect();
     var x = r.left + r.width / 2, y = r.top + r.height / 2;
     var far = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-    document.documentElement.classList.add('vt-theme');
-    document.startViewTransition(function () { setTheme(next); }).ready.then(function () {
+    var root = document.documentElement;
+    root.classList.add('vt-theme');
+    var transition = document.startViewTransition(function () { setTheme(next); });
+    themeTransition = transition;
+    function finishThemeTransition() {
+      // Removing this while the snapshot layers still exist restarts the
+      // browser's default cross-fade, briefly showing the old theme again.
+      root.classList.remove('vt-theme');
+      themeTransition = null;
+    }
+    transition.finished.then(finishThemeTransition, finishThemeTransition);
+    transition.ready.then(function () {
       document.documentElement.animate(
         { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)',
                      'circle(' + far + 'px at ' + x + 'px ' + y + 'px)'] },
         { duration: 720, easing: 'cubic-bezier(.16, 1, .3, 1)',
           pseudoElement: '::view-transition-new(root)' }
-      ).finished.then(function () { document.documentElement.classList.remove('vt-theme'); });
+      );
+    }).catch(function () {
+      // A skipped/unsupported animation still commits the requested theme.
+      transition.skipTransition();
     });
   });
 
