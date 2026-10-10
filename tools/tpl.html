@@ -472,7 +472,8 @@
 
   /* table view */
   var tb = document.getElementById('envTableBtn'), tbl = document.getElementById('envTables');
-  if (tb && tbl) tb.addEventListener('click', function () { var open = tbl.hidden; tbl.hidden = !open; tb.setAttribute('aria-expanded', open ? 'true' : 'false'); tb.textContent = open ? 'Hide table' : 'View data as table'; });
+  if (tb && tbl) tb.addEventListener('click', function () { var open = tbl.hidden; tbl.hidden = !open; tb.setAttribute('aria-expanded', open ? 'true' : 'false'); tb.textContent = open ? 'Hide table' : 'View data as table';
+    window.dispatchEvent(new Event('resize')); });   /* the other block re-fits the stages */
 })();
 </script>
 <!-- env-results:end -->
@@ -584,6 +585,25 @@
     });
   }, { threshold: 0.3 });
   ['pipePanel', 'agentPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) pio2.observe(n); });
+
+  /* ── A stage that cannot fit the screen stops pinning ──────
+     Measured by briefly unpinning: while pinned the content is stretched to
+     the pane, so its natural height is only readable in the other state. */
+  var stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
+  function fitStages() {
+    var avail = window.innerHeight - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-h') || 56);
+    stages.forEach(function (st) {
+      var pane = st.firstElementChild, content = pane && pane.firstElementChild;
+      if (!content) return;
+      st.classList.add('unpinned');
+      var natural = content.scrollHeight;
+      st.classList.toggle('unpinned', natural > avail - 8);
+    });
+  }
+  fitStages();
+  window.addEventListener('load', fitStages);      // fonts and frames settle late
+  var fitT;
+  window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitStages, 140); });
 
   /* ── Components land one at a time as the section arrives ── */
   var rio = new IntersectionObserver(function (entries) {
@@ -818,6 +838,7 @@
     tables.hidden = !open;
     tb.setAttribute('aria-expanded', String(open));
     tb.textContent = open ? 'Hide data table' : 'View data as table';
+    fitStages();                       // the table may no longer fit a pinned pane
   });
 
   /* Paper link is not public yet — say so rather than 404. */

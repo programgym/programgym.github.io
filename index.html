@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/main.css?v=fc665d11d8">
+  <link rel="stylesheet" href="static/css/main.css?v=b0f0be364f">
 
   <script>
     // Resolve theme before first paint so the page never flashes the wrong one.
@@ -375,11 +375,11 @@
       <div class="sk-rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="sk-msg">Loading Figure 2 walkthrough…</div>
     </div>
-    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=bcf0ed7970"
+    <iframe id="pipeFrame" loading="eager" fetchpriority="low" src="program-env.html?embed=1&v=437a7ab6a1"
             title="Program-Env pipeline — Figure 2, replayed beat by beat"></iframe>
     <div class="pipe-foot">
       <span class="pipe-follow" id="pipeFollow"><span class="fl">Subagent</span></span>
-      <a href="program-env.html?v=bcf0ed7970" target="_blank" rel="noopener">Open full screen &#8599;</a>
+      <a href="program-env.html?v=437a7ab6a1" target="_blank" rel="noopener">Open full screen &#8599;</a>
     </div>
   </div>
     </div>
@@ -613,7 +613,8 @@
 
   /* table view */
   var tb = document.getElementById('envTableBtn'), tbl = document.getElementById('envTables');
-  if (tb && tbl) tb.addEventListener('click', function () { var open = tbl.hidden; tbl.hidden = !open; tb.setAttribute('aria-expanded', open ? 'true' : 'false'); tb.textContent = open ? 'Hide table' : 'View data as table'; });
+  if (tb && tbl) tb.addEventListener('click', function () { var open = tbl.hidden; tbl.hidden = !open; tb.setAttribute('aria-expanded', open ? 'true' : 'false'); tb.textContent = open ? 'Hide table' : 'View data as table';
+    window.dispatchEvent(new Event('resize')); });   /* the other block re-fits the stages */
 })();
 </script>
 <!-- env-results:end -->
@@ -729,6 +730,25 @@
     });
   }, { threshold: 0.3 });
   ['pipePanel', 'agentPanel'].forEach(function (id) { var n = document.getElementById(id); if (n) pio2.observe(n); });
+
+  /* ── A stage that cannot fit the screen stops pinning ──────
+     Measured by briefly unpinning: while pinned the content is stretched to
+     the pane, so its natural height is only readable in the other state. */
+  var stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
+  function fitStages() {
+    var avail = window.innerHeight - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-h') || 56);
+    stages.forEach(function (st) {
+      var pane = st.firstElementChild, content = pane && pane.firstElementChild;
+      if (!content) return;
+      st.classList.add('unpinned');
+      var natural = content.scrollHeight;
+      st.classList.toggle('unpinned', natural > avail - 8);
+    });
+  }
+  fitStages();
+  window.addEventListener('load', fitStages);      // fonts and frames settle late
+  var fitT;
+  window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitStages, 140); });
 
   /* ── Components land one at a time as the section arrives ── */
   var rio = new IntersectionObserver(function (entries) {
@@ -963,6 +983,7 @@
     tables.hidden = !open;
     tb.setAttribute('aria-expanded', String(open));
     tb.textContent = open ? 'Hide data table' : 'View data as table';
+    fitStages();                       // the table may no longer fit a pinned pane
   });
 
   /* Paper link is not public yet — say so rather than 404. */

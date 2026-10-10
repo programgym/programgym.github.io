@@ -22,7 +22,7 @@
   /* How far you scroll to pass one page. The pane is one screen tall, so the
      part above 100vh is how long it holds before handing over: 125vh is a
      quarter-screen hold. Raising this makes every page slower to leave. */
-  --stage-run: 125vh;
+  --stage-run: 112vh;
 }
 
 [data-theme="light"] {
@@ -512,9 +512,18 @@ a { color: inherit; text-decoration: none; }
     height: calc(100vh - var(--hud-h));
     display: flex; align-items: stretch;
     background: var(--bg0);
-    overflow-y: auto;                 /* only bites if the data table is open */
     transition: background var(--t-base) var(--ease-soft);
   }
+  /* A page whose content cannot fit a screen gives up its pin rather than
+     hiding the overflow behind a scrollbar nobody expects. Without this the
+     pane is a third scroll container, silently taking the wheel whenever the
+     data table is open or the viewport is short. Set from script, which is
+     the only place the natural height can be measured. */
+  .stage.unpinned { height: auto; }
+  .stage.unpinned > .stage-in { position: static; height: auto; }
+  .stage.unpinned > .stage-in > .section,
+  .stage.unpinned > .stage-in > .page-in { height: auto; padding-top: 44px; padding-bottom: 44px; }
+
   .stage-in > .section,
   .stage-in > .page-in {
     width: 100%; height: 100%;

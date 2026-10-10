@@ -151,7 +151,11 @@ body.embed .app{height:100vh;min-height:0}
 .railhead .k{font:600 9.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .railhead .v{font:500 10.5px/1 var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
 .steps{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
-body.embed .steps{overscroll-behavior:auto}
+/* Embedded, the rail is a display, not a scroller: it holds every beat, so
+   it would take about three of its own heights of wheel before the host
+   page moved at all. overflow:hidden still scrolls programmatically, which
+   is how the active beat follows along. Full screen keeps it scrollable. */
+body.embed .steps{overflow:hidden}
 .phase{display:flex;align-items:center;gap:8px;padding:11px 15px 5px;font:600 9px/1 var(--sans);letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
 .phase::after{content:"";flex:1;height:1px;background:var(--rule-2)}
 .beat{display:grid;grid-template-columns:24px 1fr;gap:9px;width:100%;text-align:left;padding:7px 15px;cursor:pointer;background:none;border:0;color:inherit;font:inherit;align-items:start}
