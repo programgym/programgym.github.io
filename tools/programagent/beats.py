@@ -52,7 +52,7 @@ def beat(phase, t, d, **k): b = {'ph': phase, 't': t, 'd': d, 'legs': []}; b.upd
 
 # ── Inputs ─────────────────────────────────────────────────────────────
 beat('Inputs', 'The task: a black-box program and its docs',
-     '%s @%s: a %s CLI that %s. The agent gets README.md, LICENSE and the gold ./executable (2.3 MB, execute-only) — no source.' % (R['task']['repo'], R['task']['commit'], R['task']['lang'], R['task']['what']),
+     '%s @%s: a %s CLI that %s. The agent gets README.md, LICENSE and the gold ./executable (2.3 MB, execute-only), no source.' % (R['task']['repo'], R['task']['commit'], R['task']['lang'], R['task']['what']),
      at=C('a:ic-docs'), light=['a:ic-docs', 'a:docs-t', 'a:ic-prog', 'a:prog-t'] + REGIONS, throb=['a:ic-docs', 'a:ic-prog'],
      frame=[['a:ic-docs', 'a:docs-t', 'a:ic-prog', 'a:prog-t']],
      text={'a:h-analysis': EMPTY, 'a:h-impl-tab': EMPTY, 'a:h-impl': EMPTY, 'a:h-rev-tab': EMPTY, 'a:h-rev': EMPTY,
@@ -60,7 +60,7 @@ beat('Inputs', 'The task: a black-box program and its docs',
      fade=['a:h-analysis', 'a:h-impl-tab', 'a:h-impl', 'a:h-rev-tab', 'a:h-rev', 'a:ws-src', 'a:ws-build', 'a:ws-compile', 'a:rev-1', 'a:rev-2', 'a:link-top', 'a:link-bot'])
 # ── Analysis ───────────────────────────────────────────────────────────
 b = beat('Analysis', 'The analysis agent probes the executable',
-     'A Claude Code session in a copy of the workspace, %s. It drives ./executable only through stdin and flags: -help, -update, -direct, -style markdown, -ci, malformed JSON, the nil-timestamp panic — and records bytes, stderr and exit codes.' % phs('analysis-initial'),
+     'A Claude Code session in a copy of the workspace, %s. It drives ./executable only through stdin and flags: -help, -update, -direct, -style markdown, -ci, malformed JSON, the nil-timestamp panic, and records bytes, stderr and exit codes.' % phs('analysis-initial'),
      start=C('a:ic-docs'), throb=[ANA], parallel=True, speed=1.2)
 b['legs'] = [leg(P('a:docs-arrow', 1)[:1] + [P('a:docs-arrow', 2), C(ANA)], ['a:docs-arrow', ANA]),
              leg([P('a:prog-arrow', 1), P('a:prog-arrow', 2), C(ANA)], ['a:prog-arrow', ANA], **{'from': C('a:ic-prog')})]
@@ -74,7 +74,7 @@ beat('Analysis', 'The handoff is sealed read-only',
      at=TC('a:h-analysis'), light=['a:handoff', 'a:handoff-t'], frame=[['a:handoff']], marks=[{'at': right('a:h-analysis', -8)[:1] + [BB('a:h-analysis')[1] + 6], 'kind': 'pass', 'delay': 300}], flag='pass', hold=3200)
 # ── Revision 1 ─────────────────────────────────────────────────────────
 beat('Revision 1', 'The developer reads analysis.md and starts revision 1',
-     'A fresh session in /workspace with analysis.md as its only spec, %s. The gold binary is gone, so it can probe nothing — it writes Go from the document alone.' % phs('implementation-001'),
+     'A fresh session in /workspace with analysis.md as its only spec, %s. The gold binary is gone, so it can probe nothing: it writes Go from the document alone.' % phs('implementation-001'),
      legs=[into(IMP, 'a:ic-pen-i', 'a:h-analysis')], light=['a:arrow-ai'], throb=[IMP], frame=[['a:h-analysis'], [IMP]])
 beat('Revision 1', 'Source lands in the workspace',
      'main.go (flags, stdin decode, filters, table layout), internal/mod/mod.go (the Module / Update model), go.mod (stdlib only) and compile.sh (an offline go build). %d lines of Go.' % REV[1]['go_lines'],
@@ -91,7 +91,7 @@ beat('Revision 1', 'The developer writes delivery.md; the orchestrator seals the
      legs=[leg([C(IMP), C('a:ic-pen-i'), TC('a:h-impl')], ['a:ic-pen-i'])], start=C(IMP),
      produce=[{'ids': ['a:h-impl'], 'delay': 0}], text={'a:h-impl': impl_card(1)}, throb=['a:h-impl'], frame=[[IMP], ['a:h-impl']])
 beat('Revision 1', 'The reviewer takes delivery.md and the rev-001 binary',
-     'A third role, %s. Its inputs are the handoff so far and the candidate built by the orchestrator — never the developer\'s working directory. It re-runs the §6 matrix on gold and candidate in fresh fixture directories: stdout bytes, first stderr line, exit status — every row matches.' % phs('review-001'),
+     'A third role, %s. Its inputs are the handoff so far and the candidate built by the orchestrator, never the developer\'s working directory. It re-runs the §6 matrix on gold and candidate in fresh fixture directories: stdout bytes, first stderr line, exit status. Every row matches.' % phs('review-001'),
      legs=[into(REVW, 'a:ic-pen-r', 'a:h-impl'), candidate('a:rev-1')], light=['a:ic-loop'], throb=[REVW], parallel=True,
      frame=[['a:h-impl'], ['a:rev-1'], [REVW]])
 beat('Revision 1', 'review-001: three accepted findings',
@@ -105,7 +105,7 @@ beat('Revision 1', 'review-001: three accepted findings',
 # review.md. The handoff cards always show the latest folder of each kind;
 # earlier ones collapse into the small tab above.
 beat('Revisions 2–3', 'Revision 2: the developer rewrites the workspace against review-001',
-     '%s. The developer reads review-001 (F1–F3) on top of analysis.md and changes main.go and mod.go: +31 lines — Main-module drop up front, Replace redirection after the filters, a recursive *Module model. delivery.md goes to implementation-002/.' % phs('implementation-002'),
+     '%s. The developer reads review-001 (F1–F3) on top of analysis.md and changes main.go and mod.go, +31 lines: Main-module drop up front, Replace redirection after the filters, a recursive *Module model. delivery.md goes to implementation-002/.' % phs('implementation-002'),
      legs=[into(IMP, 'a:ic-pen-i', 'a:h-rev')], light=['a:ic-loop'], throb=[IMP],
      text={'a:h-impl-tab': ['📁 implementation ×1'], 'a:h-impl': impl_card(2)},
      produce=[{'ids': ['a:ws-src', 'a:ws-build'], 'delay': 200}, {'ids': ['a:h-impl', 'a:h-impl-tab'], 'delay': 900}], frame=[['a:h-rev'], [IMP], WS_CARDS])
@@ -119,14 +119,14 @@ beat('Revisions 2–3', 'Review 2: delivery.md + rev-002 → everything matches'
      text={'a:h-rev-tab': ['📁 review ×1'], 'a:h-rev': review_card(2, '📄 fixtures ×2')},
      produce=[{'ids': ['a:h-rev', 'a:h-rev-tab'], 'delay': 300}], flag='pass', frame=[['a:h-impl'], ['a:rev-2'], [REVW], ['a:h-rev']],
      marks=[{'at': [BB('a:h-rev')[2] - 6, BB('a:h-rev')[1] + 6], 'kind': 'pass', 'delay': 600}])
-beat('Revisions 2–3', 'Revision 3: review-002 asks for nothing — same commit, a third build',
-     '%s. No source change — the tree at @%s already satisfies every requirement, so the developer re-verifies an offline build and the regression matrix and hands off. rev-003 is byte-identical to rev-002.' % (phs('implementation-003'), REV[3]['commit']),
+beat('Revisions 2–3', 'Revision 3: review-002 asks for nothing, so the same commit gets a third build',
+     '%s. No source change: the tree at @%s already satisfies every requirement, so the developer re-verifies an offline build and the regression matrix and hands off. rev-003 is byte-identical to rev-002.' % (phs('implementation-003'), REV[3]['commit']),
      legs=[into(IMP, 'a:ic-pen-i', 'a:h-rev')], light=['a:ic-loop'], frame=[['a:h-rev'], [IMP], WS_CARDS],
      text={'a:h-impl-tab': ['📁 implementation ×2'], 'a:h-impl': impl_card(3), 'a:rev-2': rev_card(3)},
      produce=[{'ids': ['a:h-impl', 'a:h-impl-tab'], 'delay': 0}, {'ids': ['a:rev-2'], 'delay': 1750}], snap=snap('a:rev-2', 500), metrics='r3')
 # ── Revisions 4–5 ──────────────────────────────────────────────────────
 beat('Revisions 4–5', 'Review 3: delivery.md + rev-003 → F4, Unicode display width',
-     '%s. Byte len() against display width — CJK, fullwidth, emoji, combining marks. Every ASCII input still matches, so F4 is inert on realistic data but a real parity gap.' % phs('review-003'),
+     '%s. Byte len() against display width: CJK, fullwidth, emoji, combining marks. Every ASCII input still matches, so F4 is inert on realistic data but a real parity gap.' % phs('review-003'),
      legs=[into(REVW, 'a:ic-pen-r', 'a:h-impl'), candidate('a:rev-2')], light=['a:ic-loop'], throb=[REVW], parallel=True,
      text={'a:h-rev-tab': ['📁 review ×2'], 'a:h-rev': review_card(3, '📄 fixtures ×1')},
      produce=[{'ids': ['a:h-rev', 'a:h-rev-tab'], 'delay': 300}], flag='fail', frame=[['a:h-impl'], ['a:rev-2'], [REVW], ['a:h-rev']],
@@ -151,7 +151,7 @@ beat('Revisions 4–5', 'Revision 5: review-004 in hand, grapheme-aware width.go
      frame=[['a:h-rev'], [IMP], WS_CARDS], marks=[{'at': [BB('a:rev-2')[2] - 6, BB('a:rev-2')[1] + 6], 'kind': 'pass', 'delay': 2100}], metrics='r5')
 # ── Verification ───────────────────────────────────────────────────────
 beat('Verification', 'The verifier builds rev-005 and runs %d hidden test branches' % V['branches'],
-     'compile.sh → ./executable in %.1f s, then %d test cases: %d passed, %d failed, %d skipped. The misses: one missing-timestamp crash case, and in a single branch the help text, the unknown-flag usage and the malformed-JSON exit code. Reward %.4f — almost resolved.' % (V['compile_s'], V['total'], V['passed'], V['failed'], V['skipped'], V['reward']),
+     'compile.sh → ./executable in %.1f s, then %d test cases: %d passed, %d failed, %d skipped. The misses: one missing-timestamp crash case, and in a single branch the help text, the unknown-flag usage and the malformed-JSON exit code. Reward %.4f, almost resolved.' % (V['compile_s'], V['total'], V['passed'], V['failed'], V['skipped'], V['reward']),
      at=TC('a:rev-2'), throb=['a:rev-2'], frame=[['a:rev']], flag='pass', metrics='final', hold=6000,
      marks=[{'at': [BB('a:rev-2')[0] + 14 + 26 * i, BB('a:rev-2')[3] - 10], 'kind': ('fail' if i in (0, 3) else 'pass'), 'delay': 500 + 180 * i} for i in range(V['branches'])])
 
