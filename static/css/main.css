@@ -586,6 +586,14 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
+/* The theme change is a circle opening from the toggle, not a cross-fade:
+   the outgoing page holds still underneath while the new one is clipped in
+   over it. Scoped to .vt-theme so an unrelated view transition is unaffected. */
+.vt-theme::view-transition-old(root),
+.vt-theme::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.vt-theme::view-transition-old(root) { z-index: 1; }
+.vt-theme::view-transition-new(root) { z-index: 2; }
+
 /* ═══════════════ Footer ═══════════════ */
 
 footer {

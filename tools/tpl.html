@@ -580,11 +580,29 @@
     btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark';
   }
   syncLabel();
-  btn.addEventListener('click', function () {
-    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  function setTheme(next) {
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     syncLabel();
+  }
+  btn.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    /* The new theme is revealed by a circle opening from the button itself, so
+       the edge sweeps down across the page instead of the two themes
+       cross-fading in place. Without view transitions it just swaps. */
+    if (reduce || !document.startViewTransition) { setTheme(next); return; }
+    var r = btn.getBoundingClientRect();
+    var x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var far = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    document.documentElement.classList.add('vt-theme');
+    document.startViewTransition(function () { setTheme(next); }).ready.then(function () {
+      document.documentElement.animate(
+        { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)',
+                     'circle(' + far + 'px at ' + x + 'px ' + y + 'px)'] },
+        { duration: 720, easing: 'cubic-bezier(.16, 1, .3, 1)',
+          pseudoElement: '::view-transition-new(root)' }
+      ).finished.then(function () { document.documentElement.classList.remove('vt-theme'); });
+    });
   });
 
   /* ── Hero plays on load; panels on scroll ──────────────── */
