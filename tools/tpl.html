@@ -97,7 +97,7 @@
       <a href="#pipeline" class="hide-s">Program-Env</a>
       <a href="#agent" class="hide-s">Program-Agent</a>
       <a href="https://huggingface.co/programgym" class="hide-s">HuggingFace</a>
-      <a href="#" class="navbtn" data-paper>Paper &#8599;</a>
+      <a href="https://arxiv.org/pdf/2610.13395" class="navbtn" data-paper target="_blank" rel="noopener">Paper &#8599;</a>
       <button class="tbtn" id="themeBtn" aria-label="Toggle colour theme">Dark</button>
     </nav>
   </div>
@@ -140,7 +140,7 @@
         <svg class="bicon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#ic-huggingface"></use></svg>
         HuggingFace
       </a>
-      <a class="btn-hero paper" href="#" data-paper>
+      <a class="btn-hero paper" href="https://arxiv.org/pdf/2610.13395" data-paper target="_blank" rel="noopener">
         <svg class="bicon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#ic-arxiv"></use></svg>
         Paper
       </a>
@@ -543,7 +543,7 @@
           <span class="foot-h">Project</span>
           <a href="https://huggingface.co/programgym" target="_blank" rel="noopener">HuggingFace</a>
           <a href="https://github.com/programgym" target="_blank" rel="noopener">GitHub</a>
-          <a href="#" data-paper>Paper</a>
+          <a href="https://arxiv.org/pdf/2610.13395" data-paper target="_blank" rel="noopener">Paper</a>
         </div>
         <div class="foot-col">
           <span class="foot-h">Figures</span>
@@ -896,13 +896,6 @@
     fitStages();                       // the table may no longer fit a pinned pane
   });
 
-  /* Paper link is not public yet — say so rather than 404. */
-  document.querySelectorAll('[data-paper]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      ProgramGymTooltip.show(a, '<span class="t">Paper link coming soon</span>Drop the arXiv URL in and it goes live.', e);
-    });
-  });
 })();
 </script>
 
