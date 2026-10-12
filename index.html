@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/main.css?v=3ab28b0289">
+  <link rel="stylesheet" href="static/css/main.css?v=ce2e12abdc">
   <script src="static/js/tooltips.js?v=6d27b225ba"></script>
 
   <script>
@@ -648,6 +648,36 @@
 })();
 </script>
 <!-- env-results:end -->
+
+<section class="section citation" id="citation" aria-labelledby="citationTitle">
+  <div class="citation-head reveal">
+    <h2 id="citationTitle">Cite this work</h2>
+    <a href="https://arxiv.org/abs/2610.13395" target="_blank" rel="noopener">arXiv:2610.13395 <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="reveal" style="--i:1">
+    <div class="citation-card" id="citationCard">
+      <div class="citation-toolbar">
+        <span class="citation-format">BibTeX</span>
+        <button class="citation-copy" id="citationCopy" type="button" aria-label="Copy BibTeX citation">
+          <span class="copy-idle" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>Copy</span>
+          <span class="copy-done" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8"/></svg>Copied</span>
+        </button>
+      </div>
+      <pre class="citation-code" tabindex="0" role="region" aria-label="BibTeX citation, scroll horizontally to read"><code id="citationText">@misc{yang2026programgym,
+  title = {{ProgramGym}: Scaling Training Environments for Long-Horizon Program Reproduction Agents},
+  author = {Chengyi Yang and Renxu Bao and Jue Hou and Zongpei Teng and
+            Ziheng Wang and Yujie Lin and Chengsong Huang and Junnan Zhu and
+            Delai Qiu and Yining Wang and Shengping Liu and Fei Long and Jinsong Su},
+  year = {2026},
+  eprint = {2610.13395},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.SE},
+  url = {https://arxiv.org/abs/2610.13395}
+}</code></pre>
+      <p class="citation-status" id="citationStatus" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer>
@@ -824,6 +854,44 @@
     });
   }, { threshold: [0.01, 0.2], rootMargin: '0px 0px -5% 0px' });
   document.querySelectorAll('.reveal').forEach(function (el) { rio.observe(el); });
+
+  /* ── Copy the displayed citation, with a fallback for older browsers ── */
+  var citationCopy = document.getElementById('citationCopy'), citationCard = document.getElementById('citationCard');
+  var citationText = document.getElementById('citationText'), citationStatus = document.getElementById('citationStatus');
+  var copyTimer, copying = false;
+  function copyCitationFallback(text) {
+    var field = document.createElement('textarea');
+    field.value = text; field.readOnly = true;
+    field.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;pointer-events:none;';
+    document.body.appendChild(field);
+    var copied = false;
+    try {
+      field.focus({ preventScroll: true }); field.select(); field.setSelectionRange(0, text.length);
+      copied = document.execCommand('copy');
+    } catch (err) { /* Leave a visible manual-copy message if access is blocked. */ }
+    finally { field.remove(); citationCopy.focus({ preventScroll: true }); }
+    return copied;
+  }
+  citationCopy.addEventListener('click', async function () {
+    if (copying) return;
+    copying = true; clearTimeout(copyTimer);
+    var text = citationText.textContent, copied = false;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text); copied = true;
+      }
+    } catch (err) { /* Try the selection-based fallback below. */ }
+    if (!copied) copied = copyCitationFallback(text);
+    copying = false;
+    citationCard.classList.toggle('copied', copied);
+    citationCard.classList.toggle('copy-failed', !copied);
+    citationCopy.setAttribute('aria-label', copied ? 'Citation copied' : 'Copy BibTeX citation');
+    citationStatus.textContent = copied ? 'Citation copied to clipboard.' : 'Copy is unavailable. Select the citation above to copy it manually.';
+    if (copied) copyTimer = setTimeout(function () {
+      citationCard.classList.remove('copied'); citationCopy.setAttribute('aria-label', 'Copy BibTeX citation');
+      citationStatus.textContent = '';
+    }, 2200);
+  });
 
   /* ── Centre total counts up alongside the ring ─────────── */
   var countToken = 0;
