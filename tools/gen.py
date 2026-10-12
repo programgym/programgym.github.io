@@ -172,11 +172,13 @@ PAV = _hash('program-agent.html')   # the agent walkthrough iframe, same reason
 # Re-run gen.py after editing main.css, or the page keeps the stale query.
 CSSV = _hash('static', 'css', 'main.css')
 TIPV = _hash('static', 'js', 'tooltips.js')
+OGV = _hash('static', 'images', 'social-preview-light.png')
 tpl = open(os.path.join(ROOT, 'tools', 'tpl.html'), encoding='utf-8').read()
 out = (tpl.replace('{{PEV}}', PEV)
           .replace('{{PAV}}', PAV)
           .replace('{{CSSV}}', CSSV)
           .replace('{{TIPV}}', TIPV)
+          .replace('{{OGV}}', OGV)
           .replace('{{SPRITE}}', sprite())
           .replace('{{SEGS}}', "\n".join(segs))
           .replace('{{LEGEND}}', "\n".join(legend))

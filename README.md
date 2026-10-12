@@ -64,18 +64,27 @@ site ships PNGs generated from it:
 | `logo.png` (640px) | 117 KB | hero image |
 | `favicon.png` (64px) | 4 KB | browser tab |
 | `apple-touch-icon.png` (180px) | 17 KB | iOS home screen |
-| `social-preview.png` (1200×630) | 78 KB | Open Graph / Twitter card |
+| `social-preview-light.png` (1200×630) | 193 KB | Open Graph / Twitter card |
+| `social-preview.png` (1200×630) | 78 KB | preserved original share image |
 
-Regenerate them all after editing `icon.svg`:
+Regenerate the current assets after editing `icon.svg`:
 
 ```sh
 ./tools/build_assets.sh
+python3 tools/gen.py
 ```
+
+The white-and-green share card is rendered from `tools/social-preview.svg`
+using the existing mascot and Liberation Sans (with Helvetica/Arial fallbacks).
+To rebuild only this card, run `python3 tools/build_social_preview.py`, then
+`python3 tools/gen.py` to refresh its content hash in the share metadata.
+The original `social-preview.png` is preserved and is not regenerated.
 
 The pipeline has no third-party dependencies — it calls the system
 `librsvg`/`cairo` through `ctypes` (`tools/svg2png.py`), then reduces each PNG
-to a 256-colour palette with a median-cut quantizer (`tools/pngquant.py`),
-which saves about 70% with no visible quality loss.
+of the mascot to a 256-colour palette with a median-cut quantizer
+(`tools/pngquant.py`), which saves about 70% with no visible quality loss.
+The share card keeps RGB colours for smooth text antialiasing.
 
 ## Local preview
 

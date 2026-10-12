@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630">
+  <title>ProgramGym — a gym for coding agents</title>
+  <desc>Agents need coding like software engineers. So we build the gym.</desc>
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <g font-family="Liberation Sans, Helvetica, Arial, sans-serif">
+    <text x="512" y="265" font-size="94" font-weight="700" letter-spacing="-4" fill="#12664f">ProgramGym</text>
+    <text x="516" y="340" font-size="29" letter-spacing="-0.4" fill="#4e5663">Agents need coding like software engineers.</text>
+    <text x="514" y="394" font-size="40" font-weight="700" letter-spacing="-1" fill="#15785c">So we build the gym.</text>
+  </g>
+  <image x="64" y="121" width="388" height="388" xlink:href="{{LOGO_DATA_URI}}"/>
+</svg>
