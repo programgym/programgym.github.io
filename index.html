@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/main.css?v=64f6c6594b">
+  <link rel="stylesheet" href="static/css/main.css?v=a7d226c13e">
   <script src="static/js/tooltips.js?v=6d27b225ba"></script>
 
   <script>
@@ -832,7 +832,23 @@
      the pane, so its natural height is only readable in the other state. */
   var stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
   function fitStages() {
-    var avail = window.innerHeight - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-h') || 56);
+    var root = document.documentElement, scale = 1;
+    /* Desktop zoom-out expands the layout viewport beyond the browser window,
+       while the cards keep their max-width. Correct only their viewport-based
+       dimensions so the charts cannot stretch vertically at 67%, 50%, etc.
+       outerWidth is a conservative bound including window chrome; at normal
+       zoom and on touch devices the original 1vh rules remain untouched.
+       devicePixelRatio is deliberately unused: Retina/OS scaling is not zoom. */
+    if (window.innerWidth > 760 && window.outerWidth > 0 &&
+        window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      scale = Math.min(1, window.outerWidth / window.innerWidth);
+    }
+    var figureHeight = window.innerHeight * scale;
+    /* Resolve to pixels so nested min()/clamp() values cannot retain a stale
+       viewport-unit conversion while the browser moves between zoom levels. */
+    if (scale < 1) root.style.setProperty('--figure-vh', figureHeight / 100 + 'px');
+    else root.style.removeProperty('--figure-vh');
+    var avail = figureHeight - parseFloat(getComputedStyle(root).getPropertyValue('--hud-h') || 56);
     stages.forEach(function (st) {
       var pane = st.firstElementChild, content = pane && pane.firstElementChild;
       if (!content) return;

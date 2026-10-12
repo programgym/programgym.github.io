@@ -19,10 +19,12 @@
   --t-base: .3s;
 
   --hud-h: 56px;
+  /* Remains 1vh at normal zoom; fitStages corrects desktop zoom-out only. */
+  --figure-vh: 1vh;
   /* How far you scroll to pass one page. The pane is one screen tall, so the
      part above 100vh is how long it holds before handing over: 125vh is a
      quarter-screen hold. Raising this makes every page slower to leave. */
-  --stage-run: 112vh;
+  --stage-run: calc(112 * var(--figure-vh));
 }
 
 [data-theme="light"] {
@@ -289,7 +291,7 @@ a { color: inherit; text-decoration: none; }
 }
 .vtitle.sys { color: var(--accent); font-size: 11.5px; letter-spacing: .10em; }
 .fighead { margin-bottom: 16px; }
-.figname { font-size: clamp(26px, 3.4vh, 40px); font-weight: 700; color: var(--accent);
+.figname { font-size: clamp(26px, calc(3.4 * var(--figure-vh)), 40px); font-weight: 700; color: var(--accent);
            letter-spacing: -.025em; line-height: 1.04; }
 .fignote { margin-top: 5px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
 .vsub { font-size: 12.5px; color: var(--ink-3); margin-bottom: 14px; }
@@ -522,7 +524,7 @@ a { color: inherit; text-decoration: none; }
   .stage { height: var(--stage-run); }
   .stage-in {
     position: sticky; top: var(--hud-h);
-    height: calc(100vh - var(--hud-h));
+    height: calc(100 * var(--figure-vh) - var(--hud-h));
     display: flex; align-items: stretch;
     background: var(--bg0);
     transition: background var(--t-base) var(--ease-soft);
@@ -548,21 +550,21 @@ a { color: inherit; text-decoration: none; }
   .stage-in .pipe-embed { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   /* Without a floor the frame loses its height race against the heading and
      collapses to a bare rectangle as the window shrinks. */
-  .stage-in .pipe-embed iframe { flex: 1; min-height: min(480px, 62vh); height: auto; }
+  .stage-in .pipe-embed iframe { flex: 1; min-height: min(480px, calc(62 * var(--figure-vh))); height: auto; }
 
-  .stage-in .page-head { margin-bottom: clamp(12px, 2.2vh, 30px); }
-  .stage-in .page-head h2 { font-size: clamp(23px, 3.3vh, 40px); }
-  .stage-in .page-head p { font-size: clamp(13px, 1.7vh, 15.5px); }
+  .stage-in .page-head { margin-bottom: clamp(12px, calc(2.2 * var(--figure-vh)), 30px); }
+  .stage-in .page-head h2 { font-size: clamp(23px, calc(3.3 * var(--figure-vh)), 40px); }
+  .stage-in .page-head p { font-size: clamp(13px, calc(1.7 * var(--figure-vh)), 15.5px); }
 
   /* The walkthrough pages spend their height on the figure. */
   #pipeline .section, #agent .section { padding-top: 10px; padding-bottom: 10px; }
-  #pipeline .fighead, #agent .fighead { margin-bottom: clamp(8px, 1.6vh, 18px); }
+  #pipeline .fighead, #agent .fighead { margin-bottom: clamp(8px, calc(1.6 * var(--figure-vh)), 18px); }
 
   /* Figure 1 is two cards rather than one frame, so its parts scale instead. */
   .stage-in .figrow { flex: 1; min-height: 0; }
   .stage-in .figrow .vpanel { display: flex; flex-direction: column; min-height: 0; }
   .stage-in .donut-wrap { flex: 1; min-height: 0; justify-content: center; }
-  .stage-in .donut { max-width: min(292px, 30vh); }
+  .stage-in .donut { max-width: min(292px, calc(30 * var(--figure-vh))); }
   .stage-in .barchart { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   .stage-in .plot { flex: 1; min-height: 160px; height: auto; }
 }
@@ -795,7 +797,7 @@ footer {
 .pipe-embed { padding: 0; overflow: hidden; }
 .pipe-embed iframe {
   display: block; width: 100%; border: 0; background: var(--bg1);
-  height: clamp(560px, 78vh, 760px);
+  height: clamp(560px, calc(78 * var(--figure-vh)), 760px);
 }
 .pipe-embed.compact iframe { flex: none; height: var(--walkthrough-height); }
 .pipe-foot {
@@ -939,7 +941,7 @@ footer {
 .violeg .l-out { width: 7px; height: 7px; border: 1px solid #6B7A86; border-radius: 50%; margin-left: 4px; }
 
 /* ── Experiments: survival curves (paper colours), scatter with broken axis, K-rounds plot, summary table ── */
-.curvewrap { position: relative; max-width: min(760px, 72vh); margin: 0 auto; }
+.curvewrap { position: relative; max-width: min(760px, calc(72 * var(--figure-vh))); margin: 0 auto; }
 .curves, .scat, .kplot { width: 100%; height: auto; display: block; overflow: visible; font-family: 'Tinos', 'Times New Roman', Times, serif; }
 .curves .grid, .kplot .grid, .scat .grid { stroke: #B9B9B9; stroke-width: .75; stroke-dasharray: 3 3; opacity: .8; }
 .curves .frame, .kplot .frame, .scat .frame { fill: none; stroke: var(--ink); stroke-width: 1.15; }
@@ -980,7 +982,11 @@ footer {
 .pi { fill: currentColor; }
 .kwrap { width: 100%; max-width: 820px; margin: 0 auto; }
 /* inside the sticky pane the plot must leave room for the heading: cap the chart height and let the SVG letterbox */
-@media (min-height: 700px) and (min-width: 761px) { .stage-in .kplot, .stage-in .scat { max-height: 54vh; } .stage-in .curves { max-height: 46vh; } .stage-in .acts { max-height: 40vh; } }
+@media (min-height: 700px) and (min-width: 761px) {
+  .stage-in .kplot, .stage-in .scat { max-height: calc(54 * var(--figure-vh)); }
+  .stage-in .curves { max-height: calc(46 * var(--figure-vh)); }
+  .stage-in .acts { max-height: calc(40 * var(--figure-vh)); }
+}
 .ptable.exp { font-size: 13px; }
 .ptable.exp th, .ptable.exp td { padding: 7px 9px; }
 .ptable.exp small { color: var(--ink-3); font-size: 11px; }
